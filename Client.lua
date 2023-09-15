@@ -336,15 +336,18 @@ table.insert(connections,rs.Heartbeat:Connect(function(dt)
     end
 
     if getrenv()._G.Entities[1].Dead == true then
-        print("oh shit we dead bruh")
         local deadPeople = {}
         for userid,playerdata in registeredPlayers do
+            if userid == player.UserId then
+                continue
+            end
             if playerdata.serverData.dead == false then
                 continue
             end
             table.insert(deadPeople,userid)
         end
-        if #deadPeople == #registeredPlayers and hasCalledGameEnd == false then
+        if #deadPeople == #registeredPlayers-1 and hasCalledGameEnd == false then
+            warn("called.")
             hasCalledGameEnd = true
             old()
         end
