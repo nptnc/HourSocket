@@ -313,6 +313,8 @@ end
 
 hookToMyEntity()
 
+local fuckOff = 1000
+
 local lastMyEntity = getrenv()._G.Entities[1]
 table.insert(connections,rs.Heartbeat:Connect(function(dt)
     if getMe() == nil then
@@ -324,6 +326,12 @@ table.insert(connections,rs.Heartbeat:Connect(function(dt)
             return false
         end
         return true
+    end
+
+    if getMe().serverData.isHost and getrenv()._G.Map.Enemies == fuckOff then
+        getrenv()._G.Map.Enemies = 0
+    elseif getMe().serverData.isHost == false then
+        getrenv()._G.Map.Enemies = fuckOff
     end
 
     if lastMyEntity ~= getrenv()._G.Entities[1] then
