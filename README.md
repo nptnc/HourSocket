@@ -6,7 +6,7 @@ client - nptnc
 
 ## [Public server statistics](http://salamithecat.com:4040)
 
-## [trello](https://trello.com/b/e1gvvbzK/hours-multiplayer-script)
+## [Trello](https://trello.com/b/e1gvvbzK/hours-multiplayer-script) <sub>lists currently done features and explanations</sub>
 
 ## Setup
 
