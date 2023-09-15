@@ -23,6 +23,7 @@ local messageIds = {
     updatePlayer = 2,
     updateState = 3,
     doAttack = 4,
+    registerEntity = 5,
 }
 
 local prepareMessage = function(messageId,...)
@@ -166,6 +167,15 @@ registerMessage(4,function(userid,action)
     registeredPlayers[userid].entity.ActionFunctions[action]()
 end)
 
+registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
+    getrenv()._G.SpawnCreature({
+        Name = entityname,
+        SpawnCFrame = CFrame.new(posx,posy,posz),
+        DamageTeam = damageTeam,
+        IsBoss = isBoss,
+    })
+end)
+
 socket.OnMessage:Connect(function(msg)
     local args = string.split(msg,seperator)
     --warn(`server sent {msg}`)
@@ -198,14 +208,20 @@ workspace.ChildRemoved:Connect(function(child)
 end)
 
 getrenv()._G.SpawnCreature = createHook(getrenv()._G.SpawnCreature,function(hook,...)
+    local args = {...}
+    args = args[1]
+
     local me = getMe()
     if me.serverData.isHost == true then
         warn("i am host!")
-        return hook.call(...)
+        local entityId = hook.call(...)
+        local entity = getrenv()._G.Entities[entityId]
+        local message = prepareMessage("registerEntity",args.Name,entityId,args.DamageTeam or 1,args.IsBoss or false,entity.RootPart.Position.X,entity.RootPart.Position.Y,entity.RootPart.Position.Z)
+        socket:Send(message)
+        return entityId
     elseif me.serverData.isHost == false then
-        print("nuh uh")
-        local args = {...}
-        if args[1].Bypass ~= true then
+        warn("i am not host!")
+        if args.Bypass ~= true then
             warn("no bypass bye bye")
             return
         end
