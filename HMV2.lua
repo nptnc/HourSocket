@@ -200,7 +200,7 @@ getrenv()._G.SpawnCreature = createHook(getrenv()._G.SpawnCreature,function(hook
         return hook.call(...)
     elseif getMe().isHost == false then
         local args = {...}
-        if args[5] ~= "MULTIPLAYER" then
+        if args[1].Bypass ~= true then
             return
         end
         return hook.call(...)
@@ -210,6 +210,7 @@ end)
 local createPlayer = function(playerdata)
     local entity = getrenv()._G.SpawnCreature({
         Name = playerdata.serverData.class,
+        Bypass = true,
     })
     entity = getrenv()._G.Entities[entity]
     entity.DamageTeam = 1
