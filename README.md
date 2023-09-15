@@ -1,9 +1,19 @@
 # HoursMultiplayer
 hours multiplayer 👍👍
 
-### client setup:
+## [Public server statistics](http://salamithecat.com:4040)
+
+## [trello](https://trello.com/b/e1gvvbzK/hours-multiplayer-script)
+
+## Setup
+
+### Server
+1. download latest python!!! (was written in 3.11)
+2. download server under server directory in this repo
+3. `python3 main.py` to run server
+4. if you want the webserver as well run `python3 webserver.py` as well
+
+### Client
 1. get an executor (only tested on [krnl](https://krnl.place))
 2. run the script 👍
 
-### server setup:
-idk?
