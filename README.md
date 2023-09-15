@@ -1,6 +1,9 @@
 # HoursMultiplayer
 hours multiplayer 👍👍
 
+server - peeblyweeb  
+client - nptnc
+
 ## [Public server statistics](http://salamithecat.com:4040)
 
 ## [trello](https://trello.com/b/e1gvvbzK/hours-multiplayer-script)
@@ -19,6 +22,3 @@ just download the client script and run it when you're in hours and spawned in, 
 ### Client
 1. get an executor (only tested on [krnl](https://krnl.place))
 2. run the script 👍
-
-server - peeblyweeb  
-client - nptnc
