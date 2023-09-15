@@ -18,6 +18,7 @@ just download the client script and run it when you're in hours and spawned in, 
 2. download server under server directory in this repo
 3. `python3 main.py` to run server
 4. if you want the webserver as well run `python3 webserver.py` as well
+5. you'll have to port forward 7171 for the actual server and 4040 for the webserver.
 
 ### Client
 1. get an executor (only tested on [krnl](https://krnl.place))
