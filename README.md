@@ -1,6 +1,5 @@
 # HoursMultiplayer
 ### [roblox hours](https://www.roblox.com/games/5732973455/HOURS)
-hours multiplayer 👍👍
 
 server - peeblyweeb  
 client - nptnc
