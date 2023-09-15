@@ -271,6 +271,7 @@ socket:Send(message)
 
 --[[
     hookfunction just crashes. this is on hold until synapse is back
+    this is for attack sync
 --]]
 
 --[[local actions = getrenv()._G.Entities[1].ActionFunctions
