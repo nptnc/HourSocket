@@ -202,6 +202,7 @@ getrenv()._G.SpawnCreature = createHook(getrenv()._G.SpawnCreature,function(hook
         local args = {...}
         print(args[1].Bypass)
         if args[1].Bypass ~= true then
+            warn("no bypass bye bye")
             return
         end
         return hook.call(...)
