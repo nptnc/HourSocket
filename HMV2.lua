@@ -206,6 +206,8 @@ getrenv()._G.SpawnCreature = createHook(getrenv()._G.SpawnCreature,function(hook
         end
         return hook.call(...)
     end
+    warn("unexpected error?, none of the other functions were called")
+    return hook.call(...)
 end)
 
 local createPlayer = function(playerdata)
