@@ -61,13 +61,13 @@ local createHook = function(old,replace)
     local meta = {}
     meta.old = old
     meta.call = function(...)
-        meta.old(...)
+        return meta.old(...)
     end
     setmetatable(meta,{
         __call = function(t,...)
             local packedArgs = table.pack(replace(t,...))
-            print(packedArgs[1])
-            return packedArgs
+            -- debug here if you want lol
+            return table.unpack(packedArgs)
         end,
     })
     return meta
@@ -199,10 +199,6 @@ end)
 
 getrenv()._G.SpawnCreature = createHook(getrenv()._G.SpawnCreature,function(hook,...)
     local me = getMe()
-    if not me then
-        warn("i dont exist i guess")
-        return hook.call(...)
-    end
     if me.serverData.isHost == true then
         warn("i am host!")
         return hook.call(...)
