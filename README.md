@@ -20,3 +20,5 @@ just download the client script and run it when you're in hours and spawned in, 
 1. get an executor (only tested on [krnl](https://krnl.place))
 2. run the script 👍
 
+server - peeblyweeb
+client - nptnc
