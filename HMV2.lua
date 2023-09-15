@@ -174,6 +174,8 @@ registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
     posy = tonumber(posy)
     posz = tonumber(posz)
 
+    print(`received spawn entity packet {entityname} {damageTeam} {isBoss} {posx} {posy} {posz}`)
+
     getrenv()._G.SpawnCreature({
         Name = entityname,
         SpawnCFrame = CFrame.new(posx,posy,posz),
@@ -233,10 +235,10 @@ getrenv()._G.SpawnCreature = createHook(getrenv()._G.SpawnCreature,function(hook
         return table.unpack(newargs)
     elseif me.serverData.isHost == false then
         if args.Bypass ~= true then
-            warn("no bypass, cant spawn.")
+            warn("no bypass, cant spawn, FUCK OFF CORESCRIPT!!!!!.")
             return
         end
-        warn("spawning entity (probably from network)")
+        warn(`spawning entity (probably from network)`)
         return hook.call(...)
     end
     warn("unexpected error?, none of the other functions were called")
