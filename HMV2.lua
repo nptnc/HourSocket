@@ -8,10 +8,10 @@ char.Archivable = true
 
 local ip = "salamithecat.com"
 local port = "7171"
-local seperator = ":::"
 
 local fps = 50
 local sinceLastFPS = 0
+local seperator = ":::" -- dont change
 local connections = {}
 
 local socket = Krnl.WebSocket.connect(`http://{ip}:{port}`)
@@ -168,6 +168,12 @@ registerMessage(4,function(userid,action)
 end)
 
 registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
+    damageTeam = tonumber(damageTeam)
+    isBoss = findOutVariable(isBoss)
+    posx = tonumber(posx)
+    posy = tonumber(posy)
+    posz = tonumber(posz)
+    
     getrenv()._G.SpawnCreature({
         Name = entityname,
         SpawnCFrame = CFrame.new(posx,posy,posz),
