@@ -46,10 +46,8 @@ end
 local findOutVariable = function(var)
     local newVar = var
     if newVar == "false" then
-        warn("false")
         newVar = false
     elseif newVar == "true" then
-        warn("true")
         newVar = true
     else
         warn(`is something other "{var}"`)
@@ -313,8 +311,6 @@ end
 
 hookToMyEntity()
 
-local fuckOff = 1000
-
 local lastMyEntity = getrenv()._G.Entities[1]
 table.insert(connections,rs.Heartbeat:Connect(function(dt)
     if getMe() == nil then
@@ -326,19 +322,6 @@ table.insert(connections,rs.Heartbeat:Connect(function(dt)
             return false
         end
         return true
-    end
-
-    if getMe().serverData.isHost and getrenv()._G.Map.Enemies == fuckOff then
-        getrenv()._G.Map.Enemies = 0
-    elseif getMe().serverData.isHost == false and getrenv()._G.Map.Enemies ~= fuckOff then
-        local createGarbageTable = function(length)
-            local t = {}
-            for i = 1,length do
-                table.insert(t,i)
-            end
-            return t
-        end
-        getrenv()._G.Map.Enemies = createGarbageTable(10)
     end
 
     if lastMyEntity ~= getrenv()._G.Entities[1] then
