@@ -23,3 +23,6 @@ just download the client script and run it when you're in hours and spawned in, 
 1. get an executor (only tested on [krnl](https://krnl.place))
 2. download and open the microsoft store roblox <sub>why?, microsoft store roblox doesnt have [Byfron](https://devforum.roblox.com/t/welcoming-byfron-to-roblox/2018233)</sub>
 3. run the script 👍
+
+### Connecting to custom servers on client
+you have to edit the variable "ip" and "port" in the client script, should be somewhere near the top.
