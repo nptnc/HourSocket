@@ -65,7 +65,9 @@ local createHook = function(old,replace)
     end
     setmetatable(meta,{
         __call = function(t,...)
-            return replace(t,...)
+            local packedArgs = table.pack(replace(t,...))
+            print(packedArgs[1])
+            return packedArgs
         end,
     })
     return meta
