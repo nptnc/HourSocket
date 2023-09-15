@@ -318,6 +318,15 @@ end
 
 local hasCalledGameEnd = false
 
+-- this is because #table doesnt work on dictionaries.
+local len = function(a)
+    local ind = 0
+    for _,_ in a do
+        ind += 1
+    end
+    return ind
+end
+
 local lastMyEntity = getrenv()._G.Entities[1]
 table.insert(connections,rs.Heartbeat:Connect(function(dt)
     if getMe() == nil then
@@ -346,7 +355,7 @@ table.insert(connections,rs.Heartbeat:Connect(function(dt)
             end
             table.insert(deadPeople,userid)
         end
-        if #deadPeople == #registeredPlayers-1 and hasCalledGameEnd == false then
+        if #deadPeople == len(registeredPlayers)-1 and hasCalledGameEnd == false then
             warn("called.")
             hasCalledGameEnd = true
             old()
