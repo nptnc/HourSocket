@@ -7,6 +7,9 @@ hours multiplayer 👍👍
 
 ## Setup
 
+### Don't wanna do all the fancy setup stuff?
+just download the client script and run it when you're in hours and spawned in, it'll automatically connect to the public server!
+
 ### Server
 1. download latest python!!! (was written in 3.11)
 2. download server under server directory in this repo
