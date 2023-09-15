@@ -200,6 +200,7 @@ getrenv()._G.SpawnCreature = createHook(getrenv()._G.SpawnCreature,function(hook
         return hook.call(...)
     elseif getMe().isHost == false then
         local args = {...}
+        print(args[1].Bypass)
         if args[1].Bypass ~= true then
             return
         end
@@ -272,7 +273,7 @@ hookToMyEntity()
 
 local lastMyEntity = getrenv()._G.Entities[1]
 table.insert(connections,rs.Heartbeat:Connect(function(dt)
-    if not isClientRegistered then
+    if getMe() == nil then
         return
     end
 
