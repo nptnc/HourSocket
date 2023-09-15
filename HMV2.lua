@@ -217,8 +217,12 @@ getrenv()._G.SpawnCreature = createHook(getrenv()._G.SpawnCreature,function(hook
         warn("i am host!")
         local entityId = hook.call(...)
         local entity = getrenv()._G.Entities[entityId]
-        local message = prepareMessage("registerEntity",args.Name,entityId,args.DamageTeam or 1,args.IsBoss or false,entity.RootPart.Position.X,entity.RootPart.Position.Y,entity.RootPart.Position.Z)
-        socket:Send(message)
+        if entity.specialId == nil then
+            local message = prepareMessage("registerEntity",args.Name,entityId,args.DamageTeam or 1,args.IsBoss or false,entity.RootPart.Position.X,entity.RootPart.Position.Y,entity.RootPart.Position.Z)
+            socket:Send(message)
+        else
+            warn("tried to register a entity which is a player!")
+        end
         return entityId
     elseif me.serverData.isHost == false then
         warn("i am not host!")
