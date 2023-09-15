@@ -70,6 +70,7 @@ async def ws_to_userid(_ws):
             return ws
     return
 
+# i am not proud of this function, infact i fucking despise it. - peeblyweeb
 async def send_all_ws(message, except_for: list = None, include_webservers: bool = False):
     if except_for is None:
         except_for = []
