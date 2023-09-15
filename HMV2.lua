@@ -173,6 +173,7 @@ registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
         SpawnCFrame = CFrame.new(posx,posy,posz),
         DamageTeam = damageTeam,
         IsBoss = isBoss,
+        Bypass = true,
     })
 end)
 
