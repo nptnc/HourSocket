@@ -226,7 +226,7 @@ getrenv()._G.SpawnCreature = createHook(getrenv()._G.SpawnCreature,function(hook
         local entityId = newargs[1]
         local entity = getrenv()._G.Entities[entityId]
         if not args.IsPlayer then
-            local message = prepareMessage("registerEntity",args.Name,entityId,args.DamageTeam or 1,args.IsBoss or false,entity.RootPart.Position.X,entity.RootPart.Position.Y,entity.RootPart.Position.Z)
+            local message = prepareMessage("registerEntity",entityId,args.Name,args.DamageTeam or 1,args.IsBoss or false,entity.RootPart.Position.X,entity.RootPart.Position.Y,entity.RootPart.Position.Z)
             socket:Send(message)
             warn(`registering entity {args.Name} {entityId}`)
         else
