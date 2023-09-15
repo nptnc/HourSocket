@@ -196,9 +196,16 @@ workspace.ChildRemoved:Connect(function(child)
 end)
 
 getrenv()._G.SpawnCreature = createHook(getrenv()._G.SpawnCreature,function(hook,...)
-    if getMe().serverData.isHost == true then
+    local me = getMe()
+    if not me then
+        warn("i dont exist i guess")
         return hook.call(...)
-    elseif getMe().serverData.isHost == false then
+    end
+    if me.serverData.isHost == true then
+        warn("i am host!")
+        return hook.call(...)
+    elseif me.serverData.isHost == false then
+        print("nuh uh")
         local args = {...}
         if args[1].Bypass ~= true then
             warn("no bypass bye bye")
