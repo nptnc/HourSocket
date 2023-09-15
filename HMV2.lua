@@ -11,7 +11,7 @@ local port = "7171"
 
 local fps = 50
 local sinceLastFPS = 0
-local seperator = ":::" -- dont change
+local seperator = ":::" -- dont change, this has to be the same on the server and the client.
 local connections = {}
 
 local socket = Krnl.WebSocket.connect(`http://{ip}:{port}`)
@@ -173,7 +173,7 @@ registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
     posx = tonumber(posx)
     posy = tonumber(posy)
     posz = tonumber(posz)
-    
+
     getrenv()._G.SpawnCreature({
         Name = entityname,
         SpawnCFrame = CFrame.new(posx,posy,posz),
@@ -220,22 +220,23 @@ getrenv()._G.SpawnCreature = createHook(getrenv()._G.SpawnCreature,function(hook
 
     local me = getMe()
     if me.serverData.isHost == true then
-        warn("i am host!")
-        local entityId = hook.call(...)
+        local newargs = table.pack(hook.call(...))
+        local entityId = newargs[1]
         local entity = getrenv()._G.Entities[entityId]
         if not args.IsPlayer then
             local message = prepareMessage("registerEntity",args.Name,entityId,args.DamageTeam or 1,args.IsBoss or false,entity.RootPart.Position.X,entity.RootPart.Position.Y,entity.RootPart.Position.Z)
             socket:Send(message)
+            warn(`registering entity {args.Name} {entityId}`)
         else
             warn("tried to register a entity which is a player!")
         end
-        return entityId
+        return newargs
     elseif me.serverData.isHost == false then
-        warn("i am not host!")
         if args.Bypass ~= true then
-            warn("no bypass bye bye")
+            warn("no bypass, cant spawn.")
             return
         end
+        warn("spawning entity (probably from network)")
         return hook.call(...)
     end
     warn("unexpected error?, none of the other functions were called")
