@@ -21,4 +21,5 @@ just download the client script and run it when you're in hours and spawned in, 
 
 ### Client
 1. get an executor (only tested on [krnl](https://krnl.place))
-2. run the script 👍
+2. download and open the [microsoft store version](https://www.reddit.com/r/robloxhackers/comments/14a74yv/why_doesnt_the_microsoft_store_version_of_roblox/) of roblox
+3. run the script 👍
