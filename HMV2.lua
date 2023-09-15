@@ -217,7 +217,7 @@ getrenv()._G.SpawnCreature = createHook(getrenv()._G.SpawnCreature,function(hook
         warn("i am host!")
         local entityId = hook.call(...)
         local entity = getrenv()._G.Entities[entityId]
-        if entity.specialId == nil then
+        if not args.IsPlayer then
             local message = prepareMessage("registerEntity",args.Name,entityId,args.DamageTeam or 1,args.IsBoss or false,entity.RootPart.Position.X,entity.RootPart.Position.Y,entity.RootPart.Position.Z)
             socket:Send(message)
         else
@@ -240,6 +240,7 @@ local createPlayer = function(playerdata)
     local entity = getrenv()._G.SpawnCreature({
         Name = playerdata.serverData.class,
         Bypass = true,
+        IsPlayer = true,
     })
     print(entity)
     if not entity then
