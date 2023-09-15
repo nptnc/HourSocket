@@ -335,7 +335,7 @@ table.insert(connections,rs.Heartbeat:Connect(function(dt)
         hookToMyEntity()
     end
 
-    if getrenv()._G.Entities[1].dead == true then
+    if getrenv()._G.Entities[1].Dead == true then
         print("oh shit we dead bruh")
         local deadPeople = {}
         for userid,playerdata in registeredPlayers do
