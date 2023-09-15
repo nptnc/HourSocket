@@ -230,7 +230,7 @@ getrenv()._G.SpawnCreature = createHook(getrenv()._G.SpawnCreature,function(hook
         else
             warn("tried to register a entity which is a player!")
         end
-        return newargs
+        return table.unpack(newargs)
     elseif me.serverData.isHost == false then
         if args.Bypass ~= true then
             warn("no bypass, cant spawn.")
