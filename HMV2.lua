@@ -222,6 +222,10 @@ local createPlayer = function(playerdata)
         Name = playerdata.serverData.class,
         Bypass = true,
     })
+    print(entity)
+    if not entity then
+        return
+    end
     entity = getrenv()._G.Entities[entity]
     entity.DamageTeam = 1
     entity.specialId = tonumber(playerdata.serverData.id)
