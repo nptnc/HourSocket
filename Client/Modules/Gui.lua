@@ -53,7 +53,7 @@ return function(api)
         rightbar.BorderSizePixel = 0
         rightbar.Size = UDim2.new(0.09,0,1,0)
         rightbar.AnchorPoint = Vector2.new(1,0)
-        rightbar.Position = UDim2.new(1,0)
+        rightbar.Position = UDim2.new(1,0,0,0)
 
         local uilistlayout2 = Instance.new("UIListLayout")
         uilistlayout2.Padding = UDim.new()
