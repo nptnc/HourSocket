@@ -2,11 +2,14 @@
 ### <span style="color:blue">this is currently patched due to the new microsoft store roblox getting an update</span>.
 <br />
 
-### [Roblox Hours](https://www.roblox.com/games/5732973455/HOURS)
-### [Mod Gameplay](https://www.youtube.com/watch?v=IsCv-xNTXe4)
-
 server - peeblyweeb  
 client - nptnc
+
+## [Roblox Hours](https://www.roblox.com/games/5732973455/HOURS)  
+<sub>the game that the repo is for.</sub>
+
+## [Mod Gameplay](https://www.youtube.com/watch?v=IsCv-xNTXe4)  
+<sub>gameplay of this in use</sub>
 
 ## [Public server statistics](http://salamithecat.com:4040)
 <sub>displays public server's statistics</sub>
