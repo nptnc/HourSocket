@@ -8,7 +8,7 @@ This means that if you DO end up injecting in to Roblox you are at risk of being
 
 [Public server statistics](http://salamithecat.com:4040) · [Trello](https://trello.com/b/e1gvvbzK/hours-multiplayer-script) · [Mod Showcase](https://www.youtube.com/watch?v=IsCv-xNTXe4)
 
-Server programmed by [PeeblyWeeb](https://discord.com/users/904032786854346795)
+Server programmed by [PeeblyWeeb](https://discord.com/users/904032786854346795)  
 Client programmed by [nptnc](https://discord.com/users/397930609894490122)
   
 
