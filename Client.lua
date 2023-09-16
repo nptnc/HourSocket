@@ -50,7 +50,6 @@ local findOutVariable = function(var)
     elseif newVar == "true" then
         newVar = true
     else
-        warn(`is something other "{var}"`)
         newVar = var
     end
     return newVar
@@ -80,6 +79,14 @@ local registeredPlayers = {}
 
 local getMe = function()
     return registeredPlayers[player.UserId]
+end
+
+local getEntityIdByEntity = function(entity)
+    for entityId,_ in getrenv()._G.Entities do
+        if entityId == entity then
+            return entityId
+        end
+    end
 end
 
 local isClientRegistered = false
@@ -152,6 +159,14 @@ registerMessage(3,function(userid,key,value)
 
     local messageplayer = registeredPlayers[userid]
     messageplayer.serverData[key] = findOutVariable(value)
+
+    if key == "class" then
+        local entityId = getEntityIdByEntity(messageplayer.entity)
+        local entity = getrenv()._G.Entities[entityId]
+        entity.Character:Destroy()
+        getrenv()._G.Entities[entityId] = nil
+        messageplayer.entity = nil
+    end
 end)
 
 registerMessage(4,function(userid,action)
@@ -227,8 +242,6 @@ getrenv()._G.SpawnCreature = createHook(getrenv()._G.SpawnCreature,function(hook
             local message = prepareMessage("registerEntity",entityId,args.Name,args.DamageTeam or 1,args.IsBoss or false,entity.RootPart.Position.X,entity.RootPart.Position.Y,entity.RootPart.Position.Z)
             socket:Send(message)
             warn(`registering entity {args.Name} {entityId}`)
-        else
-            warn("tried to register a entity which is a player!")
         end
         return table.unpack(newargs)
     elseif me.serverData.isHost == false then
@@ -328,6 +341,7 @@ local len = function(a)
 end
 
 local lastMyEntity = getrenv()._G.Entities[1]
+local lastClass = getrenv()._G.Class
 table.insert(connections,rs.Heartbeat:Connect(function(dt)
     if getMe() == nil then
         return
@@ -358,13 +372,21 @@ table.insert(connections,rs.Heartbeat:Connect(function(dt)
         if #deadPeople == len(registeredPlayers)-1 and hasCalledGameEnd == false then
             warn("called.")
             hasCalledGameEnd = true
+            -- call end game when all players die
             old()
         end
     else
         hasCalledGameEnd = false
     end
 
+    if lastClass ~= getrenv()._G.Class then
+        -- update class lol
+        local message = prepareMessage("updateState","class",getrenv()._G.Class)
+        socket:Send(message)
+    end
+
     lastMyEntity = getrenv()._G.Entities[1]
+    lastClass = getrenv()._G.Class
 
     for userid,playerdata in registeredPlayers do
         if userid == player.UserId then
