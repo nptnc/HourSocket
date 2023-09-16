@@ -19,7 +19,7 @@ return function(api)
         textlabel.Size = UDim2.new(1,0,0.75,0)
         textlabel.TextColor3 = Color3.fromRGB(255,255,255)
         textlabel.TextScaled = true
-        textlabel.Font = Enum.Font.Code
+        --textlabel.Font = Enum.Font.Code
 
         if parent == rightbar then
             frame.Position = UDim2.new(1,0,0,0)
