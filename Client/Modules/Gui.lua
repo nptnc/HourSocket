@@ -85,7 +85,7 @@ return function(api)
     local start = tick()
     module.update = function()
         packetInFrame.TextLabel.Text = `packets in: {packetsIn}/s`
-        packetOutFrame.TextLabel.Text = `packets out: {packetsIn}/s`
+        packetOutFrame.TextLabel.Text = `packets out: {packetsOut}/s`
 
         if tick() - start > 1 then
             start = tick()
