@@ -120,7 +120,7 @@ end
 local requiredModules = {}
 for _,module in modules do
     module = string.gsub(module,".lua")
-    requiredModules[module] = loadstring(game:HttpGet(`{github}/{module}.lua`))()(main)
+    requiredModules[module] = loadstring(game:HttpGet(`{github}/Modules/{module}.lua`))()(main)
     local newModule = requiredModules[module]
     if newModule.once then
         newModule.once()
