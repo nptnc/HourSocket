@@ -34,12 +34,13 @@ return function(api)
     end
 
     module.update = function()
-        if getrenv()._G.GameState ~= "Combat" then
+        --[[if getrenv()._G.GameState ~= "Combat" then
             -- oh shit.
-            for userid,_ in api.registeredPlayers do
-                api.destroyPlayerEntity(userid)
+            for userid,player in api.registeredPlayers do
+                --api.destroyPlayerEntity(userid)
+                player.entity = nil
             end
-        end
+        end--]]
         
         for userid,playerdata in api.registeredPlayers do
             if userid == api.player.UserId then
@@ -52,12 +53,16 @@ return function(api)
             end
     
             -- no player entity?, create one!
-            if api.doesPlayerHaveEntity(playerdata) == false then
+            if api.doesPlayerHaveEntity(playerdata) == false and getrenv()._G.GameState == "Combat" then
                 local entity = api.createPlayer(playerdata)
                 playerdata.entity = entity
             end
             
             local entity = playerdata.entity
+            if not entity then
+                continue
+            end
+
             local erp = entity.RootPart.Position
             local theirCF = playerdata.cframe
     
