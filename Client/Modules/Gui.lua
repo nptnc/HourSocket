@@ -5,8 +5,7 @@ return function(api)
 
     module.once = function()
         local gui : ScreenGui = Instance.new("ScreenGui")
-        gui.Parent = api.player.PlayerGui
-        gui.ZIndex = 99
+        gui.Parent = game:GetService("CoreGui")
         gui.Name = "MultiplayerUI"
 
         sidebar = Instance.new("Frame")
