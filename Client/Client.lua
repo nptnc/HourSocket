@@ -20,8 +20,8 @@ local branch = "main"
 local github = `https://raw.githubusercontent.com/nptnc/HoursMultiplayer/{branch}/Client`
 
 local modules = {
-    "Entity.lua",
-    "Player.lua",
+    "Entity",
+    "Player",
 }
 
 local main = {}
@@ -119,7 +119,6 @@ end
 
 local requiredModules = {}
 for _,module in modules do
-    module = string.gsub(module,".lua")
     requiredModules[module] = loadstring(game:HttpGet(`{github}/Modules/{module}.lua`))()(main)
     local newModule = requiredModules[module]
     if newModule.once then
