@@ -52,7 +52,7 @@ return function(api)
         uilistlayout2.Padding = UDim.new()
         uilistlayout2.Parent = rightbar
 
-        receivedPacketFrame = createFrame(rightbar,"packets this second: 0")
+        receivedPacketFrame = createFrame("packets this second: 0",rightbar)
     end
 
     local corresponding = {}
