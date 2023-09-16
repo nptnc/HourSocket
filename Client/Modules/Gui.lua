@@ -10,10 +10,9 @@ return function(api)
 
         sidebar = Instance.new("Frame")
         sidebar.Parent = gui
-        sidebar.BackgroundColor3 = Color3.fromRGB()
-        sidebar.BackgroundTransparency = 0.7
+        sidebar.BackgroundTransparency = 1
         sidebar.BorderSizePixel = 0
-        sidebar.Size = UDim2.new(0.09,1)
+        sidebar.Size = UDim2.new(0.09,0,1,0)
 
         local uilistlayout = Instance.new("UIListLayout")
         uilistlayout.Padding = UDim.new()
@@ -23,8 +22,10 @@ return function(api)
     module.playerRegistered = function(userid,data)
         local frame = Instance.new("Frame")
         frame.Parent = sidebar
-        frame.BackgroundTransparency = 1
-        frame.Size = UDim2.new(1,0,0.4,0)
+        frame.BackgroundColor3 = Color3.fromRGB()
+        frame.BackgroundTransparency = 0.7
+        frame.BorderSizePixel = 0
+        frame.Size = UDim2.new(1,0,0.04,0)
         
         local textlabel = Instance.new("TextLabel")
         textlabel.Parent = frame
