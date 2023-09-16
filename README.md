@@ -1,4 +1,6 @@
 # HoursMultiplayer
+![Static Badge](https://img.shields.io/badge/True?style=flat-square&label=Patched&color=%ff0000)
+
 ### [Roblox Hours](https://www.roblox.com/games/5732973455/HOURS)
 ### [Mod Gameplay](https://www.youtube.com/watch?v=IsCv-xNTXe4)
 
