@@ -6,7 +6,7 @@ return function(api)
     
     local createFrame = function(text,parent)
         local frame = Instance.new("Frame")
-        frame.Parent = leftbar
+        frame.Parent = parent
         frame.BackgroundColor3 = Color3.fromRGB()
         frame.BackgroundTransparency = 0.7
         frame.BorderSizePixel = 0
