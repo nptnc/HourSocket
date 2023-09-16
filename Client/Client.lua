@@ -27,6 +27,7 @@ local modules = {
 }
 
 local main = {}
+local apiCall
 
 main.player = player
 main.socket = socket
@@ -113,6 +114,8 @@ main.destroyPlayerEntity = function(userid)
 end
 
 main.prepareMessage = function(messageId,...)
+    apiCall("sentMessage")
+
     messageId = messageIds[messageId] or messageId
     local endString = `{messageId}{seperator}{player.UserId}{seperator}`
     if #{...} > 0 then
@@ -138,7 +141,7 @@ for _,module in modules do
     end
 end
 
-local apiCall = function(method,...)
+apiCall = function(method,...)
     for moduleName, module in requiredModules do
         if not module[method] then
             continue

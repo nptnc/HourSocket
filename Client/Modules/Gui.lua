@@ -31,7 +31,8 @@ return function(api)
 
     local packetsIn,packetsOut = 0,0
 
-    local receivedPacketFrame
+    local packetInFrame
+    local packetOutFrame
     module.once = function()
         local gui : ScreenGui = Instance.new("ScreenGui")
         gui.Parent = game:GetService("CoreGui")
@@ -59,7 +60,8 @@ return function(api)
         uilistlayout2.Padding = UDim.new()
         uilistlayout2.Parent = rightbar
 
-        receivedPacketFrame = createFrame("packets in: 0",rightbar)
+        packetInFrame = createFrame("packets in: 0/s",rightbar)
+        packetOutFrame = createFrame("packets out: 0/s",rightbar)
     end
 
     local corresponding = {}
@@ -74,11 +76,17 @@ return function(api)
 
     module.receivedMessage = function()
         packetsIn += 1
-        receivedPacketFrame.TextLabel.Text = `packets in: {packetsIn}`
+    end
+
+    module.sentMessage = function()
+        packetsOut += 1
     end
 
     local start = tick()
     module.update = function()
+        packetInFrame.TextLabel.Text = `packets in: {packetsIn}/s`
+        packetOutFrame.TextLabel.Text = `packets out: {packetsIn}/s`
+
         if tick() - start > 1 then
             start = tick()
             packetsOut = 0
