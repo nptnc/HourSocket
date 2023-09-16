@@ -1,6 +1,5 @@
 # HoursMultiplayer
-### <span style="color:blue">this is currently patched due to the new microsoft store roblox getting an update</span>.
-<br />
+### *this is currently patched due to the new microsoft store roblox getting an update*  
 
 server - peeblyweeb  
 client - nptnc
