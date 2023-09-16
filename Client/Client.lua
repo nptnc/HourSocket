@@ -170,8 +170,7 @@ end)
 registerMessage(0,function(userId)
     userId = tonumber(userId)
 
-    main.registeredPlayers[userId].entity:Destroy()
-
+    apiCall("playerDisconnected",userId)
     main.registeredPlayers[userId] = nil
     print(`received disconnect for player {userId}`)
 end)

@@ -19,6 +19,7 @@ return function(api)
         uilistlayout.Parent = sidebar
     end
 
+    local corresponding = {}
     module.playerRegistered = function(userid,data)
         local frame = Instance.new("Frame")
         frame.Parent = sidebar
@@ -31,9 +32,14 @@ return function(api)
         textlabel.Parent = frame
         textlabel.Text = data.serverData.username
         textlabel.BackgroundTransparency = 1
-        textlabel.Size = UDim2.new(1,0,1,0)
+        textlabel.Size = UDim2.new(1,0,0.75,0)
         textlabel.TextColor3 = Color3.fromRGB(255,255,255)
         textlabel.TextScaled = true
+        corresponding[userid] = frame
+    end
+
+    module.playerDisconnected = function(userid,data)
+       corresponding[userid]:Destroy()
     end
 
     return module
