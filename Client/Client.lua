@@ -274,6 +274,7 @@ end)
 socket.OnMessage:Connect(function(msg)
     local args = string.split(msg,seperator)
     --warn(`server sent {msg}`)
+    apiCall("receivedMessage")
     local messageId = tonumber(args[1])
     local newArgs = {}
     for index,value in args do
