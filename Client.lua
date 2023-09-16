@@ -11,7 +11,7 @@ local port = "7171"
 
 local fps = 50
 local sinceLastFPS = 0
-local seperator = ":::" -- dont change, this has to be the same on the server and the client.
+local seperator = ":::" -- dont change, this has to be the same on the server and the client otherwise one or the other wont receive information.
 local connections = {}
 
 local socket = Krnl.WebSocket.connect(`http://{ip}:{port}`)
@@ -271,7 +271,6 @@ socket:Send(message)
 
 --[[
     hookfunction just crashes. this is on hold until synapse is back
-    this is for attack sync
 --]]
 
 --[[local actions = getrenv()._G.Entities[1].ActionFunctions
@@ -312,6 +311,22 @@ end
 
 hookToMyEntity()
 
+local old = getrenv()._G.EndGame
+getrenv()._G.EndGame = function()
+    
+end
+
+local hasCalledGameEnd = false
+
+-- this is because #table doesnt work on dictionaries.
+local len = function(a)
+    local ind = 0
+    for _,_ in a do
+        ind += 1
+    end
+    return ind
+end
+
 local lastMyEntity = getrenv()._G.Entities[1]
 table.insert(connections,rs.Heartbeat:Connect(function(dt)
     if getMe() == nil then
@@ -329,9 +344,26 @@ table.insert(connections,rs.Heartbeat:Connect(function(dt)
         hookToMyEntity()
     end
 
-    if registeredPlayers[player.UserId] and registeredPlayers[player.UserId].serverData.isHost then
-        -- yo
+    if getrenv()._G.Entities[1].Dead == true then
+        local deadPeople = {}
+        for userid,playerdata in registeredPlayers do
+            if userid == player.UserId then
+                continue
+            end
+            if playerdata.serverData.dead == false then
+                continue
+            end
+            table.insert(deadPeople,userid)
+        end
+        if #deadPeople == len(registeredPlayers)-1 and hasCalledGameEnd == false then
+            warn("called.")
+            hasCalledGameEnd = true
+            old()
+        end
+    else
+        hasCalledGameEnd = false
     end
+
     lastMyEntity = getrenv()._G.Entities[1]
 
     for userid,playerdata in registeredPlayers do
