@@ -16,10 +16,15 @@ return function(api)
         api.socket:Send(message)
     end
     
+    local lastUpdated = {Vector3.zero,Vector3.zero}
     module.updateWithFPS = function()
         local char = api.player.Character
         local pos = char.HumanoidRootPart.Position
         local rot = char.HumanoidRootPart.Rotation
+
+        if lastUpdated[1] == pos and lastUpdated[2] == rot then
+            return
+        end
         
         local message = api.prepareMessage("updatePlayer",
             api.optimize(pos.X),
@@ -31,6 +36,8 @@ return function(api)
         )
 
         api.socket:Send(message)
+
+        lastUpdated = {pos,rot}
     end
 
     module.update = function()
