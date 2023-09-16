@@ -27,12 +27,27 @@ local modules = {
 }
 
 local main = {}
-local apiCall
+local requiredModules = {}
 
 main.player = player
 main.socket = socket
 main.registeredPlayers = {}
 main.globals = {}
+
+local apiCall = function(method,...)
+    for moduleName, module in requiredModules do
+        if not module[method] then
+            continue
+        end
+        local args = {...}
+        local success,error = pcall(function()
+            module[method](table.unpack(args))
+        end)
+        if not success then
+            warn(`an error occured while trying to call method of module {moduleName}.\n{error}`)
+        end
+    end
+end
 
 main.doesPlayerHaveEntity = function(playerdata)
     if playerdata.entity == nil then
@@ -130,22 +145,6 @@ main.prepareMessage = function(messageId,...)
         endString = `{messageId}{seperator}{player.UserId}`
     end
     return endString
-end
-
-local requiredModules = {}
-apiCall = function(method,...)
-    for moduleName, module in requiredModules do
-        if not module[method] then
-            continue
-        end
-        local args = {...}
-        local success,error = pcall(function()
-            module[method](table.unpack(args))
-        end)
-        if not success then
-            warn(`an error occured while trying to call method of module {moduleName}.\n{error}`)
-        end
-    end
 end
 
 for _,module in modules do
