@@ -133,22 +133,26 @@ main.prepareMessage = function(messageId,...)
 end
 
 local requiredModules = {}
-for _,module in modules do
-    requiredModules[module] = loadstring(game:HttpGet(`{github}/Modules/{module}.lua`))()(main)
-    local newModule = requiredModules[module]
-    if newModule.once then
-        newModule.once()
-    end
-end
-
 apiCall = function(method,...)
     for moduleName, module in requiredModules do
         if not module[method] then
             continue
         end
-        module[method](...)
+        local args = {...}
+        local success,error = pcall(function()
+            module[method](table.unpack(args))
+        end)
+        if not success then
+            warn(`an error occured while trying to call method of module {moduleName}.\n{error}`)
+        end
     end
 end
+
+for _,module in modules do
+    requiredModules[module] = loadstring(game:HttpGet(`{github}/Modules/{module}.lua`))()(main)
+    local newModule = requiredModules[module]
+end
+apiCall("once")
 
 local messages = {}
 
