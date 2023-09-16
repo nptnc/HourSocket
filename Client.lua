@@ -82,14 +82,12 @@ local getMe = function()
 end
 
 local getEntityIdByEntity = function(entity)
-    for entityId,_ in getrenv()._G.Entities do
-        if entityId == entity then
+    for entityId,entityData in getrenv()._G.Entities do
+        if entityData == entity then
             return entityId
         end
     end
 end
-
-local isClientRegistered = false
 
 registerMessage(999,function(errorMessage)
     print(`server caught error {errorMessage}`)
