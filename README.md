@@ -1,6 +1,6 @@
 
 # ⚠️ HourSocket is currently patched! 
-Byfron has been released to both the normal Roblox client and the Microsoft Store version of Roblox
+Byfron has been released to both the normal Roblox client and the Microsoft Store version of Roblox.  
 This means that if you DO end up injecting in to Roblox you are at risk of being banned by Roblox, most executors will not let you though.
 
 
