@@ -19,6 +19,12 @@ return function(api)
         textlabel.Size = UDim2.new(1,0,0.75,0)
         textlabel.TextColor3 = Color3.fromRGB(255,255,255)
         textlabel.TextScaled = true
+
+        if parent == rightbar then
+            frame.Position = UDim2.new(1,0,0,0)
+            frame.AnchorPoint = Vector2.new(1,0)
+        end
+
         return frame
     end
 
@@ -52,7 +58,7 @@ return function(api)
         uilistlayout2.Padding = UDim.new()
         uilistlayout2.Parent = rightbar
 
-        receivedPacketFrame = createFrame("packets this second: 0",rightbar)
+        receivedPacketFrame = createFrame("packets in: 0",rightbar)
     end
 
     local corresponding = {}
@@ -66,7 +72,8 @@ return function(api)
     end
 
     module.receivedMessage = function()
-        receivedPacketFrame.TextLabel.Text = `packets out: {packetsOut}`
+        packetsIn += 1
+        receivedPacketFrame.TextLabel.Text = `packets in: {packetsIn}`
     end
 
     local start = tick()
@@ -74,6 +81,7 @@ return function(api)
         if tick() - start > 1 then
             start = tick()
             packetsOut = 0
+            packetsIn = 0
         end
     end
 
