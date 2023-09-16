@@ -9,5 +9,9 @@ return function(api)
 
     end
 
+    module.entityUpdateNonHost = function(entityid,posx,posy,posz,rotx,roty,rotz)
+        
+    end
+
     return module
 end

@@ -102,6 +102,16 @@ local messageIds = {
     updateEntity = 6,
 }
 
+main.destroyPlayerEntity = function(userid)
+    local targetPlayer = main.registeredPlayers[userid]
+    if not targetPlayer.entity then
+        return
+    end
+    getrenv()._G.Entities[targetPlayer.entity.Id].Character:Destroy()
+    getrenv()._G.Entities[targetPlayer.entity.Id] = nil
+    targetPlayer.entity = nil
+end
+
 main.prepareMessage = function(messageId,...)
     messageId = messageIds[messageId] or messageId
     local endString = `{messageId}{seperator}{player.UserId}{seperator}`
@@ -269,6 +279,18 @@ registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
         IsBoss = isBoss,
         Bypass = true,
     })
+end)
+
+registerMessage(5,function(entityid,posx,posy,posz,rosx,rosy,rosz)
+    entityid = tonumber(entityid)
+    posx = tonumber(posx)
+    posy = tonumber(posy)
+    posz = tonumber(posz)
+    rosx = tonumber(rosx)
+    rosy = tonumber(rosy)
+    rosz = tonumber(rosz)
+
+    apiCall("entityUpdateNonHost",entityid,posx,posy,posz,rosx,rosy,rosz)
 end)
 
 socket.OnMessage:Connect(function(msg)

@@ -34,6 +34,13 @@ return function(api)
     end
 
     module.update = function()
+        if getrenv()._G.GameState ~= "Combat" then
+            -- oh shit.
+            for userid,_ in api.registeredPlayers do
+                api.destroyPlayerEntity(userid)
+            end
+        end
+        
         for userid,playerdata in api.registeredPlayers do
             if userid == api.player.UserId then
                 -- no creaty yourselfy!
