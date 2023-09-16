@@ -70,7 +70,6 @@ async def ws_to_userid(_ws):
             return ws
     return
 
-# i am not proud of this function, infact i fucking despise it. - peeblyweeb
 async def send_all_ws(message, except_for: list = None, include_webservers: bool = False):
     if except_for is None:
         except_for = []
@@ -126,7 +125,6 @@ async def registerPlayer(ws, userid: int, username: str, _class: str):
             "position": [0,0,0],
             "rotation": [0,0,0],
             "isHost": len(data['players']) == 0,
-            "owned_entities": []
         }
     })
     websockets.update({
@@ -164,17 +162,25 @@ async def updatePlayerState(ws, userid: int, key: str, value: any):
     await send_all_ws(create_message(
         3, userid, key, value
     ))
+    if key == "dead" and value:
+        for player in data['players']:
+            if not data['players'][player]['dead']:
+                return
+        data['world'].update({
+            "entities": {}
+        })
+        logger.info("Clearing entities because all players died.")
 updatePlayerState()
 
 @createPacket(4)
-async def doAttack(ws, userid: int, attack: str):
+async def doAttack(ws, userid: int, attack: str, arg1: float = None, arg2: float = None):
     await send_all_ws(create_message(
-        4, userid, attack
+        4, userid, attack, arg1, arg2 # we dont know what arg1 or 2 is ☠️💀☠️💀☠️💀
     ), except_for=[userid])
 doAttack()
 
 @createPacket(5)
-async def registerEntity(ws, userid: int, entityid: int, entityname: str, team: int, is_boss: bool, pos_x: float = 0, pos_y: float = 0, pos_z: float = 0):
+async def registerEntity(ws, userid: int, entityid: int, entityname: str, team: int, is_boss: bool, pos_x: float = 0, pos_y: float = 0, pos_z: float = 0, rot_x: float = 0, rot_y: float = 0, rot_z: float = 0):
     if not data['players'][userid]['isHost']:
         logger.warning(f"{userid} is not allowed to register entities!")
         return
@@ -189,7 +195,7 @@ async def registerEntity(ws, userid: int, entityid: int, entityname: str, team: 
         }
     })
     await send_all_ws(create_message(
-        5, entityid, entityname, team, is_boss, pos_x, pos_y, pos_z
+        5, entityid, entityname, team, is_boss, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z
     ), except_for=[userid])
     logger.debug(f"Registered {entityname}({entityid}) as an entity.")
 registerEntity()
@@ -197,12 +203,20 @@ registerEntity()
 @createPacket(6)
 async def updateEntity(ws, userid: int, entityid: int, pos_x: float, pos_y: float, pos_z: float, rot_x: float, rot_y: float, rot_z: float):
     if not data['players'][userid]['isHost']:
-        logger.warning(f"{userid} is not allowed to update entities!")
+        logger.debug(f"{userid} is not allowed to update entities!")
+        return
+    if entityid not in data['world']['entities']:
+        logger.debug(f"{userid} is trying to update entity {entityid} but it does not exist, not updating.")
         return
     data['world']['entities'][entityid].update({
         "position": [pos_x,pos_y,pos_z],
         "rotation": [rot_x,rot_y,rot_z],
     })
+
+    # hi peebly 👋
+    await send_all_ws(create_message(
+        6, entityid, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z
+    ), except_for=[userid])
 updateEntity()
 
 @createPacket(7)
