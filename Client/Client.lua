@@ -20,7 +20,9 @@ local branch = "main"
 local github = `https://raw.githubusercontent.com/nptnc/HoursMultiplayer/{branch}/Client`
 
 local modules = {
+    "Gui",
     "Entity",
+    "MultiplayerQOL",
     "Player",
 }
 
@@ -188,6 +190,8 @@ local registerPlayer = function(userid,data)
     end
     
     print(`received register player {userid}`)
+
+    apiCall("playerRegistered",userid,main.registeredPlayers[userid])
     if tonumber(userid) ~= player.UserId then
         return
     end
