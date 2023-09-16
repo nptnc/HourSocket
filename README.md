@@ -13,7 +13,7 @@ Client programmed by [nptnc](https://discord.com/users/397930609894490122)
   
 
 ## How do I play?
-If you're stupid, here's a video tutorial on how to play on a [public server](https://google.com/) or [private server](https://google.com/).
+~~If you're stupid, here's a video tutorial on how to play on a [public server](https://google.com/) or [private server](https://google.com/).~~
 
 ### Creating a server
 - [Download Python](https://www.python.org/downloads/release/python-3110/) (If you already have Python, skip this step)
