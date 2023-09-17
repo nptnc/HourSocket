@@ -47,7 +47,7 @@ return function(api)
         textlabel.TextColor3 = Color3.fromRGB(255,255,255)
         textlabel.TextScaled = false
 
-        task.delay(duration or 3,function()
+        task.delay(duration or 5,function()
             frame:Destroy()
         end)
 
@@ -104,7 +104,9 @@ return function(api)
 
     local corresponding = {}
     module.playerRegistered = function(userid,data)
-        createNotification(`has joined the server {data.serverData.username}`)
+        if userid == api.player.UserId then
+            createNotification(`has joined the server {data.serverData.username}`)
+        end
         corresponding[userid] = createFrame(data.serverData.username,leftbar)
     end
 
