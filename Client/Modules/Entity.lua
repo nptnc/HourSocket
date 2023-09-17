@@ -45,7 +45,7 @@ return function(api)
                         entity.ProcessAI = function() end
 
                          -- we gonna stop the animations from playing unless its networked.
-                        entity.SwitchAnimation = createHook(entity.SwitchAnimation,function(hook,...)
+                        entity.SwitchAnimation = api.createHook(entity.SwitchAnimation,function(hook,...)
                             local args = {...}
                             if args[4] ~= false then
                                 return
