@@ -97,22 +97,20 @@ return function(api)
         warn(`non host, registering entity {entityId} in script entity database`)
         entityDatabase[entityId] = {
             cframe = CFrame.new(posx,posy,posz),
-            entity = getrenv()._G.Entities[realEntityId],
+            realId = realEntityId,
         }
     end
 
     local warnedAboutNoCFrame = {}
     module.update = function()
-        print("update loop")
         for entityId,entityData in api.getMe().serverData.isHost and {} or entityDatabase do
-            print("trying to update entity.")
             local entity = entityData.entity
 
             local currentCF = entity.RootPart.CFrame
             local targetCF = entityData.cframe
             if not targetCF and warnedAboutNoCFrame[entity] == nil then
                 warnedAboutNoCFrame[entityId] = true
-                warn("cf doesnt exist.")
+                warn("no cf")
             end
 
             if not targetCF then
@@ -135,8 +133,7 @@ return function(api)
             local entity = entityData.entity
             
             local pos = entity.RootPart.Position
-            local rx, ry, rz = entity.RootPart.Rotation:ToOrientation()
-			local rot = Vector3.new(math.deg(rx), math.deg(ry), math.deg(rz))
+            local rot = entity.RootPart.Rotation
 
             local message = api.prepareMessage("updateEntityCF",
                 entityId,
