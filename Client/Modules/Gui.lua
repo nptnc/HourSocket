@@ -46,6 +46,7 @@ return function(api)
         textlabel.Size = UDim2.new(1,0,0.75,0)
         textlabel.TextColor3 = Color3.fromRGB(255,255,255)
         textlabel.TextScaled = false
+        textlabel.AutomaticSize = Enum.AutomaticSize.X
 
         task.delay(duration or 5,function()
             frame:Destroy()
