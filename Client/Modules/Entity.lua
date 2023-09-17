@@ -74,10 +74,6 @@ return function(api)
                         entity.Update = function() end
                         entity.ProcessAI = function() end
 
-                        entityDatabase[entityId] = {
-                            entity = entity,
-                        }
-
                          -- we gonna stop the animations from playing unless its networked.
                         entity.SwitchAnimation = api.createHook(entity.SwitchAnimation,function(hook,...)
                             local args = {...}
@@ -105,12 +101,21 @@ return function(api)
         }
     end
 
+    local warnedAboutNoCFrame = {}
     module.update = function()
         for entityId,entityData in api.getMe().serverData.isHost and {} or entityDatabase do
             local entity = entityData.entity
 
             local currentCF = entity.RootPart.CFrame
             local targetCF = entityData.cframe
+            if not targetCF and warnedAboutNoCFrame[entity] == nil then
+                warnedAboutNoCFrame[entityId] = true
+                warn("cf doesnt exist.")
+            end
+
+            if not targetCF then
+                continue
+            end
 
             local distanceFromTarget = (targetCF.Position-currentCF.Position).Magnitude
             --entity.Resources.Health = 10000
@@ -144,7 +149,7 @@ return function(api)
         end
     end
 
-    module.entityUpdateNonHost = function(entityid,posx,posy,posz,rotx,roty,rotz)
+    module.networkEntityUpdate = function(entityid,posx,posy,posz,rotx,roty,rotz)
         local entityData = entityDatabase[entityid]
         entityData.cframe = CFrame.new(posx,posy,posz) * CFrame.Angles(rotx,roty,rotz)
     end

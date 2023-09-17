@@ -310,7 +310,7 @@ registerMessage(6,function(entityid,posx,posy,posz,rosx,rosy,rosz)
     rosy = tonumber(rosy)
     rosz = tonumber(rosz)
 
-    apiCall("entityUpdateNonHost",entityid,posx,posy,posz,rosx,rosy,rosz)
+    apiCall("networkEntityUpdate",entityid,posx,posy,posz,rosx,rosy,rosz)
 end)
 
 registerMessage("animationChange",function(userid,arg1,animationname)
