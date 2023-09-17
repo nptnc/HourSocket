@@ -2,6 +2,7 @@ import asyncio
 import json
 import logging
 import websockets.server as server
+import datetime
 from websockets import exceptions
 
 class CustomFormatter(logging.Formatter):
@@ -36,8 +37,12 @@ handler_console.setFormatter(formatter)
 logger.addHandler(handler_console)
 
 packet_handlers = {}
+start_time = datetime.datetime.now()
 
 data = {
+    "statistics": {
+        "total_packets_received": 0,
+    },
     "players": {},
     "world": {
         "entities": {},
@@ -87,13 +92,14 @@ async def send_all_ws(message, except_for: list = None, include_webservers: bool
 
 @createPacket(-1)
 async def getWebData(ws):
+    logger.debug("New web server connection!")
     webserver_websockets.append(ws)
     while not ws.closed:
         try:
             await ws.send(json.dumps(data))
             await asyncio.sleep(1/60)
         except exceptions.ConnectionClosed:
-            logger.debug("webserver disconnect.")
+            logger.debug("A web server disconnected.")
 getWebData()
 
 @createPacket(0)
@@ -232,10 +238,18 @@ async def updateWorldState(ws, userid: int, newstate: str):
     ))
 updateWorldState()
 
+@createPacket(8)
+async def playAnimation(ws, userid: int, arg1: float, animationname: str):
+    await send_all_ws(create_message(
+        8, userid, arg1, animationname
+    ), except_for=[userid])
+playAnimation()
+
 async def handler(ws: server.WebSocketServerProtocol):
     while True:
         try:
             message = await ws.recv()
+            data['statistics']['total_packets_received'] += 1
         except (exceptions.ConnectionClosedOK, exceptions.ConnectionClosedError, exceptions.ConnectionClosed, ConnectionResetError):
             socket_id = await ws_to_userid(ws)
             if socket_id is None:
