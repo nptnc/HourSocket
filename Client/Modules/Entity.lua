@@ -22,28 +22,28 @@ return function(api)
         if not data.serverData.isHost then
             return
         end
-        for realEntityId, entity in getrenv()._G.Entities do
+        --[[for realEntityId, entity in getrenv()._G.Entities do
             if realEntityId == 1 or entity.specialId ~= nil then
                 continue
             end
             local x,y,z = getVector3(entity.RootPart.Position)
             local xr,yr,zr = getVector3(entity.RootPart.Rotation)
             reg(entity,entity.Name,x,y,z,xr,yr,zr)
-        end
+        end--]]
     end
 
     module.once = function()
         -- hook when this function is called by hours, what we'll do is check if we are allowed to spawn an entity or not.
         
         if api.getMe() ~= nil then
-            for realEntityId, entity in getrenv()._G.Entities do
+            --[[for realEntityId, entity in getrenv()._G.Entities do
                 if realEntityId == 1 or entity.specialId ~= nil then
                     continue
                 end
                 local x,y,z = getVector3(entity.RootPart.Position)
                 local xr,yr,zr = getVector3(entity.RootPart.Rotation)
                 reg(entity,entity.Name,x,y,z,xr,yr,zr)
-            end
+            end--]]
         end
         
         getrenv()._G.SpawnCreature = api.createHook(getrenv()._G.SpawnCreature,function(hook,...)
