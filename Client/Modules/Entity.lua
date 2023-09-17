@@ -17,6 +17,7 @@ return function(api)
         }
         local message = api.prepareMessage("registerEntity",globalEntityId,entitymodelid,entity.DamageTeam,entity.IsBoss or false,x,y,z,xr,yr,zr)
         api.socket:Send(message)
+        print(`registering entity {realId} as {globalEntityId} on network`)
     end
 
     module.playerRegistered = function(playerid,data)
@@ -109,7 +110,7 @@ return function(api)
             local entity = getrenv()._G.Entities[realId]
 
             if entity == nil then
-                warn("entity nil (non host)")
+                entityDatabase[entityId] = nil
                 continue
             end
 
@@ -141,7 +142,7 @@ return function(api)
             local entity = getrenv()._G.Entities[realId]
 
             if entity == nil then
-                warn(`entity nil`)
+                entityDatabase[entityId] = nil
                 continue
             end
             
@@ -163,7 +164,7 @@ return function(api)
 
     module.networkEntityUpdate = function(entityid,posx,posy,posz,rotx,roty,rotz)
         local entityData = entityDatabase[entityid]
-        entityData.cframe = CFrame.new(posx,posy,posz) * CFrame.Angles(rotx,roty,rotz)
+        entityData.cframe = CFrame.new(posx,posy,posz) * CFrame.Angles(math.rad(rotx),math.rad(roty),math.rad(rotz))
     end
 
     return module
