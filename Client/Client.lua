@@ -278,21 +278,24 @@ registerMessage(4,function(userid,action)
 end)
 
 registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
+    entityid = tonumber(entityid)
     damageTeam = tonumber(damageTeam)
     isBoss = findOutVariable(isBoss)
     posx = tonumber(posx)
     posy = tonumber(posy)
     posz = tonumber(posz)
 
-    print(`received spawn entity packet {entityname} {damageTeam} {isBoss} {posx} {posy} {posz}`)
+    print(`received spawn entity packet {entityid} {entityname} {damageTeam} {isBoss} {posx} {posy} {posz}`)
 
-    getrenv()._G.SpawnCreature({
+    local realEntityId = getrenv()._G.SpawnCreature({
         Name = entityname,
         SpawnCFrame = CFrame.new(posx,posy,posz),
         DamageTeam = damageTeam,
         IsBoss = isBoss,
         Bypass = true,
     })
+
+    apiCall("networkedEntityCreated",entityid,realEntityId)
 end)
 
 registerMessage(6,function(entityid,posx,posy,posz,rosx,rosy,rosz)
