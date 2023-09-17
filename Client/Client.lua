@@ -174,7 +174,7 @@ local registerMessage = function(id,messageCallback)
         messages[messageIds[id]] = messageCallback
         return
     end
-    print(`registered message {messageIds[id]}`)
+    print(`registered message {id}`)
     messages[id] = messageCallback
 end
 
@@ -308,6 +308,7 @@ registerMessage(6,function(entityid,posx,posy,posz,rosx,rosy,rosz)
 end)
 
 registerMessage("animationChange",function(userid,arg1,animationname)
+    userid = tonumber(userid)
     arg1 = tonumber(arg1)
 
     local messageplayer = main.registeredPlayers[userid]
