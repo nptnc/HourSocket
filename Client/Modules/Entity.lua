@@ -51,7 +51,25 @@ return function(api)
     module.update = function()
         for entityId,entityData in api.getMe().serverData.isHost and {} or entityDatabase do
             entityData.entity.RootPart.CFrame = entityData.cframe
-        end 
+        end
+    end
+
+    module.updateWithFPS = function()
+        for entityId,entityData in api.getMe().serverData.isHost and {} or entityDatabase do
+            local pos = entityData.cframe.Position
+            local rx, ry, rz = entityData.cframe.Rotation:ToOrientation()
+			local rot = Vector3.new(math.deg(rx), math.deg(ry), math.deg(rz))
+
+            local message = api.prepareMessage("updateEntityCF",
+                entityId,
+                api.optimize(pos.X),
+                api.optimize(pos.Y),
+                api.optimize(pos.Z),
+                api.optimize(rot.X),
+                api.optimize(rot.Y),
+                api.optimize(rot.Z)
+            )
+        end
     end
 
     module.entityUpdateNonHost = function(entityid,posx,posy,posz,rotx,roty,rotz)
