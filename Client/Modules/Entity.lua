@@ -164,7 +164,7 @@ return function(api)
 
         local networkEntities = api.len(entityDatabase)
         local fps = (30/networkEntities)
-        if networkEntities ~= 0 and tick() - sinceLastUpdate < 1/fps  then
+        if networkEntities == 0 or tick() - sinceLastUpdate < 1/fps  then
             return
         end
 
@@ -208,7 +208,7 @@ return function(api)
         entityDatabase[entityId] = {
             cframe = CFrame.new(posx,posy,posz),
             realId = realEntityId,
-            health = getrenv()._G.Entities[realEntityId].Resources.Health,
+            health = getrenv()._G.Entities[realEntityId].Resources.Health or 100,
         }
     end
 
