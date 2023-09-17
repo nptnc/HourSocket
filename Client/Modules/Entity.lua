@@ -103,8 +103,18 @@ return function(api)
         }
     end
 
+    local sinceLastUpdate = tick()
+
+    local updates = {
+        {1,50},
+        {2,40},
+        {3,20},
+        {4,10},
+    }
+
     local warnedAboutNoCFrame = {}
     module.update = function()
+        -- non host
         for entityId,entityData in api.getMe().serverData.isHost and {} or entityDatabase do
             local realId = entityData.realId
             local entity = getrenv()._G.Entities[realId]
@@ -134,9 +144,13 @@ return function(api)
             entity.Facing = true
             --entity.Dead = playerdata.serverData.dead
         end
-    end
 
-    module.updateWithFPS = function()
+        local networkEntities = api.len(entityDatabase)
+        if networkEntities ~= 0 and tick() - sinceLastUpdate < updates[networkEntities] or updates[#updates] then
+            return
+        end
+
+        -- host
         for entityId,entityData in api.getMe().serverData.isHost and entityDatabase or {} do
             local realId = entityData.realId
             local entity = getrenv()._G.Entities[realId]
