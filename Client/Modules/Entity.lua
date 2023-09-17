@@ -104,7 +104,13 @@ return function(api)
     local warnedAboutNoCFrame = {}
     module.update = function()
         for entityId,entityData in api.getMe().serverData.isHost and {} or entityDatabase do
-            local entity = entityData.entity
+            local realId = entityData.realId
+            local entity = getrenv()._G.Entities[realId]
+
+            if entity == nil then
+                warn("entity nil (non host)")
+                continue
+            end
 
             local currentCF = entity.RootPart.CFrame
             local targetCF = entityData.cframe
@@ -135,7 +141,7 @@ return function(api)
 
             if entity == nil then
                 warn(`entity nil`)
-                return
+                continue
             end
             
             local pos = entity.RootPart.Position
