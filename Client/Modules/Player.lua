@@ -90,6 +90,7 @@ return function(api)
             entity.TargetCFrame = theirCF
             entity.Facing = true
             entity.Dead = playerdata.serverData.dead
+            entity.TimeSpeed = 1
         end
     end
 
