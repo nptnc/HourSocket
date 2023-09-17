@@ -154,7 +154,7 @@ for _,module in modules do
 end
 apiCall("once")
 
-apiCall("createNotification",`joined server {ip}:{port}`)
+apiCall("createNotification",`connected to server {ip}:{port}`)
 
 local messages = {}
 

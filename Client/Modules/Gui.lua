@@ -36,7 +36,8 @@ return function(api)
         frame.BackgroundColor3 = Color3.fromRGB()
         frame.BackgroundTransparency = 0.7
         frame.BorderSizePixel = 0
-        frame.Size = UDim2.new(1,0,0.04,0)
+        frame.Size = UDim2.new(0,0,0.04,0)
+        frame.AutomaticSize = Enum.AutomaticSize.X
         
         local textlabel = Instance.new("TextLabel")
         textlabel.Parent = frame
@@ -44,7 +45,7 @@ return function(api)
         textlabel.BackgroundTransparency = 1
         textlabel.Size = UDim2.new(1,0,0.75,0)
         textlabel.TextColor3 = Color3.fromRGB(255,255,255)
-        textlabel.TextScaled = true
+        textlabel.TextScaled = false
 
         task.delay(duration or 3,function()
             frame:Destroy()
@@ -103,7 +104,7 @@ return function(api)
 
     local corresponding = {}
     module.playerRegistered = function(userid,data)
-        createNotification(data.serverData.username)
+        createNotification(`has joined the server {data.serverData.username}`)
         corresponding[userid] = createFrame(data.serverData.username,leftbar)
     end
 
