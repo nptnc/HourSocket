@@ -39,10 +39,26 @@ return function(api)
                     -- spawn the enemy, bypass is only usually used on players when you arent the host.
                     local realEntityId = hook.call(...) 
                     local entity = getrenv()._G.Entities[realEntityId]
+
                     -- this will render the ai useless.
                     entity.Update = function()
                         
                     end
+                    
+                    -- lets overkill this shit, bye bye ai.
+                    entity.ProcessAI = function()
+                        
+                    end
+
+                    -- we gonna stop the animations from playing unless its networked.
+                    entity.SwitchAnimation = createHook(entityData.SwitchAnimation,function(hook,...)
+                        local args = {...}
+                        if args[4] ~= false then
+                            return
+                        end
+                        return hook.call(...)
+                    end)
+
                     return realEntityId
                 end
                 -- dont spawn the enemy because we arent allowed to.
@@ -68,11 +84,11 @@ return function(api)
 
             local distanceFromTarget = (targetCF.Position-currentCF.Position).Magnitude
             --entity.Resources.Health = 10000
-            entity.MoveDirection = {distanceFromTarget > 0.5 and 1 or 0,0}
-            entity.MovePosition = targetCF.Position
-            entity.FacingPosition = (targetCF.Position + targetCF.LookVector*1000)
-            entity.TargetCFrame = targetCF
-            entity.Facing = true
+            --entity.MoveDirection = {distanceFromTarget > 0.5 and 1 or 0,0}
+            --entity.MovePosition = targetCF.Position
+            --entity.FacingPosition = (targetCF.Position + targetCF.LookVector*1000)
+            --entity.TargetCFrame = targetCF
+            --entity.Facing = true
             --entity.Dead = playerdata.serverData.dead
         end
     end

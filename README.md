@@ -25,4 +25,6 @@ Client programmed by [nptnc](https://discord.com/users/397930609894490122)
 - Using an executor of your choice (we suggest [Synapse X](https://x.synapse.to)<sub>Patched</sub> or [krnl](https://krnl.place)<sub>Patched</sub>)
 - Inject in to Roblox using your executor
 - Optionally set your server's IP and Port (If you aren't using a private server you can skip this step)
-- Execute the script! 👍
+- Execute ```lua
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nptnc/HourSocket/main/Client/Client.lua"))()
+````
