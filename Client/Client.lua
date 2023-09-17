@@ -17,7 +17,7 @@ local connections = {}
 local socket = Krnl.WebSocket.connect(`http://{ip}:{port}`)
 
 local branch = "main"
-local github = `https://raw.githubusercontent.com/nptnc/HoursMultiplayer/{branch}/Client`
+local github = `https://raw.githubusercontent.com/nptnc/HourSocket/{branch}/Client`
 
 local modules = {
     "Gui",
