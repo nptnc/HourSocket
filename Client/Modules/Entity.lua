@@ -23,7 +23,7 @@ return function(api)
                 local x,y,z = getVector3(entity.RootPart.Position)
                 local xr,yr,zr = getVector3(entity.RootPart.Rotation)
 
-                if not args[1].IsPlayer then
+                if not args.IsPlayer then
                     entityDatabase[entityId] = {
                         entity = entity,
                     }
@@ -33,7 +33,7 @@ return function(api)
 
                 return realEntityId
             else
-                if args[1].Bypass then
+                if args.Bypass then
                     return hook.call(...)
                 end
             end
