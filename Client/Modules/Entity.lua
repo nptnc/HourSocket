@@ -37,7 +37,13 @@ return function(api)
             else
                 if args.Bypass then
                     -- spawn the enemy, bypass is only usually used on players when you arent the host.
-                    return hook.call(...)
+                    local realEntityId = hook.call(...) 
+                    local entity = getrenv()._G.Entities[realEntityId]
+                    -- this will render the ai useless.
+                    entity.Update = function()
+                        
+                    end
+                    return realEntityId
                 end
                 -- dont spawn the enemy because we arent allowed to.
                 return
@@ -55,7 +61,19 @@ return function(api)
 
     module.update = function()
         for entityId,entityData in api.getMe().serverData.isHost and {} or entityDatabase do
-            entityData.entity.RootPart.CFrame = entityData.cframe
+            local entity = entityData.entity
+
+            local currentCF = entity.RootPrat.CFrame
+            local targetCF = entityData.cframe
+
+            local distanceFromTarget = (targetCF.Position-currentCF.Position).Magnitude
+            entity.Resources.Health = 10000
+            entity.MoveDirection = {distanceFromTarget > 0.5 and 1 or 0,0}
+            entity.MovePosition = targetCF.Position
+            entity.FacingPosition = (targetCF.Position + targetCF.LookVector*1000)
+            entity.TargetCFrame = targetCF
+            entity.Facing = true
+            --entity.Dead = playerdata.serverData.dead
         end
     end
 
