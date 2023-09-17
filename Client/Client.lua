@@ -154,6 +154,8 @@ for _,module in modules do
 end
 apiCall("once")
 
+apiCall("createNotification",`joined server {ip}:{port}`)
+
 local messages = {}
 
 local findOutVariable = function(var)
