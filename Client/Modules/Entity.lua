@@ -41,18 +41,22 @@ return function(api)
         end)
     end
 
-    module.networkedEntityCreated = function(entityId,realEntityId)
+    module.networkedEntityCreated = function(entityId,realEntityId,posx,posy,posz)
         entityDatabase[entityId] = {
+            cframe = CFrame.new(posx,posy,posz),
             entity = getrenv()._G.Entities[realEntityId],
         }
     end
 
     module.update = function()
-
+        for entityId,entityData in api.getMe().serverData.isHost and {} or entityDatabase do
+            entityData.entity.RootPart.CFrame = entityData.cframe
+        end 
     end
 
     module.entityUpdateNonHost = function(entityid,posx,posy,posz,rotx,roty,rotz)
-
+        local entityData = entityDatabase[entityid]
+        entityData.cframe = CFrame.new(posx,posy,posz) * CFrame.Angles(rotx,roty,rotz)
     end
 
     return module

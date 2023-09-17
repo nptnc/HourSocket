@@ -295,7 +295,7 @@ registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
         Bypass = true,
     })
 
-    apiCall("networkedEntityCreated",entityid,realEntityId)
+    apiCall("networkedEntityCreated",entityid,realEntityId,posx,posy,posz)
 end)
 
 registerMessage(6,function(entityid,posx,posy,posz,rosx,rosy,rosz)
