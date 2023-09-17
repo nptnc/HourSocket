@@ -205,6 +205,7 @@ local registerPlayer = function(userid,data)
     end
     main.registeredPlayers[userid] = {
         model = nil,
+        cframe = CFrame.new(data.position[1],data.position[2],data.position[3]) * CFrame.Angles(math.rad(data.rotation[1]),math.rad(data.rotation[2]),math.rad(data.rotation[3])),
         serverData = data,
     }
 
