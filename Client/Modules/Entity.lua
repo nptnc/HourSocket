@@ -8,16 +8,50 @@ return function(api)
     local entityDatabase = {}
 
     local entityId = 0
+    local reg = function(entity,entitymodelid,x,y,z,xr,yr,zr)
+        entityId += 1
+
+        entityDatabase[entityId] = {
+            entity = entity,
+        }
+        local message = api.prepareMessage("registerEntity",entityId,entitymodelid,entity.DamageTeam,entity.IsBoss or false,x,y,z,xr,yr,zr)
+        api.socket:Send(message)
+    end
+
+    module.playerRegistered = function(playerid,data)
+        if not data.serverData.isHost then
+            return
+        end
+        for realEntityId, entity in getrenv()._G.Entities do
+            if realEntityId == 1 or entity.specialId ~= nil then
+                continue
+            end
+            local x,y,z = getVector3(entity.RootPart.Position)
+            local xr,yr,zr = getVector3(entity.RootPart.Rotation)
+            reg(entity,entity.Name,x,y,z,xr,yr,zr)
+        end
+    end
+
     module.once = function()
         -- hook when this function is called by hours, what we'll do is check if we are allowed to spawn an entity or not.
+        
+        if api.getMe() ~= nil then
+            for realEntityId, entity in getrenv()._G.Entities do
+                if realEntityId == 1 or entity.specialId ~= nil then
+                    continue
+                end
+                local x,y,z = getVector3(entity.RootPart.Position)
+                local xr,yr,zr = getVector3(entity.RootPart.Rotation)
+                reg(entity,entity.Name,x,y,z,xr,yr,zr)
+            end
+        end
+        
         getrenv()._G.SpawnCreature = api.createHook(getrenv()._G.SpawnCreature,function(hook,...)
             local args = {...}
             args = args[1]
 
             local isHost = api.getMe().serverData.isHost
             if isHost then
-                entityId += 1
-
                 local realEntityId = hook.call(...) -- spawn the enemy
                 local entity = getrenv()._G.Entities[realEntityId]
 
@@ -26,11 +60,7 @@ return function(api)
 
                 -- lets stop from creating infinite loops of players
                 if not args.IsPlayer then
-                    entityDatabase[entityId] = {
-                        entity = entity,
-                    }
-                    local message = api.prepareMessage("registerEntity",entityId,args.Name,entity.DamageTeam,entity.IsBoss or false,x,y,z,xr,yr,zr)
-                    api.socket:Send(message)
+                    reg(entity,args.Name,x,y,z,xr,yr,zr)
                 end
 
                 return realEntityId
@@ -43,6 +73,10 @@ return function(api)
                     if not args.IsPlayer then
                         entity.Update = function() end
                         entity.ProcessAI = function() end
+
+                        entityDatabase[entityId] = {
+                            entity = entity,
+                        }
 
                          -- we gonna stop the animations from playing unless its networked.
                         entity.SwitchAnimation = api.createHook(entity.SwitchAnimation,function(hook,...)
@@ -64,6 +98,7 @@ return function(api)
     end
 
     module.networkedEntityCreated = function(entityId,realEntityId,posx,posy,posz)
+        warn(`non host, registering entity {entityId} in script entity database`)
         entityDatabase[entityId] = {
             cframe = CFrame.new(posx,posy,posz),
             entity = getrenv()._G.Entities[realEntityId],
