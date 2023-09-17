@@ -144,6 +144,8 @@ return function(api)
             return
         end
 
+        sinceLastUpdate = tick()
+
         -- host
         for entityId,entityData in api.getMe().serverData.isHost and entityDatabase or {} do
             local realId = entityData.realId
