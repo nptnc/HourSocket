@@ -113,6 +113,7 @@ return function(api)
             local entity = getrenv()._G.Entities[realId]
 
             if entity == nil then
+                warn("unregistered entity non host")
                 entityDatabase[entityId] = nil
                 continue
             end
@@ -149,6 +150,7 @@ return function(api)
             local entity = getrenv()._G.Entities[realId]
 
             if entity == nil then
+                warn("unregistered entity host")
                 entityDatabase[entityId] = nil
                 continue
             end
