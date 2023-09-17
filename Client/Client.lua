@@ -170,9 +170,11 @@ end
 
 local registerMessage = function(id,messageCallback)
     if type(id) == "string" then
+        print(`registered message {messageIds[id]}`)
         messages[messageIds[id]] = messageCallback
         return
     end
+    print(`registered message {messageIds[id]}`)
     messages[id] = messageCallback
 end
 
