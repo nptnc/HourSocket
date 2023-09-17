@@ -146,7 +146,7 @@ async def registerPlayer(ws, userid: int, username: str, _class: str):
 registerPlayer()
 
 @createPacket(2)
-async def updatePlayer(ws, userid: int, pos_x: float, pos_y: float, pos_z: float, rot_x: float, rot_y: float, rot_z: float):
+async def updatePlayerPosition(ws, userid: int, pos_x: float, pos_y: float, pos_z: float, rot_x: float, rot_y: float, rot_z: float):
     if userid not in data['players']:
         return await ws.send(create_message(
             999, "Player does not exist.", 1
@@ -158,7 +158,7 @@ async def updatePlayer(ws, userid: int, pos_x: float, pos_y: float, pos_z: float
     await send_all_ws(create_message(
         2, userid, pos_x,pos_y,pos_z,rot_x,rot_y,rot_z
     ), except_for=[userid])
-updatePlayer()
+updatePlayerPosition()
 
 @createPacket(3)
 async def updatePlayerState(ws, userid: int, key: str, value: any):
@@ -207,7 +207,7 @@ async def registerEntity(ws, userid: int, entityid: int, entityname: str, team: 
 registerEntity()
 
 @createPacket(6)
-async def updateEntity(ws, userid: int, entityid: int, pos_x: float, pos_y: float, pos_z: float, rot_x: float, rot_y: float, rot_z: float):
+async def updateEntityPosition(ws, userid: int, entityid: int, pos_x: float, pos_y: float, pos_z: float, rot_x: float, rot_y: float, rot_z: float):
     if not data['players'][userid]['isHost']:
         logger.debug(f"{userid} is not allowed to update entities!")
         return
@@ -223,7 +223,7 @@ async def updateEntity(ws, userid: int, entityid: int, pos_x: float, pos_y: floa
     await send_all_ws(create_message(
         6, entityid, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z
     ), except_for=[userid])
-updateEntity()
+updateEntityPosition()
 
 @createPacket(7)
 async def updateWorldState(ws, userid: int, newstate: str):
@@ -244,6 +244,23 @@ async def playAnimation(ws, userid: int, arg1: float, animationname: str):
         8, userid, arg1, animationname
     ), except_for=[userid])
 playAnimation()
+
+@createPacket(9)
+async def updateEntityState(ws, userid: int, entityid: int, key: str, value: any):
+    if not data['players'][userid]['isHost']:
+        logger.warning(f"{userid} is not allowed to update entity states!")
+        return
+    data['entities'][entityid].update({
+        key: value,
+    })
+    await send_all_ws(create_message(
+        9, entityid, key, value
+    ))
+    if key == "health" and value <= 0:
+        del data['entities'][entityid]
+        logger.debug(f"Deleted entity {entityid} because it fucking died")
+
+updateEntityState()
 
 async def handler(ws: server.WebSocketServerProtocol):
     while True:
