@@ -79,11 +79,11 @@ return function(api)
 
             local distanceFromTarget = (targetCF.Position-currentCF.Position).Magnitude
             --entity.Resources.Health = 10000
-            --entity.MoveDirection = {distanceFromTarget > 0.5 and 1 or 0,0}
-            --entity.MovePosition = targetCF.Position
-            --entity.FacingPosition = (targetCF.Position + targetCF.LookVector*1000)
-            --entity.TargetCFrame = targetCF
-            --entity.Facing = true
+            entity.MoveDirection = {distanceFromTarget > 0.5 and 1 or 0,0}
+            entity.MovePosition = targetCF.Position
+            entity.FacingPosition = (targetCF.Position + targetCF.LookVector*1000)
+            entity.TargetCFrame = targetCF
+            entity.Facing = true
             --entity.Dead = playerdata.serverData.dead
         end
     end
