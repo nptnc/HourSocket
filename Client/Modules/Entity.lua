@@ -36,6 +36,7 @@ return function(api)
                 if args.Bypass then
                     return hook.call(...)
                 end
+                return
             end
             return hook.call(...)
         end)
