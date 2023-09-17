@@ -9,23 +9,51 @@ body {
 }
 
 .hero {
+    float: right;
+    margin-top: 50px;
     color: white;
     width: 100%;
     text-align: center;
     text-shadow: black 1px 1px 5px;
 }
+.hero .statistics {
+    float: left;
+    background-color: rgb(31, 31, 31);
+    margin-left: 25px;
+    width: 50%;
+    height: 15%;
+    box-shadow: rgba(0, 0, 0, 0.250) 1px 1px 10px;
+}
+.hero .statistics h1 {
+    text-align: left;
+    margin-left: 25px;
+    font-size: 2.5vw;
+}
+.hero .statistics p {
+    text-align: left;
+    margin-left: 25px;
+}
+.hero h1 {
+    font-size: 45px;
+}
+.hero p {
+    font-size: 20px;
+}
 
 
 .grid {
+    margin-top: 15px;
+    margin-left: 25px;
+    float: left;
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: left;
     justify-content: center;
 }
 .playerinfobox {
     user-select: none;
     background-color: rgb(26, 26, 26);
-    box-shadow: black 1px 1px 25px;
+    box-shadow: rgba(0, 0, 0, 0.250) 1px 1px 10px;
     z-index: 25;
     margin: 8px;
     width: 360px;

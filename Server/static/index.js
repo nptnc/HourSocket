@@ -2,8 +2,13 @@ window.onload = () => {
     const ws = new WebSocket("ws://salamithecat.com:7171")
     const grid = document.getElementById('player-grid')
     const playercountdisplay = document.getElementById('connectedplayers')
+    const stats = document.getElementById('statistics')
+    const connectiontext = document.getElementById('connection-text')
+    const connectiontext2 = document.getElementById('connection-text2')
     ws.onopen = () => {
         ws.send(-1)
+        connectiontext.innerText = "Server Statistics"
+        connectiontext2.innerText = "Connected."
     }
 
 
@@ -16,8 +21,19 @@ window.onload = () => {
             }
             return
         }
+        const json = JSON.parse(data);
+        console.log(json)
+        const {players, statistics} = json;
 
-        const {players} = JSON.parse(data);
+        for (var statistic in statistics) {
+            if (document.getElementById(statistic) == undefined) {
+                const stat = document.createElement("p")
+                stat.id = statistic
+                stats.appendChild(stat)
+            }
+
+            document.getElementById(statistic).innerText = `${statistic}: ${statistics[statistic]}`
+        }
         
         for (var playerID in players) {
             if (document.getElementById(playerID) == undefined) {
@@ -51,4 +67,11 @@ window.onload = () => {
 
         playercountdisplay.innerText = `${Object.keys(players).length} Connected Player(s)`
     });
+    ws.onclose = () => {
+        connectiontext.innerText = "Disconnected"
+        connectiontext2.innerText = "Reconnecting in 2 seconds.."
+        setTimeout(() => {
+            document.location.reload()
+        }, 2000);
+    }
 }
