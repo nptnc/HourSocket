@@ -63,7 +63,7 @@ return function(api)
         for entityId,entityData in api.getMe().serverData.isHost and {} or entityDatabase do
             local entity = entityData.entity
 
-            local currentCF = entity.RootPrat.CFrame
+            local currentCF = entity.RootPart.CFrame
             local targetCF = entityData.cframe
 
             local distanceFromTarget = (targetCF.Position-currentCF.Position).Magnitude
