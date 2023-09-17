@@ -7,14 +7,14 @@ return function(api)
 
     local entityDatabase = {}
 
-    local entityId = 0
+    local globalEntityId = 0
     local reg = function(entity,entitymodelid,x,y,z,xr,yr,zr)
-        entityId += 1
+        globalEntityId += 1
 
-        entityDatabase[entityId] = {
+        entityDatabase[globalEntityId] = {
             entity = entity,
         }
-        local message = api.prepareMessage("registerEntity",entityId,entitymodelid,entity.DamageTeam,entity.IsBoss or false,x,y,z,xr,yr,zr)
+        local message = api.prepareMessage("registerEntity",globalEntityId,entitymodelid,entity.DamageTeam,entity.IsBoss or false,x,y,z,xr,yr,zr)
         api.socket:Send(message)
     end
 
@@ -103,7 +103,9 @@ return function(api)
 
     local warnedAboutNoCFrame = {}
     module.update = function()
+        print("update loop")
         for entityId,entityData in api.getMe().serverData.isHost and {} or entityDatabase do
+            print("trying to update entity.")
             local entity = entityData.entity
 
             local currentCF = entity.RootPart.CFrame
