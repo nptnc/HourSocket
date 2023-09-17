@@ -68,10 +68,6 @@ return function(api)
                 continue
             end
     
-            if not playerdata.cframe then
-                continue
-            end
-    
             -- no player entity?, create one!
             if api.doesPlayerHaveEntity(playerdata) == false and getrenv()._G.GameState == "Combat" then
                 local entity = api.createPlayer(playerdata)
