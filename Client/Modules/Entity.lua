@@ -105,13 +105,6 @@ return function(api)
 
     local sinceLastUpdate = tick()
 
-    local updates = {
-        {1,50},
-        {2,40},
-        {3,20},
-        {4,10},
-    }
-
     local warnedAboutNoCFrame = {}
     module.update = function()
         -- non host
@@ -146,7 +139,7 @@ return function(api)
         end
 
         local networkEntities = api.len(entityDatabase)
-        if networkEntities ~= 0 and tick() - sinceLastUpdate < updates[networkEntities] or updates[#updates] then
+        if networkEntities ~= 0 and tick() - sinceLastUpdate < 1/(50 / networkEntities) then
             return
         end
 
