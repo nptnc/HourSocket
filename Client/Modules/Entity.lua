@@ -130,7 +130,8 @@ return function(api)
 
     module.updateWithFPS = function()
         for entityId,entityData in api.getMe().serverData.isHost and entityDatabase or {} do
-            local entity = entityData.entity
+            local realId = entityData.realId
+            local entity = getrenv()._G.Entities[realId]
             
             local pos = entity.RootPart.Position
             local rot = entity.RootPart.Rotation
