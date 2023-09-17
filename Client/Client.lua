@@ -169,6 +169,10 @@ local findOutVariable = function(var)
 end
 
 local registerMessage = function(id,messageCallback)
+    if type(id) == "string" then
+        messages[messageIds[id]] = messageCallback
+        return
+    end
     messages[id] = messageCallback
 end
 
