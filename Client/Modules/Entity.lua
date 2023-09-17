@@ -95,17 +95,11 @@ return function(api)
         end)
     end
 
-    module.networkedEntityCreated = function(entityId,realEntityId,posx,posy,posz)
-        warn(`non host, registering entity {entityId} in script entity database`)
-        entityDatabase[entityId] = {
-            cframe = CFrame.new(posx,posy,posz),
-            realId = realEntityId,
-        }
-    end
-
     local sinceLastUpdate = tick()
 
     local warnedAboutNoCFrame = {}
+
+    local lastEntityStuff = {}
     module.update = function()
         -- non host
         for entityId,entityData in api.getMe().serverData.isHost and {} or entityDatabase do
@@ -130,13 +124,42 @@ return function(api)
             end
 
             local distanceFromTarget = (targetCF.Position-currentCF.Position).Magnitude
-            --entity.Resources.Health = 10000
+            entity.Resources.Health = entityData.health
             entity.MoveDirection = {distanceFromTarget > 0.5 and 1 or 0,0}
             entity.MovePosition = targetCF.Position
             entity.FacingPosition = (targetCF.Position + targetCF.LookVector*1000)
             entity.TargetCFrame = targetCF
             entity.Facing = true
             --entity.Dead = playerdata.serverData.dead
+        end
+
+        -- host
+        for entityId,entityData in api.getMe().serverData.isHost and entityDatabase or {} do
+            local realId = entityData.realId
+            local entity = getrenv()._G.Entities[realId]
+
+            if entity == nil then
+                warn("unregistered entity host")
+                entityDatabase[entityId] = nil
+                continue
+            end
+
+            if not lastEntityStuff[entityId] then
+                lastEntityStuff[entityId] = {
+                    health = entity.Resources.Health,
+                }
+            end
+
+            if entity.Resources.Health ~= lastEntityStuff[entityId].Health then
+                local message = api.prepareMessage("updateEntityState",
+                    entityId,
+                    "health",
+                    entity.Resources.Health
+                )
+                api.socket:Send(message)
+            end
+
+            lastEntityStuff[entityId]["health"] = entity.Resources.Health
         end
 
         local networkEntities = api.len(entityDatabase)
@@ -178,6 +201,20 @@ return function(api)
     module.networkEntityUpdate = function(entityid,posx,posy,posz,rotx,roty,rotz)
         local entityData = entityDatabase[entityid]
         entityData.cframe = CFrame.new(posx,posy,posz) * CFrame.Angles(math.rad(rotx),math.rad(roty),math.rad(rotz))
+    end
+
+    module.networkedEntityCreated = function(entityId,realEntityId,posx,posy,posz)
+        warn(`non host, registering entity {entityId} in script entity database`)
+        entityDatabase[entityId] = {
+            cframe = CFrame.new(posx,posy,posz),
+            realId = realEntityId,
+            health = getrenv()._G.Entities[realEntityId].Resources.Health,
+        }
+    end
+
+    module.networkEntityStateUpdate = function(entityid,index,value)
+        local entityData = entityDatabase[entityid]
+        entityData[index] = value
     end
 
     return module

@@ -38,6 +38,7 @@ local messageIds = {
     registerEntity = 5,
     updateEntityCF = 6,
     animationChange = 8,
+    updateEntityState = 9,
 }
 
 main.player = player
@@ -320,6 +321,13 @@ registerMessage("animationChange",function(userid,arg1,animationname)
     local messageplayer = main.registeredPlayers[userid]
     local entity = messageplayer.entity
     entity.SwitchAnimation(entity,arg1,animationname)
+end)
+
+registerMessage(9,function(entityid,index,value)
+    if index == "health" then
+        value = tonumber(value)
+    end
+    apiCall("networkEntityStateUpdate",entityid,index,value)
 end)
 
 socket.OnMessage:Connect(function(msg)
