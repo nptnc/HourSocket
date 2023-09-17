@@ -106,8 +106,8 @@ return function(api)
 
     local corresponding = {}
     module.playerRegistered = function(userid,data)
-        if userid == api.player.UserId then
-            createNotification(`has joined the server {data.serverData.username}`)
+        if userid ~= api.player.UserId then
+            createNotification(`{data.serverData.username} has joined the server`)
         end
         corresponding[userid] = createFrame(data.serverData.username,leftbar)
     end
