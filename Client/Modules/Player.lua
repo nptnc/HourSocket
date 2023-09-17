@@ -4,6 +4,17 @@ return function(api)
     module.playerRespawned = function()
         local message = api.prepareMessage("updateState","dead",false)
         api.socket:Send(message)
+
+        local entities = getrenv()._G.Entities
+        entities[1].SwitchAnimation = api.createHook(entities[1].SwitchAnimation,function(hook,...)
+            local args = {...}
+            local blacklistedAnimations = {"Idle","Run"}
+            if not table.find(blacklistedAnimations,args[3]) then
+                local message = api.prepareMessage("animationChange",args[2],args[3])
+                api.socket:Send(message)
+            end
+            return hook.call(...)
+        end)
     end
 
     module.playerDied = function()

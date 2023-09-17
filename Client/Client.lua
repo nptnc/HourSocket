@@ -29,6 +29,17 @@ local modules = {
 local main = {}
 local requiredModules = {}
 
+local messageIds = {
+    disconnect = 0,
+    registerPlayer = 1,
+    updatePlayer = 2,
+    updateState = 3,
+    doAttack = 4,
+    registerEntity = 5,
+    updateEntity = 6,
+    animationChange = 8,
+}
+
 main.player = player
 main.socket = socket
 main.registeredPlayers = {}
@@ -107,16 +118,6 @@ end
 main.getMe = function()
     return main.registeredPlayers[player.UserId]
 end
-
-local messageIds = {
-    disconnect = 0,
-    registerPlayer = 1,
-    updatePlayer = 2,
-    updateState = 3,
-    doAttack = 4,
-    registerEntity = 5,
-    updateEntity = 6,
-}
 
 main.destroyPlayerEntity = function(userid)
     local targetPlayer = main.registeredPlayers[userid]
@@ -288,7 +289,7 @@ registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
     })
 end)
 
-registerMessage(5,function(entityid,posx,posy,posz,rosx,rosy,rosz)
+registerMessage(6,function(entityid,posx,posy,posz,rosx,rosy,rosz)
     entityid = tonumber(entityid)
     posx = tonumber(posx)
     posy = tonumber(posy)
@@ -298,6 +299,14 @@ registerMessage(5,function(entityid,posx,posy,posz,rosx,rosy,rosz)
     rosz = tonumber(rosz)
 
     apiCall("entityUpdateNonHost",entityid,posx,posy,posz,rosx,rosy,rosz)
+end)
+
+registerMessage("animationChange",function(userid,arg1,animationname)
+    arg1 = tonumber(arg1)
+
+    local messageplayer = main.registeredPlayers[userid]
+    local entity = messageplayer.entity
+    entity.SwitchAnimation(entity,arg1,animationname)
 end)
 
 socket.OnMessage:Connect(function(msg)
