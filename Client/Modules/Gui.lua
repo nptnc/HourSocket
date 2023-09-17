@@ -97,6 +97,7 @@ return function(api)
         local uilistlayout3 = Instance.new("UIListLayout")
         uilistlayout3.Padding = UDim.new()
         uilistlayout3.Parent = middle
+        uilistlayout3.HorizontalAlignment = Enum.VerticalAlignment.Middle
         uilistlayout3.VerticalAlignment = Enum.VerticalAlignment.Bottom
 
         packetInFrame = createFrame("packets in: 0/s",rightbar)
