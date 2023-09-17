@@ -3,6 +3,7 @@ return function(api)
 
     local leftbar
     local rightbar
+    local middle
     
     local createFrame = function(text,parent)
         local frame = Instance.new("Frame")
@@ -25,6 +26,29 @@ return function(api)
             frame.Position = UDim2.new(1,0,0,0)
             frame.AnchorPoint = Vector2.new(1,0)
         end
+
+        return frame
+    end
+
+    local createNotification = function(text,duration)
+        local frame = Instance.new("Frame")
+        frame.Parent = middle
+        frame.BackgroundColor3 = Color3.fromRGB()
+        frame.BackgroundTransparency = 0.7
+        frame.BorderSizePixel = 0
+        frame.Size = UDim2.new(1,0,0.04,0)
+        
+        local textlabel = Instance.new("TextLabel")
+        textlabel.Parent = frame
+        textlabel.Text = text
+        textlabel.BackgroundTransparency = 1
+        textlabel.Size = UDim2.new(1,0,0.75,0)
+        textlabel.TextColor3 = Color3.fromRGB(255,255,255)
+        textlabel.TextScaled = true
+
+        task.delay(duration or 3,function()
+            frame:Destroy()
+        end)
 
         return frame
     end
@@ -60,12 +84,26 @@ return function(api)
         uilistlayout2.Padding = UDim.new()
         uilistlayout2.Parent = rightbar
 
+        middle = Instance.new("Frame")
+        middle.Parent = gui
+        middle.BackgroundTransparency = 1
+        middle.BorderSizePixel = 0
+        middle.Size = UDim2.new(0.09,0,0.8,0)
+        middle.AnchorPoint = Vector2.new(0.5,0)
+        middle.Position = UDim2.new(0.5,0,0,0)
+
+        local uilistlayout3 = Instance.new("UIListLayout")
+        uilistlayout3.Padding = UDim.new()
+        uilistlayout3.Parent = middle
+        uilistlayout3.VerticalAlignment = Enum.VerticalAlignment.Bottom
+
         packetInFrame = createFrame("packets in: 0/s",rightbar)
         packetOutFrame = createFrame("packets out: 0/s",rightbar)
     end
 
     local corresponding = {}
     module.playerRegistered = function(userid,data)
+        createNotification(data.serverData.username)
         corresponding[userid] = createFrame(data.serverData.username,leftbar)
     end
 
@@ -80,6 +118,10 @@ return function(api)
 
     module.sentMessage = function()
         packetsOut += 1
+    end
+
+    module.createNotification = function(text)
+        createNotification(text)
     end
 
     local start = tick()
