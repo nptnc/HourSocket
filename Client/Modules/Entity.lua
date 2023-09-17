@@ -8,11 +8,12 @@ return function(api)
     local entityDatabase = {}
 
     local globalEntityId = 0
-    local reg = function(entity,entitymodelid,x,y,z,xr,yr,zr)
+    local reg = function(entity,realId,entitymodelid,x,y,z,xr,yr,zr)
         globalEntityId += 1
 
         entityDatabase[globalEntityId] = {
-            entity = entity,
+            cframe = CFrame.new(x,y,z) * CFrame.Angles(math.rad(xr),math.rad(yr),math.rad(zr)),
+            realId = realId,
         }
         local message = api.prepareMessage("registerEntity",globalEntityId,entitymodelid,entity.DamageTeam,entity.IsBoss or false,x,y,z,xr,yr,zr)
         api.socket:Send(message)
@@ -60,7 +61,7 @@ return function(api)
 
                 -- lets stop from creating infinite loops of players
                 if not args.IsPlayer then
-                    reg(entity,args.Name,x,y,z,xr,yr,zr)
+                    reg(entity,realEntityId,args.Name,x,y,z,xr,yr,zr)
                 end
 
                 return realEntityId
