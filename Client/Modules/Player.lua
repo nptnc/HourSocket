@@ -9,6 +9,8 @@ return function(api)
         entities[1].SwitchAnimation = api.createHook(entities[1].SwitchAnimation,function(hook,...)
             local args = {...}
             local blacklistedAnimations = {"Idle","Run"}
+            
+            -- we dont really need idle or run to be networked since they are already handled by the games ai when we create a player.
             if not table.find(blacklistedAnimations,args[3]) then
                 local message = api.prepareMessage("animationChange",args[2],args[3])
                 api.socket:Send(message)

@@ -9,6 +9,7 @@ return function(api)
 
     local entityId = 0
     module.once = function()
+        -- hook when this function is called by hours, what we'll do is check if we are allowed to spawn an entity or not.
         getrenv()._G.SpawnCreature = api.createHook(getrenv()._G.SpawnCreature,function(hook,...)
             local args = {...}
             args = args[1]
@@ -17,12 +18,13 @@ return function(api)
             if isHost then
                 entityId += 1
 
-                local realEntityId = hook.call(...)
+                local realEntityId = hook.call(...) -- spawn the enemy
                 local entity = getrenv()._G.Entities[realEntityId]
 
                 local x,y,z = getVector3(entity.RootPart.Position)
                 local xr,yr,zr = getVector3(entity.RootPart.Rotation)
 
+                -- lets stop from creating infinite loops of players
                 if not args.IsPlayer then
                     entityDatabase[entityId] = {
                         entity = entity,
@@ -34,8 +36,10 @@ return function(api)
                 return realEntityId
             else
                 if args.Bypass then
+                    -- spawn the enemy, bypass is only usually used on players when you arent the host.
                     return hook.call(...)
                 end
+                -- dont spawn the enemy because we arent allowed to.
                 return
             end
             return hook.call(...)
