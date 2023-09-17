@@ -132,6 +132,11 @@ return function(api)
         for entityId,entityData in api.getMe().serverData.isHost and entityDatabase or {} do
             local realId = entityData.realId
             local entity = getrenv()._G.Entities[realId]
+
+            if entity == nil then
+                warn(`entity nil`)
+                return
+            end
             
             local pos = entity.RootPart.Position
             local rot = entity.RootPart.Rotation
