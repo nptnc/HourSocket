@@ -69,6 +69,7 @@ return function(api)
                 api.optimize(rot.Y),
                 api.optimize(rot.Z)
             )
+            api.socket:Send(message)
         end
     end
 
