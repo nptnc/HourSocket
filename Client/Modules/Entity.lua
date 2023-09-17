@@ -40,24 +40,19 @@ return function(api)
                     local realEntityId = hook.call(...) 
                     local entity = getrenv()._G.Entities[realEntityId]
 
-                    -- this will render the ai useless.
-                    entity.Update = function()
-                        
-                    end
-                    
-                    -- lets overkill this shit, bye bye ai.
-                    entity.ProcessAI = function()
-                        
-                    end
+                    if not args.IsPlayer then
+                        entity.Update = function() end
+                        entity.ProcessAI = function() end
 
-                    -- we gonna stop the animations from playing unless its networked.
-                    entity.SwitchAnimation = createHook(entityData.SwitchAnimation,function(hook,...)
-                        local args = {...}
-                        if args[4] ~= false then
-                            return
-                        end
-                        return hook.call(...)
-                    end)
+                         -- we gonna stop the animations from playing unless its networked.
+                        entity.SwitchAnimation = createHook(entity.SwitchAnimation,function(hook,...)
+                            local args = {...}
+                            if args[4] ~= false then
+                                return
+                            end
+                            return hook.call(...)
+                        end)
+                    end
 
                     return realEntityId
                 end
