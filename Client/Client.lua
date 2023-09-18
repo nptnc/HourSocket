@@ -151,12 +151,14 @@ main.prepareMessage = function(messageId,...)
 end
 
 for _,module in modules do
-    requiredModules[module] = loadstring(game:HttpGet(`{github}/Modules/{module}.lua`))()(main)
-    local newModule = requiredModules[module]
+    local success = pcall(function()
+        requiredModules[module] = loadstring(game:HttpGet(`{github}/Modules/{module}.lua`))()(main)
+    end)
+    if not success then
+        warn("caught an error trying to fetch module")
+    end
 end
 apiCall("once")
-
-apiCall("createNotification",`connected to server {ip}:{port}`)
 
 local messages = {}
 
@@ -342,6 +344,8 @@ end)
 main.tryToConnect = function(ip)
     local socket = Krnl.WebSocket.connect(ip)
     main.socket = socket
+
+    apiCall("createNotification",`connected to server {ip}`)
 
     socket.OnMessage:Connect(function(msg)
         local args = string.split(msg,seperator)
