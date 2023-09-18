@@ -153,6 +153,11 @@ return function(api)
         for entityId,entityData in api.getMe().serverData.isHost and entityDatabase or {} do
             local realId = entityData.realId
             local entity = getrenv()._G.Entities[realId]
+            if entity == nil then
+                warn("unregistered entity host loop 1")
+                entityDatabase[entityId] = nil
+                continue
+            end
 
             if findEntityByNetworkId(entityData.networkId) == nil or entity == nil then
                 warn("unregistered entity host loop 1")
@@ -160,17 +165,20 @@ return function(api)
                 continue
             end
 
+            local entityHealth = entity.Resources.Health
             if not lastEntityStuff[entityId] then
                 lastEntityStuff[entityId] = {
-                    health = entity.Resources.Health,
+                    health = entityHealth or 100,
                 }
             end
 
-            if entity.Resources.Health ~= lastEntityStuff[entityId].health then
+            local lastEntityHealth = lastEntityStuff[entityId].health
+
+            if entityHealth ~= lastEntityHealth then
                 local message = api.prepareMessage("updateEntityState",
                     entityId,
                     "health",
-                    entity.Resources.Health
+                    entityHealth
                 )
                 api.sendToServer(message)
                 print("updating entity health, guh hopefully this doesnt spam the server")
