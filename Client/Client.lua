@@ -150,14 +150,21 @@ main.prepareMessage = function(messageId,...)
     return endString
 end
 
-for _,module in modules do
+-- i have no idea if pcalls yield,m they progbably dont tho
+
+local hasLoadedModules = false 
+for index,module in modules do
     local success = pcall(function()
         requiredModules[module] = loadstring(game:HttpGet(`{github}/Modules/{module}.lua`))()(main)
     end)
     if not success then
         warn("caught an error trying to fetch module")
     end
+    if index == #modules then
+        hasLoadedModules = true
+    end
 end
+repeat rs.Heartbeat:Wait() until hasLoadedModules
 apiCall("once")
 
 local messages = {}
