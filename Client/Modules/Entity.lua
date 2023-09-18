@@ -14,6 +14,7 @@ return function(api)
         entityDatabase[globalEntityId] = {
             cframe = CFrame.new(x,y,z) * CFrame.Angles(math.rad(xr),math.rad(yr),math.rad(zr)),
             realId = realId,
+            networkId = globalEntityId,
         }
 
         getrenv()._G.Entities[realId].NetworkID = globalEntityId
