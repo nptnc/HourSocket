@@ -118,7 +118,7 @@ return function(api)
             local realId = entityData.realId
             local entity = getrenv()._G.Entities[realId]
 
-            if findEntityByNetworkId(entityData.networkId) == nil then
+            if findEntityByNetworkId(entityData.networkId) == nil or entity == nil then
                 warn("unregistered entity non host")
                 entityDatabase[entityId] = nil
                 continue
@@ -150,7 +150,7 @@ return function(api)
             local realId = entityData.realId
             local entity = getrenv()._G.Entities[realId]
 
-            if findEntityByNetworkId(entityData.networkId) == nil then
+            if findEntityByNetworkId(entityData.networkId) == nil or entity == nil then
                 warn("unregistered entity host loop 1")
                 entityDatabase[entityId] = nil
                 continue
