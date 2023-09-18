@@ -42,12 +42,18 @@ return function(api)
     end
     
     local lastUpdated = {Vector3.zero,Vector3.zero}
+    local lastNetworkedPosition = Vector3.zero
+    local lastNetworkedRotation = Vector3.zero
     module.updateWithFPS = function()
         local char = api.player.Character
         local pos = char.HumanoidRootPart.Position
         local rot = char.HumanoidRootPart.Rotation
 
         if lastUpdated[1] == pos and lastUpdated[2] == rot then
+            return
+        end
+
+        if (lastNetworkedRotation - pos).Magnitude < 1 or (lastNetworkedPosition - pos).Magnitude < 1 then
             return
         end
         
@@ -61,6 +67,9 @@ return function(api)
         )
 
         api.sendToServer(message)
+
+        lastNetworkedPosition = pos
+        lastNetworkedRotation = rot
 
         lastUpdated = {pos,rot}
     end

@@ -100,6 +100,10 @@ main.optimize = function(n)
     return math.round(n * 50) / 50
 end
 
+main.hardOptimize = function(n)
+    return math.round(n)
+end
+
 local packetsSentOut = 0
 main.isThrottling = false
 main.sendToServer = function(...)

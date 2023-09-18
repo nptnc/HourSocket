@@ -5,6 +5,10 @@ return function(api)
         return api.optimize(v3.X),api.optimize(v3.Y),api.optimize(v3.Z)
     end
 
+    local getVector3Hard = function(v3)
+        return api.hardOptimize(v3.X),api.hardOptimize(v3.Y),api.hardOptimize(v3.Z)
+    end
+
     local entityDatabase = {}
 
     local globalEntityId = 0
@@ -61,8 +65,8 @@ return function(api)
                 local realEntityId = hook.call(...) -- spawn the enemy
                 local entity = getrenv()._G.Entities[realEntityId]
 
-                local x,y,z = getVector3(entity.RootPart.Position)
-                local xr,yr,zr = getVector3(entity.RootPart.Rotation)
+                local x,y,z = getVector3Hard(entity.RootPart.Position)
+                local xr,yr,zr = getVector3Hard(entity.RootPart.Rotation)
 
                 -- lets stop from creating infinite loops of players
                 if not args.IsPlayer then
@@ -194,12 +198,12 @@ return function(api)
 
             local message = api.prepareMessage("updateEntityCF",
                 entityId,
-                api.optimize(pos.X),
-                api.optimize(pos.Y),
-                api.optimize(pos.Z),
-                api.optimize(rot.X),
-                api.optimize(rot.Y),
-                api.optimize(rot.Z)
+                api.hardOptimize(pos.X),
+                api.hardOptimize(pos.Y),
+                api.hardOptimize(pos.Z),
+                api.hardOptimize(rot.X),
+                api.hardOptimize(rot.Y),
+                api.hardOptimize(rot.Z)
             )
             api.sendToServer(message)
         end
