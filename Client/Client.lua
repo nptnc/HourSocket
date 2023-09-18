@@ -342,7 +342,7 @@ registerMessage(9,function(entityid,index,value)
     apiCall("networkEntityStateUpdate",entityid,index,value)
 end)
 
-local connectToServer = function()
+main.tryToConnect = function()
     local socket = Krnl.WebSocket.connect(`http://{ip}:{port}`)
     main.socket = socket
 

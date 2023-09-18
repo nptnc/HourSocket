@@ -136,7 +136,7 @@ return function(api)
             })
         end
         
-        local createButton = function(label)
+        local createButton = function(label,callback)
             local newFrame = createInstance("Frame",{
                 Size = UDim2.new(0,0,0.06,0),
                 Parent = frame,
@@ -161,12 +161,17 @@ return function(api)
                 Text = label,
                 TextXAlignment = Enum.TextXAlignment.Center,
             })
+            box.MouseButton1Click:Connect(function()
+                callback()
+            end)
         end
         
         createLabel("you can press [ to hide this ui")
         createTextbox("ip","salamithecat.com")
         createTextbox("port","7171")
-        createButton("connect")
+        createButton("connect",function()
+            api.tryToConnect()
+        end)
         --createCheckbox("hi")
     end
 
