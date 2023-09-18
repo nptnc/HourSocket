@@ -25,7 +25,7 @@ return function(api)
             end
 
             if input.KeyCode == Enum.KeyCode.LeftBracket then
-                isActive = false
+                isActive = not isActive
             end
         end)
         
