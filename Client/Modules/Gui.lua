@@ -125,6 +125,10 @@ return function(api)
         packetsOut = sentOut
     end
 
+    module.resetPacketInformation = function()
+        packetOutFrame.TextLabel.Text = `packets out: {packetsOut}/s{api.isThrottling and " THROTTLING" or ""}`
+    end
+
     module.createNotification = function(text)
         createNotification(text)
     end
@@ -134,8 +138,6 @@ return function(api)
         if tick() - start > 1 then
             start = tick()
             packetInFrame.TextLabel.Text = `packets in: {packetsIn}/s`
-            packetOutFrame.TextLabel.Text = `packets out: {packetsOut}/s{api.isThrottling and " THROTTLING" or ""}`
-            packetsOut = 0
             packetsIn = 0
         end
     end

@@ -102,13 +102,14 @@ end
 local packetsSentOut = 0
 main.isThrottling = false
 main.sendToServer = function(...)
-    apiCall("sentMessage", packetsSentOut, packetsSentOut <= 60 and true or false)
     if packetsSentOut > 60 then
         main.isThrottling = true
+        apiCall("sentMessage", packetsSentOut, packetsSentOut <= 60 and true or false)
         return
     end
     packetsSentOut += 1
     main.socket:Send(...)
+    apiCall("sentMessage", packetsSentOut, packetsSentOut <= 60 and true or false)
 end
 
 main.createHook = function(old,replace)
@@ -465,6 +466,7 @@ table.insert(connections,rs.Heartbeat:Connect(function(dt)
     if tick() - sinceLastWipe > 1 then
         sinceLastWipe = tick()
         packetsSentOut = 0
+        apiCall("resetPacketInformation")
     end
 
     if main.getMe() == nil then
