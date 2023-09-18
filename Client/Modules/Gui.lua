@@ -109,7 +109,9 @@ return function(api)
         if userid ~= api.player.UserId then
             createNotification(`{data.serverData.username} has joined the server`)
         end
-        corresponding[userid] = createFrame(data.serverData.username,leftbar)
+        local frame = createFrame(data.serverData.username,leftbar)
+        frame.BackgroundColor3 = data.serverData.isHost == false and Color3.fromRGB(0,0,0) or Color3.fromRGB(255, 253, 123)
+        corresponding[userid] = frame
     end
 
     module.playerDisconnected = function(userid,data)
