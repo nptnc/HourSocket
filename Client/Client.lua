@@ -342,6 +342,8 @@ registerMessage("animationChange",function(userid,arg1,animationname)
     userid = tonumber(userid)
     arg1 = tonumber(arg1)
 
+    print(`received animation play {animationname}`)
+
     local messageplayer = main.registeredPlayers[userid]
     local entity = messageplayer.entity
     entity.SwitchAnimation(entity,arg1,animationname)
