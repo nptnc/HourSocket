@@ -62,6 +62,7 @@ return function(api)
 
                 -- lets stop from creating infinite loops of players
                 if not args.IsPlayer then
+                    entity.NetworkID = globalEntityId
                     reg(entity,realEntityId,args.Name,x,y,z,xr,yr,zr)
                 end
 
@@ -96,17 +97,25 @@ return function(api)
     end
 
     local sinceLastUpdate = tick()
-
     local warnedAboutNoCFrame = {}
-
     local lastEntityStuff = {}
+
+    local findEntityByNetworkId = function(id)
+        for id,entity in getrenv()._G.Entities do
+            if entity.NetworkID ~= id then
+                continue
+            end
+            return id
+        end
+    end
+
     module.update = function()
         -- non host
         for entityId,entityData in api.getMe().serverData.isHost and {} or entityDatabase do
             local realId = entityData.realId
             local entity = getrenv()._G.Entities[realId]
 
-            if entity == nil then
+            if findEntityByNetworkId(entityData.networkId) == nil then
                 warn("unregistered entity non host")
                 entityDatabase[entityId] = nil
                 continue
@@ -138,8 +147,8 @@ return function(api)
             local realId = entityData.realId
             local entity = getrenv()._G.Entities[realId]
 
-            if entity == nil then
-                warn("unregistered entity host")
+            if findEntityByNetworkId(entityData.networkId) == nil then
+                warn("unregistered entity host loop 1")
                 entityDatabase[entityId] = nil
                 continue
             end
@@ -204,7 +213,9 @@ return function(api)
             cframe = CFrame.new(posx,posy,posz),
             realId = realEntityId,
             health = getrenv()._G.Entities[realEntityId].Resources.Health or 100,
+            networkId = entityId, 
         }
+        getrenv()._G.Entities[realEntityId].NetworkID = entityId
     end
 
     module.networkEntityStateUpdate = function(entityid,index,value)
