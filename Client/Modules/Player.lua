@@ -65,7 +65,11 @@ return function(api)
         lastUpdated = {pos,rot}
     end
 
+    local knockbackPreviousValues = {}
     module.update = function()
+        if not api.connected then
+            return
+        end
         --[[if getrenv()._G.GameState ~= "Combat" then
             -- oh shit.
             for userid,player in api.registeredPlayers do
@@ -73,6 +77,23 @@ return function(api)
                 player.entity = nil
             end
         end--]]
+
+        -- to make hellion shift, e, right click to work we must sync knockback over the network, i've only tested hellion this could add support to others though.
+        local myEntity = getrenv()._G.Entities[1]
+        if myEntity then 
+            for knockbackIndex,knockbackData in myEntity.Knockback do
+                if knockbackPreviousValues[knockbackIndex] and knockbackPreviousValues[knockbackIndex] ~= knockbackData then
+                    local message = api.prepareMessage("updateKnockback",
+                        knockbackIndex,
+                        api.optimize(knockbackData.Knockback.X),
+                        api.optimize(knockbackData.Knockback.Y),
+                        api.optimize(knockbackData.Knockback.Z)
+                    )
+                    api.sendToServer(message)
+                end
+                knockbackPreviousValues[knockbackIndex] = knockbackData
+            end
+        end
         
         for userid,playerdata in api.registeredPlayers do
             if userid == api.player.UserId then

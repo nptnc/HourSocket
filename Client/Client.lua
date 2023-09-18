@@ -30,6 +30,7 @@ local messageIds = {
     registerPlayer = 1,
     updatePlayer = 2,
     updateState = 3,
+    updateKnockback = 4,
     registerEntity = 5,
     updateEntityCF = 6,
     animationChange = 8,
@@ -295,25 +296,18 @@ registerMessage(3,function(userid,key,value)
     end
 end)
 
-registerMessage(4,function(userid,attackInformationType,action,arg1,arg2)
+registerMessage(4,function(userid,knockbackIndex,x,y,z)
     userid = tonumber(userid)
-    attackInformationType = tonumber(attackInformationType)
-    arg1 = findOutVariable(arg1)
-    arg2 = findOutVariable(arg2)
+    knockbackIndex = tonumber(knockbackIndex)
+    x = tonumber(x)
+    y = tonumber(y)
+    z = tonumber(z)
 
-    if not main.registeredPlayers[userid] then
-        warn(`no userid ({userid}) is not a userid`)
-        return
-    end
-
-    if attackInformationType == 1 then
-        arg1 = http:JSONDecode(arg1)
-    end
-
-    main.registeredPlayers[userid].entity.ActionFunctions[action]({
-        arg1,
-        arg2,
-    })
+    local messageplayer = main.registeredPlayers[userid]
+    local entityId = getEntityIdByEntity(messageplayer.entity)
+    local entity = getrenv()._G.Entities[entityId]
+    entity.Knockback[knockbackIndex].Knockback = Vector3.new(x,y,z)
+    print("receiving networked knockback for player entity")
 end)
 
 registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
