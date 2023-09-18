@@ -227,7 +227,7 @@ updateEntityPosition()
 
 @createPacket(7)
 async def updateWorldState(ws, userid: int, newstate: str):
-    if not data['players'][userid]['isHost']:
+    if not data['world']['players'][userid]['isHost']:
         logger.warning(f"{userid} is not allowed to update the world state!")
         return
     data['world'].update({
