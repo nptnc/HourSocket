@@ -169,10 +169,10 @@ return function(api)
                     entity.Resources.Health
                 )
                 api.sendToServer(message)
-                print("updating entity health")
+                print("updating entity health, guh hopefully this doesnt spam the server")
             end
 
-            lastEntityStuff[entityId]["health"] = entity.Resources.Health
+            lastEntityStuff[entityId].health = entity.Resources.Health
         end
 
         local networkEntities = api.len(entityDatabase)
