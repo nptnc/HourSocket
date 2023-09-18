@@ -11,13 +11,13 @@ return function(api)
     local reg = function(entity,realId,entitymodelid,x,y,z,xr,yr,zr)
         globalEntityId += 1
 
+        getrenv()._G.Entities[realId].NetworkID = globalEntityId
+
         entityDatabase[globalEntityId] = {
             cframe = CFrame.new(x,y,z) * CFrame.Angles(math.rad(xr),math.rad(yr),math.rad(zr)),
             realId = realId,
             networkId = globalEntityId,
         }
-
-        getrenv()._G.Entities[realId].NetworkID = globalEntityId
 
         local message = api.prepareMessage("registerEntity",globalEntityId,entitymodelid,entity.DamageTeam,entity.IsBoss or false,x,y,z,xr,yr,zr)
         api.sendToServer(message)
@@ -103,9 +103,9 @@ return function(api)
     local warnedAboutNoCFrame = {}
     local lastEntityStuff = {}
 
-    local findEntityByNetworkId = function(id)
+    local findEntityByNetworkId = function(networkId)
         for id,entity in getrenv()._G.Entities do
-            if entity.NetworkID ~= id then
+            if entity.NetworkID ~= networkId then
                 continue
             end
             return id
