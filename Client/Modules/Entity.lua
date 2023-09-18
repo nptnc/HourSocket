@@ -211,6 +211,9 @@ return function(api)
 
     module.networkEntityUpdate = function(entityid,posx,posy,posz,rotx,roty,rotz)
         local entityData = entityDatabase[entityid]
+        if not entityData then
+            return
+        end
         entityData.cframe = CFrame.new(posx,posy,posz) * CFrame.Angles(math.rad(rotx),math.rad(roty),math.rad(rotz))
     end
 
