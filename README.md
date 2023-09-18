@@ -1,8 +1,6 @@
 
-# ⚠️ HourSocket is currently patched! 
-Byfron has been released to both the normal Roblox client and the Microsoft Store version of Roblox.  
-This means that if you DO end up injecting in to Roblox you are at risk of being banned by Roblox, most executors will not let you though.
-
+# Hour Socket
+This requires the Microsoft Store Roblox Version 592.586.0 to be downloaded, any higher and [Byfron / Hyperion](https://devforum.roblox.com/t/welcoming-byfron-to-roblox/2018233) will be installed, you can install 592.586.0 [here]().
 
 # HourSocket <sub>a multiplayer mod for [Hours](https://www.roblox.com/games/5732973455/HOURS)</sub>
 
@@ -10,7 +8,6 @@ This means that if you DO end up injecting in to Roblox you are at risk of being
 
 Server programmed by [PeeblyWeeb](https://discord.com/users/904032786854346795)  
 Client programmed by [nptnc](https://discord.com/users/397930609894490122)
-  
 
 ## How do I play?
 ~~If you're stupid, here's a video tutorial on how to play on a [public server](https://google.com/) or [private server](https://google.com/).~~
