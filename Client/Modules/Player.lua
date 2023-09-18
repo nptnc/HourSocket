@@ -82,7 +82,7 @@ return function(api)
         local myEntity = getrenv()._G.Entities[1]
         if myEntity then 
             for knockbackIndex,knockbackData in myEntity.Knockback do
-                if knockbackPreviousValues[knockbackIndex] and knockbackPreviousValues[knockbackIndex] ~= knockbackData then
+                if knockbackPreviousValues[knockbackIndex] and knockbackPreviousValues[knockbackIndex].Knockback ~= knockbackData.Knockback then
                     local message = api.prepareMessage("updateKnockback",
                         knockbackIndex,
                         api.optimize(knockbackData.Knockback.X),
@@ -90,6 +90,7 @@ return function(api)
                         api.optimize(knockbackData.Knockback.Z)
                     )
                     api.sendToServer(message)
+                    print("networking knockback")
                 end
                 knockbackPreviousValues[knockbackIndex] = knockbackData
             end
