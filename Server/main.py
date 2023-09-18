@@ -227,7 +227,7 @@ updateEntityPosition()
 
 @createPacket(7)
 async def updateWorldState(ws, userid: int, newstate: str):
-    if not data['world']['players'][userid]['isHost']:
+    if not data['players'][userid]['isHost']:
         logger.warning(f"{userid} is not allowed to update the world state!")
         return
     data['world'].update({
@@ -250,14 +250,14 @@ async def updateEntityState(ws, userid: int, entityid: int, key: str, value: any
     if not data['players'][userid]['isHost']:
         logger.warning(f"{userid} is not allowed to update entity states!")
         return
-    data['entities'][entityid].update({
+    data['world']['entities'][entityid].update({
         key: value,
     })
     await send_all_ws(create_message(
         9, entityid, key, value
     ))
     if key == "health" and value <= 0:
-        del data['entities'][entityid]
+        del data['world']['entities'][entityid]
         logger.debug(f"Deleted entity {entityid} because it fucking died")
 
 updateEntityState()
