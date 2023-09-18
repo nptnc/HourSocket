@@ -53,7 +53,7 @@ return function(api)
             return
         end
 
-        if (lastNetworkedRotation - pos).Magnitude < 1 or (lastNetworkedPosition - pos).Magnitude < 1 then
+        if (lastNetworkedRotation - pos).Magnitude < 1 and (lastNetworkedPosition - pos).Magnitude < 1 then
             return
         end
         
