@@ -186,7 +186,7 @@ return function(api)
         local ip = createTextbox("ip","salamithecat.com")
         local port = createTextbox("port","7171")
         createButton("connect",function()
-            api.tryToConnect("http://{ip}:{port}")
+            api.tryToConnect("http://{ip.get()}:{port.get()}")
         end)
         --createCheckbox("hi")
     end
