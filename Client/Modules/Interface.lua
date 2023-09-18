@@ -6,7 +6,11 @@ return function(api)
     module.once = function()
         local isActive = true
         
+        local ui = Instance.new("ScreenGui")
+        ui.Parent = game:GetService("CoreGui")
+
         rs.Heartbeat:Connect(function(dt)
+            ui.Enabled = isActive
             if isActive then
                 uis.MouseBehavior = Enum.MouseBehavior.Default
             elseif not isActive and getrenv()._G.GameState == "Combat" then
@@ -14,8 +18,15 @@ return function(api)
             end
         end)
         
-        local ui = Instance.new("ScreenGui")
-        ui.Parent = game:GetService("CoreGui")
+        uis.InputBegan:Connect(function(input, gameProcessedEvent)
+            if gameProcessedEvent then
+                return
+            end
+
+            if input.KeyCode == Enum.KeyCode.LeftBracket then
+                isActive = false
+            end
+        end)
         
         local createInstance = function(Type,data)
             local object = Instance.new(Type)
