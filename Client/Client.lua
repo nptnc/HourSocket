@@ -6,9 +6,6 @@ local player = game.Players.LocalPlayer
 local char = player.Character
 char.Archivable = true
 
-local ip = "salamithecat.com"
-local port = "7171"
-
 local fps = 50
 local sinceLastFPS = 0
 local seperator = ":::" -- dont change, this has to be the same on the server and the client otherwise one or the other wont receive information.
@@ -342,8 +339,8 @@ registerMessage(9,function(entityid,index,value)
     apiCall("networkEntityStateUpdate",entityid,index,value)
 end)
 
-main.tryToConnect = function()
-    local socket = Krnl.WebSocket.connect(`http://{ip}:{port}`)
+main.tryToConnect = function(ip)
+    local socket = Krnl.WebSocket.connect(ip)
     main.socket = socket
 
     socket.OnMessage:Connect(function(msg)

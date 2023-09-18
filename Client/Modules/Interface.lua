@@ -175,13 +175,18 @@ return function(api)
             box.MouseButton1Click:Connect(function()
                 callback()
             end)
+            return {
+                get = function()
+                    return box.Text or box.PlaceholderText
+                end
+            }
         end
         
         createLabel("you can press [ to hide this ui")
-        createTextbox("ip","salamithecat.com")
-        createTextbox("port","7171")
+        local ip = createTextbox("ip","salamithecat.com")
+        local port = createTextbox("port","7171")
         createButton("connect",function()
-            api.tryToConnect()
+            api.tryToConnect("http://{ip}:{port}")
         end)
         --createCheckbox("hi")
     end
