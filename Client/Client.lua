@@ -6,7 +6,7 @@ local player = game.Players.LocalPlayer
 local char = player.Character
 char.Archivable = true
 
-local ip = "127.0.0.1"
+local ip = "salamithecat.com"
 local port = "7171"
 
 local fps = 50
