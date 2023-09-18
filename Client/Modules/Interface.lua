@@ -121,6 +121,11 @@ return function(api)
                 Text = defaultText,
                 TextXAlignment = Enum.TextXAlignment.Left
             })
+            return {
+                get = function()
+                    return box.Text or box.PlaceholderText
+                end
+            }
         end
         
         local createLabel = function(label)
@@ -176,11 +181,6 @@ return function(api)
             box.MouseButton1Click:Connect(function()
                 callback()
             end)
-            return {
-                get = function()
-                    return box.Text or box.PlaceholderText
-                end
-            }
         end
         
         createLabel("you can press [ to hide this ui")
