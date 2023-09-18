@@ -102,6 +102,7 @@ end
 local packetsSentOut = 0
 main.isThrottling = false
 main.sendToServer = function(...)
+    apiCall("sentMessage", packetsSentOut, packetsSentOut <= 60 and true or false)
     if packetsSentOut > 60 then
         main.isThrottling = true
         return
@@ -141,8 +142,6 @@ main.destroyPlayerEntity = function(userid)
 end
 
 main.prepareMessage = function(messageId,...)
-    apiCall("sentMessage")
-
     messageId = messageIds[messageId] or messageId
     local endString = `{messageId}{seperator}{player.UserId}{seperator}`
     if #{...} > 0 then
