@@ -187,6 +187,9 @@ return function(api)
         local ip = createTextbox("ip","salamithecat.com")
         local port = createTextbox("port","7171")
         createButton("connect",function()
+            if api.connected then
+                return
+            end
             api.tryToConnect(`http://{ip.get()}:{port.get()}`)
         end)
         createButton("disconnect",function()
