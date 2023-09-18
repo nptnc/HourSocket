@@ -464,6 +464,7 @@ table.insert(connections,rs.Heartbeat:Connect(function(dt)
     if tick() - sinceLastWipe > 1 then
         sinceLastWipe = tick()
         packetsSentOut = 0
+        apiCall("sentMessage", packetsSentOut, false)
         apiCall("resetPacketInformation")
     end
 
