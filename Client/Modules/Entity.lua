@@ -157,6 +157,7 @@ return function(api)
                     entity.Resources.Health
                 )
                 api.sendToServer(message)
+                print("updating entity health")
             end
 
             lastEntityStuff[entityId]["health"] = entity.Resources.Health
