@@ -5,6 +5,12 @@ import websockets.server as server
 import datetime
 from websockets import exceptions
 
+
+import subprocess
+import re
+
+
+
 class CustomFormatter(logging.Formatter):
     grey = "\x1b[38;20m"
     yellow = "\x1b[33;20m"
@@ -41,7 +47,8 @@ start_time = datetime.datetime.now()
 
 data = {
     "statistics": {
-        "total_packets_received": 0,
+        "Packets received": 0,
+        "Commit hash as of start": "i nunno" 
     },
     "players": {},
     "world": {
@@ -49,6 +56,10 @@ data = {
         "state": "Start"
     }
 }
+
+process = subprocess.Popen(["git", "ls-remote", 'https://github.com/nptnc/HourSocket.git'], stdout=subprocess.PIPE)
+stdout, stderr = process.communicate()
+data['statistics']["Commit hash as of start"] = re.split(r'\t+', stdout.decode('ascii'))[0][:7]
 
 websockets = {}
 webserver_websockets = []
@@ -266,7 +277,7 @@ async def handler(ws: server.WebSocketServerProtocol):
     while True:
         try:
             message = await ws.recv()
-            data['statistics']['total_packets_received'] += 1
+            data['statistics']["Packets received"] += 1
         except (exceptions.ConnectionClosedOK, exceptions.ConnectionClosedError, exceptions.ConnectionClosed, ConnectionResetError):
             socket_id = await ws_to_userid(ws)
             if socket_id is None:
