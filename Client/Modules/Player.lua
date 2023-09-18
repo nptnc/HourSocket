@@ -58,12 +58,12 @@ return function(api)
         end
         
         local message = api.prepareMessage("updatePlayer",
-            api.optimize(pos.X),
-            api.optimize(pos.Y),
-            api.optimize(pos.Z),
-            api.optimize(rot.X),
-            api.optimize(rot.Y),
-            api.optimize(rot.Z)
+            api.hardOptimize(pos.X),
+            api.hardOptimize(pos.Y),
+            api.hardOptimize(pos.Z),
+            api.hardOptimize(rot.X),
+            api.hardOptimize(rot.Y),
+            api.hardOptimize(rot.Z)
         )
 
         api.sendToServer(message)
