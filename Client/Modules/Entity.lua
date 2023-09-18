@@ -16,7 +16,7 @@ return function(api)
             realId = realId,
         }
         local message = api.prepareMessage("registerEntity",globalEntityId,entitymodelid,entity.DamageTeam,entity.IsBoss or false,x,y,z,xr,yr,zr)
-        api.socket:Send(message)
+        api.sendToServer(message)
         print(`registering entity {realId} as {globalEntityId} on network`)
     end
 
@@ -156,7 +156,7 @@ return function(api)
                     "health",
                     entity.Resources.Health
                 )
-                api.socket:Send(message)
+                api.sendToServer(message)
             end
 
             lastEntityStuff[entityId]["health"] = entity.Resources.Health
@@ -194,7 +194,7 @@ return function(api)
                 api.optimize(rot.Y),
                 api.optimize(rot.Z)
             )
-            api.socket:Send(message)
+            api.sendToServer(message)
         end
     end
 

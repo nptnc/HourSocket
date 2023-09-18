@@ -10,7 +10,7 @@ return function(api)
             -- we dont really need idle or run to be networked since they are already handled by the games ai when we create a player.
             if not table.find(blacklistedAnimations,args[3]) then
                 local message = api.prepareMessage("animationChange",args[2],args[3])
-                api.socket:Send(message)
+                api.sendToServer(message)
             end
             return hook.call(...)
         end)
@@ -22,19 +22,19 @@ return function(api)
         end
         
         local message = api.prepareMessage("updateState","dead",false)
-        api.socket:Send(message)
+        api.sendToServer(message)
 
         hook2()
     end
 
     module.playerDied = function()
         local message = api.prepareMessage("updateState","dead",true)
-        api.socket:Send(message)
+        api.sendToServer(message)
     end
 
     module.connected = function()
         local message = api.prepareMessage("registerPlayer",api.player.Name,getrenv()._G.Class)
-        api.socket:Send(message)
+        api.sendToServer(message)
 
         if getrenv()._G.Entities[1] then
             hook2()
@@ -60,7 +60,7 @@ return function(api)
             api.optimize(rot.Z)
         )
 
-        api.socket:Send(message)
+        api.sendToServer(message)
 
         lastUpdated = {pos,rot}
     end

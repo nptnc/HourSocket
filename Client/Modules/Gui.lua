@@ -134,7 +134,7 @@ return function(api)
         if tick() - start > 1 then
             start = tick()
             packetInFrame.TextLabel.Text = `packets in: {packetsIn}/s`
-            packetOutFrame.TextLabel.Text = `packets out: {packetsOut}/s`
+            packetOutFrame.TextLabel.Text = `packets out: {packetsOut}/s {api.isThrottling and "THROTTLING"}`
             packetsOut = 0
             packetsIn = 0
         end

@@ -99,6 +99,17 @@ main.optimize = function(n)
     return math.round(n * 50) / 50
 end
 
+local packetsSentOut = 0
+main.isThrottling = false
+main.sendToServer = function(...)
+    if packetsSentOut > 60 then
+        main.isThrottling = true
+        return
+    end
+    packetsSentOut += 1
+    main.socket:Send(...)
+end
+
 main.createHook = function(old,replace)
     local meta = {}
     meta.old = old
@@ -443,12 +454,20 @@ if getrenv()._G.Entities[1] ~= nil then
     hookToMyEntity()
 end
 
+local sinceLastWipe = tick()
+
 local lastMyEntity = getrenv()._G.Entities[1]
 local lastClass = getrenv()._G.Class
 table.insert(connections,rs.Heartbeat:Connect(function(dt)
     if not main.connected then
         return
     end
+
+    if tick() - sinceLastWipe > 1 then
+        sinceLastWipe = tick()
+        packetsSentOut = 0
+    end
+
     if main.getMe() == nil then
         return
     end
@@ -462,7 +481,7 @@ table.insert(connections,rs.Heartbeat:Connect(function(dt)
     if lastClass ~= getrenv()._G.Class then
         -- update class lol
         local message = main.prepareMessage("updateState","class",getrenv()._G.Class)
-        main.socket:Send(message)
+        main.sendToServer(message)
     end
 
     lastMyEntity = getrenv()._G.Entities[1]
