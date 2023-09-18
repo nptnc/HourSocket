@@ -14,14 +14,13 @@ local sinceLastFPS = 0
 local seperator = ":::" -- dont change, this has to be the same on the server and the client otherwise one or the other wont receive information.
 local connections = {}
 
-local socket = Krnl.WebSocket.connect(`http://{ip}:{port}`)
-
 local user = "nptnc"
 local branch = "main"
 local github = `https://raw.githubusercontent.com/{user}}/HourSocket/{branch}/Client`
 
 local modules = {
     "Gui",
+    "Interface",
     "Entity",
     "MultiplayerQOL",
     "Player",
@@ -43,7 +42,6 @@ local messageIds = {
 }
 
 main.player = player
-main.socket = socket
 main.registeredPlayers = {}
 main.globals = {}
 
@@ -344,30 +342,38 @@ registerMessage(9,function(entityid,index,value)
     apiCall("networkEntityStateUpdate",entityid,index,value)
 end)
 
-socket.OnMessage:Connect(function(msg)
-    local args = string.split(msg,seperator)
-    --warn(`server sent {msg}`)
-    apiCall("receivedMessage")
-    local messageId = tonumber(args[1])
-    local newArgs = {}
-    for index,value in args do
-        if index == 1 then
-            continue
-        end
-        newArgs[index-1] = value
-    end
-    if not messages[messageId] then
-        warn(`message id {messageId} does not exist.`)
-        return
-    end
-    messages[messageId](table.unpack(newArgs))
-end)
+local connectToServer = function()
+    local socket = Krnl.WebSocket.connect(`http://{ip}:{port}`)
+    main.socket = socket
 
-socket.OnClose:Connect(function()
-    warn("Connection was closed")
-end)
+    socket.OnMessage:Connect(function(msg)
+        local args = string.split(msg,seperator)
+        --warn(`server sent {msg}`)
+        apiCall("receivedMessage")
+        local messageId = tonumber(args[1])
+        local newArgs = {}
+        for index,value in args do
+            if index == 1 then
+                continue
+            end
+            newArgs[index-1] = value
+        end
+        if not messages[messageId] then
+            warn(`message id {messageId} does not exist.`)
+            return
+        end
+        messages[messageId](table.unpack(newArgs))
+    end)
+
+    socket.OnClose:Connect(function()
+        warn("Connection was closed")
+    end)
+end
 
 workspace.ChildRemoved:Connect(function(child)
+    if not main.connected then
+        return
+    end
     if main.registeredPlayers[tonumber(child.Name)] == nil then
         return
     end
