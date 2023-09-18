@@ -354,7 +354,9 @@ end)
 main.tryToConnect = function(ip)
     local socket = Krnl.WebSocket.connect(ip)
     main.socket = socket
+    main.connected = true
 
+    apiCall("connected")
     apiCall("createNotification",`connected to server {ip}`)
 
     socket.OnMessage:Connect(function(msg)
@@ -379,8 +381,6 @@ main.tryToConnect = function(ip)
     socket.OnClose:Connect(function()
         warn("Connection was closed")
     end)
-
-    main.connected = true
 end
 
 workspace.ChildRemoved:Connect(function(child)

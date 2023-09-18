@@ -48,7 +48,7 @@ return function(api)
         api.socket:Send(message)
     end
 
-    module.once = function()
+    module.connected = function()
         local message = api.prepareMessage("registerPlayer",api.player.Name,getrenv()._G.Class)
         api.socket:Send(message)
     end
