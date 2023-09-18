@@ -82,6 +82,11 @@ main.createPlayer = function(playerdata)
     entity.specialId = tonumber(playerdata.serverData.id)
     entity.Character.Name = playerdata.serverData.id
     entity.Resources.Health = 10000
+
+    --[[entity.Interrupt = function()
+        
+    end--]]
+
     if playerdata.cframe then
         entity.RootPart.CFrame = playerdata.cframe
     end
@@ -165,6 +170,8 @@ local findOutVariable = function(var)
         newVar = false
     elseif newVar == "true" then
         newVar = true
+    elseif tonumber(newVar) then
+        newVar = tonumber(newVar)
     else
         newVar = var
     end
@@ -270,15 +277,21 @@ registerMessage(3,function(userid,key,value)
     end
 end)
 
-registerMessage(4,function(userid,action)
+registerMessage(4,function(userid,attackInformationType,action,arg1,arg2)
     userid = tonumber(userid)
+    attackInformationType = tonumber(attackInformationType)
+    arg1 = findOutVariable(arg1)
+    arg2 = findOutVariable(arg2)
 
     if not main.registeredPlayers[userid] then
         warn(`no userid ({userid}) is not a userid`)
         return
     end
 
-    main.registeredPlayers[userid].entity.ActionFunctions[action]()
+    main.registeredPlayers[userid].entity.ActionFunctions[action]({
+        arg1,
+        arg2,
+    })
 end)
 
 registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)

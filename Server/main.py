@@ -179,9 +179,9 @@ async def updatePlayerState(ws, userid: int, key: str, value: any):
 updatePlayerState()
 
 @createPacket(4)
-async def doAttack(ws, userid: int, attack: str, arg1: float = None, arg2: float = None):
+async def doAttack(ws, userid: int, attackInformationType: int, attack: str, arg1: any = None, arg2: any = None):
     await send_all_ws(create_message(
-        4, userid, attack, arg1, arg2 # we dont know what arg1 or 2 is ☠️💀☠️💀☠️💀
+        4, userid, attackInformationType, attack, arg1, arg2 # we dont know what arg1 or 2 is ☠️💀☠️💀☠️💀
     ), except_for=[userid])
 doAttack()
 
