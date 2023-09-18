@@ -1,17 +1,8 @@
 return function(api)
     local module = {}
 
-    module.playerRespawned = function()
-        if not api.connected then
-            return
-        end
-        
-        local message = api.prepareMessage("updateState","dead",false)
-        api.socket:Send(message)
-
+    local hook2 = function()
         local entities = getrenv()._G.Entities
-
-        -- old system
         entities[1].SwitchAnimation = api.createHook(entities[1].SwitchAnimation,function(hook,...)
             local args = {...}
             local blacklistedAnimations = {"Idle","Run"}
@@ -25,6 +16,17 @@ return function(api)
         end)
     end
 
+    module.playerRespawned = function()
+        if not api.connected then
+            return
+        end
+        
+        local message = api.prepareMessage("updateState","dead",false)
+        api.socket:Send(message)
+
+        hook2()
+    end
+
     module.playerDied = function()
         local message = api.prepareMessage("updateState","dead",true)
         api.socket:Send(message)
@@ -33,6 +35,10 @@ return function(api)
     module.connected = function()
         local message = api.prepareMessage("registerPlayer",api.player.Name,getrenv()._G.Class)
         api.socket:Send(message)
+
+        if getrenv()._G.Entities[1] then
+            hook2()
+        end
     end
     
     local lastUpdated = {Vector3.zero,Vector3.zero}
