@@ -109,7 +109,7 @@ return function(api)
 
     local findEntityByNetworkId = function(networkId)
         for id,entity in getrenv()._G.Entities do
-            if entity.NetworkID ~= networkId then
+            if entity.NetworkID == nil or entity.NetworkID ~= networkId then
                 continue
             end
             return id
@@ -166,7 +166,6 @@ return function(api)
                 }
             end
 
-            print(entity.Resources.Health,lastEntityStuff[entityId].health)
             if entity.Resources.Health ~= lastEntityStuff[entityId].health then
                 local message = api.prepareMessage("updateEntityState",
                     entityId,
