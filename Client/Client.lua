@@ -296,6 +296,10 @@ registerMessage(4,function(userid,attackInformationType,action,arg1,arg2)
         return
     end
 
+    if attackInformationType == 1 then
+        arg1 = http:JSONDecode(arg1)
+    end
+
     main.registeredPlayers[userid].entity.ActionFunctions[action]({
         arg1,
         arg2,
