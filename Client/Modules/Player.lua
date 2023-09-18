@@ -2,6 +2,10 @@ return function(api)
     local module = {}
 
     module.playerRespawned = function()
+        if not api.connected then
+            return
+        end
+        
         local message = api.prepareMessage("updateState","dead",false)
         api.socket:Send(message)
 

@@ -1,6 +1,7 @@
-local rs = game:GetService("RunService")
-local uis = game:GetService("UserInputService")
 return function(api)
+    local rs = game:GetService("RunService")
+    local uis = game:GetService("UserInputService")
+
     local module = {}
 
     module.once = function()

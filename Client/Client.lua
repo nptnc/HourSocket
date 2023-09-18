@@ -11,9 +11,8 @@ local sinceLastFPS = 0
 local seperator = ":::" -- dont change, this has to be the same on the server and the client otherwise one or the other wont receive information.
 local connections = {}
 
-local user = "nptnc"
 local branch = "main"
-local github = `https://raw.githubusercontent.com/{user}}/HourSocket/{branch}/Client`
+local github = `https://raw.githubusercontent.com/nptnc/HourSocket/{branch}/Client`
 
 local modules = {
     "Gui",
@@ -154,11 +153,15 @@ end
 
 local hasLoadedModules = false 
 for index,module in modules do
-    local success = pcall(function()
-        requiredModules[module] = loadstring(game:HttpGet(`{github}/Modules/{module}.lua`))()(main)
+    local success,error = pcall(function()
+        local response = loadstring(request({
+            Url = `{github}/Modules/{module}.lua`,
+            Method = 'GET', -- <optional> | GET/POST/HEAD, etc.
+        }).Body)()
+        requiredModules[module] = response(main)
     end)
     if not success then
-        warn("caught an error trying to fetch module")
+        warn(`caught an error trying to fetch module\n{error}`)
     end
     if index == #modules then
         hasLoadedModules = true
