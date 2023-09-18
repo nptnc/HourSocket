@@ -30,7 +30,6 @@ local messageIds = {
     registerPlayer = 1,
     updatePlayer = 2,
     updateState = 3,
-    doAttack = 4,
     registerEntity = 5,
     updateEntityCF = 6,
     animationChange = 8,

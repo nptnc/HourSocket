@@ -12,35 +12,17 @@ return function(api)
         local entities = getrenv()._G.Entities
 
         -- old system
-        [[--entities[1].SwitchAnimation = api.createHook(entities[1].SwitchAnimation,function(hook,...)
+        entities[1].SwitchAnimation = api.createHook(entities[1].SwitchAnimation,function(hook,...)
             local args = {...}
             local blacklistedAnimations = {"Idle","Run"}
-            
+
             -- we dont really need idle or run to be networked since they are already handled by the games ai when we create a player.
             if not table.find(blacklistedAnimations,args[3]) then
                 local message = api.prepareMessage("animationChange",args[2],args[3])
                 api.socket:Send(message)
             end
             return hook.call(...)
-        end)--]]
-
-        for actionName,actionFunction in entities[1].ActionFunctions do
-            entities[1].ActionFunctions[actionName] = api.createHook(entities[1].ActionFunctions[actionName],function(hook,...)
-                local args = {...}
-                
-                local attackInformationType = typeof(args[1]) == "table" and 1 or 2
-                local arg1 = args[1]
-                local arg2 = args[2]
-                if attackInformationType == 1 then
-                    arg1 = game:GetService("HttpService"):JSONEncode(arg1)
-                end
-
-                local message = api.prepareMessage("doAttack",attackInformationType,actionName,arg1,arg2)
-                api.socket:Send(message)
-
-                return hook.call(...)
-            end)
-        end
+        end)
     end
 
     module.playerDied = function()
