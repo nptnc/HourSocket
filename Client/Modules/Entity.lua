@@ -185,7 +185,7 @@ return function(api)
             return
         end
 
-        print(`entity update fps is {fps} {networkEntities}`)
+        --print(`entity update fps is {fps} {networkEntities}`)
         sinceLastUpdate = tick()
 
         -- host
