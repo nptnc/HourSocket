@@ -365,6 +365,8 @@ main.tryToConnect = function(ip)
     socket.OnClose:Connect(function()
         warn("Connection was closed")
     end)
+
+    main.connected = true
 end
 
 workspace.ChildRemoved:Connect(function(child)
@@ -410,6 +412,9 @@ hookToMyEntity()
 local lastMyEntity = getrenv()._G.Entities[1]
 local lastClass = getrenv()._G.Class
 table.insert(connections,rs.Heartbeat:Connect(function(dt)
+    if not main.connected then
+        return
+    end
     if main.getMe() == nil then
         return
     end
