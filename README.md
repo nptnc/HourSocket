@@ -6,8 +6,8 @@ This requires the Microsoft Store Roblox Version [592.586.0](https://mega.nz/fil
 
 [Public server statistics](http://salamithecat.com:4040) · [Trello](https://trello.com/b/e1gvvbzK/hours-multiplayer-script) · [Mod Showcase](https://www.youtube.com/watch?v=IsCv-xNTXe4)
 
-Server programmed by [PeeblyWeeb](https://discord.com/users/904032786854346795)  
-Client programmed by [nptnc](https://discord.com/users/397930609894490122)
+<img alt="Static Badge" src="https://img.shields.io/badge/server-brightgreen?style=flat-square"> programmed by [PeeblyWeeb](https://discord.com/users/904032786854346795)  
+<img alt="Static Badge" src="https://img.shields.io/badge/client-cyan?style=flat-square"> programmed by [nptnc](https://discord.com/users/397930609894490122)
 
 ## How do I play?
 ~~If you're stupid, here's a video tutorial on how to play on a [public server](https://google.com/) or [private server](https://google.com/).~~
