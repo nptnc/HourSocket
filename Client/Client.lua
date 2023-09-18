@@ -361,6 +361,7 @@ main.disconnect = function()
     for userid,_ in main.registeredPlayers do
         main.destroyPlayerEntity(userid)
     end
+    main.registeredPlayers = {}
 end
 
 main.tryToConnect = function(ip)
