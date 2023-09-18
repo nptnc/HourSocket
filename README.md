@@ -19,7 +19,7 @@ This requires the Microsoft Store Roblox Version [592.586.0](https://mega.nz/fil
 - Run `main.py` and optionally `webserver.py`
 
 ### Connecting to a server
-- Using an executor of your choice (we suggest [Synapse X](https://x.synapse.to)<sub>Patched</sub> or [krnl](https://krnl.place)<sub>Patched</sub>)
+- Using an executor of your choice (we suggest [Synapse X](https://x.synapse.to)<sub>Unavailable</sub> or [krnl](https://krnl.place))
 - Inject in to Roblox using your executor
 - Optionally set your server's IP and Port (If you aren't using a private server you can skip this step)
 - Execute the script:
