@@ -189,6 +189,9 @@ return function(api)
         createButton("connect",function()
             api.tryToConnect(`http://{ip.get()}:{port.get()}`)
         end)
+        createButton("disconnect",function()
+            api.disconnect()
+        end)
         --createCheckbox("hi")
     end
 

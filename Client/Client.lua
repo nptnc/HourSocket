@@ -351,6 +351,18 @@ registerMessage(9,function(entityid,index,value)
     apiCall("networkEntityStateUpdate",entityid,index,value)
 end)
 
+main.disconnect = function()
+    if not main.socket then
+        return
+    end
+    main.socket:close()
+    main.connected = false
+    main.socket = nil
+    for userid,_ in main.registeredPlayers do
+        main.destroyPlayerEntity(userid)
+    end
+end
+
 main.tryToConnect = function(ip)
     local socket = Krnl.WebSocket.connect(ip)
     main.socket = socket
@@ -421,7 +433,9 @@ local hookToMyEntity = function()
     end)
 end
 
-hookToMyEntity()
+if getrenv()._G.Entities[1] ~= nil then
+    hookToMyEntity()
+end
 
 local lastMyEntity = getrenv()._G.Entities[1]
 local lastClass = getrenv()._G.Class
