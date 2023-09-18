@@ -15,6 +15,9 @@ return function(api)
             cframe = CFrame.new(x,y,z) * CFrame.Angles(math.rad(xr),math.rad(yr),math.rad(zr)),
             realId = realId,
         }
+
+        getrenv()._G.Entities[realId].NetworkID = globalEntityId
+
         local message = api.prepareMessage("registerEntity",globalEntityId,entitymodelid,entity.DamageTeam,entity.IsBoss or false,x,y,z,xr,yr,zr)
         api.sendToServer(message)
         print(`registering entity {realId} as {globalEntityId} on network`)
@@ -62,7 +65,6 @@ return function(api)
 
                 -- lets stop from creating infinite loops of players
                 if not args.IsPlayer then
-                    entity.NetworkID = globalEntityId
                     reg(entity,realEntityId,args.Name,x,y,z,xr,yr,zr)
                 end
 
