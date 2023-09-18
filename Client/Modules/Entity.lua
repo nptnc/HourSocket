@@ -162,7 +162,7 @@ return function(api)
                 }
             end
 
-            if entity.Resources.Health ~= lastEntityStuff[entityId].Health then
+            if entity.Resources.Health ~= lastEntityStuff[entityId].health then
                 local message = api.prepareMessage("updateEntityState",
                     entityId,
                     "health",
