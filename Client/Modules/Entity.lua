@@ -166,6 +166,7 @@ return function(api)
                 }
             end
 
+            print(entity.Resources.Health,lastEntityStuff[entityId].health)
             if entity.Resources.Health ~= lastEntityStuff[entityId].health then
                 local message = api.prepareMessage("updateEntityState",
                     entityId,
