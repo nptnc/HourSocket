@@ -184,7 +184,7 @@ return function(api)
                 print("updating entity health, guh hopefully this doesnt spam the server")
             end
 
-            lastEntityStuff[entityId].health = entity.Resources.Health
+            lastEntityStuff[entityId].health = entityHealth
         end
 
         local networkEntities = api.len(entityDatabase)
@@ -231,7 +231,7 @@ return function(api)
             cframe = CFrame.new(posx,posy,posz),
             realId = realEntityId,
             health = getrenv()._G.Entities[realEntityId].Resources.Health or 100,
-            networkId = entityId, 
+            networkId = entityId,
         }
         getrenv()._G.Entities[realEntityId].NetworkID = entityId
     end
