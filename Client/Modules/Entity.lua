@@ -237,6 +237,7 @@ return function(api)
     end
 
     module.networkEntityStateUpdate = function(entityid,index,value)
+        print(`i have received a network entity state update and i am {api.getMe().serverData.isHost and "host" or "non host."} trying to update {index} to {value}`)
         local entityData = entityDatabase[entityid]
         entityData[index] = value
     end
