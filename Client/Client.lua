@@ -369,6 +369,7 @@ registerMessage(9,function(entityid,index,value)
 end)
 
 registerMessage(10,function(talentindex)
+    tonumber(talentindex)
     getrenv()._G.TalentChosen(talentindex,true)
 end)
 
