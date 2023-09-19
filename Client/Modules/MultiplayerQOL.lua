@@ -14,8 +14,7 @@ return function(api)
                 return hook.call(...)
             end
             local args = {...}
-            print(args[2])
-            local message = api.prepareMessage("pickTalent",args[2])
+            local message = api.prepareMessage("pickTalent",args[1])
             api.sendToServer(message)
             print("sent picked talent to server")
             return -- we return nothing and let the server know so they deem when we can choose
