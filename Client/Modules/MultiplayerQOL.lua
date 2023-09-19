@@ -20,6 +20,7 @@ return function(api)
                 print("sent picked talent to server")
                 return -- we return nothing and let the server know so they deem when we can choose
             end
+            print("received pick talent from server")
             return hook.call(...)
         end)
     end
