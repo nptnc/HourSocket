@@ -369,7 +369,7 @@ registerMessage(9,function(entityid,index,value)
 end)
 
 registerMessage(10,function(talentindex)
-    getrenv()._G.TalentChosen(talentindex)
+    getrenv()._G.TalentChosen(talentindex,true)
 end)
 
 main.disconnect = function()
