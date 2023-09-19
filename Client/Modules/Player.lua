@@ -168,6 +168,11 @@ return function(api)
             entity.Dead = playerdata.serverData.dead
             entity.TimeSpeed = 1
             entity.SpeedMultiplier = playerdata.serverData.speed
+
+            for cooldownName,cooldownData in entity.Cooldowns do
+                cooldownData.Charges = 99
+                cooldownData.Cooldown = 0
+            end
         end
     end
 
