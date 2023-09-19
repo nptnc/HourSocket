@@ -119,16 +119,17 @@ main.hardOptimize = function(n)
 end
 
 local packetsSentOut = 0
+local throttleAt = 70
 main.isThrottling = false
 main.sendToServer = function(...)
-    if packetsSentOut > 60 then
+    if packetsSentOut > throttleAt then
         main.isThrottling = true
-        apiCall("sentMessage", packetsSentOut, packetsSentOut <= 60 and true or false)
+        apiCall("sentMessage", packetsSentOut, packetsSentOut <= throttleAt and true or false)
         return
     end
     packetsSentOut += 1
     main.socket:Send(...)
-    apiCall("sentMessage", packetsSentOut, packetsSentOut <= 60 and true or false)
+    apiCall("sentMessage", packetsSentOut, packetsSentOut <= throttleAt and true or false)
 end
 
 main.createHook = function(old,replace)
