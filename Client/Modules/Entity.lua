@@ -83,16 +83,6 @@ return function(api)
                     if not args.IsPlayer then
                         --entity.Update = function() end
                         entity.ProcessAI = function() end
-
-                         -- we gonna stop the animations from playing unless its networked.
-                        entity.SwitchAnimation = api.createHook(entity.SwitchAnimation,function(hook,...)
-                            local args = {...}
-                            local allowedAnimations = {"Death"}
-                            if table.find(allowedAnimations,args[3]) and args[4] ~= false then
-                                return
-                            end
-                            return hook.call(...)
-                        end)
                     end
 
                     return realEntityId
