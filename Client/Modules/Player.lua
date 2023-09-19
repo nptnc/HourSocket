@@ -3,7 +3,7 @@ return function(api)
 
     local hook2 = function()
         local entities = getrenv()._G.Entities
-        entities[1].SwitchAnimation = api.createHook(entities[1].SwitchAnimation,function(hook,...)
+        --[[entities[1].SwitchAnimation = api.createHook(entities[1].SwitchAnimation,function(hook,...)
             local args = {...}
             local blacklistedAnimations = {"Idle","Run"}
 
@@ -13,7 +13,16 @@ return function(api)
                 api.sendToServer(message)
             end
             return hook.call(...)
-        end)
+        end)--]]
+
+        for inputName,inputFunction in entities[1].InputFunctions do
+            entities[1].InputFunctions[inputName] = api.createHook(entities[1].InputFunctions[inputName],function(hook,...)
+                local args = {...}
+                local message = api.prepareMessage("doInput",args[2],args[3])
+                api.sendToServer(message)
+                return hook.call(...)
+            end)
+        end
     end
 
     module.playerRespawned = function()

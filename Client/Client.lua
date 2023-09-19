@@ -33,7 +33,7 @@ local messageIds = {
     updateKnockback = 4,
     registerEntity = 5,
     updateEntityCF = 6,
-    animationChange = 8,
+    doInput = 8,
     updateEntityState = 9,
 }
 
@@ -348,15 +348,14 @@ registerMessage(6,function(entityid,posx,posy,posz,rosx,rosy,rosz)
     apiCall("networkEntityUpdate",entityid,posx,posy,posz,rosx,rosy,rosz)
 end)
 
-registerMessage("animationChange",function(userid,arg1,animationname)
+registerMessage("animationChange",function(userid,input)
     userid = tonumber(userid)
-    arg1 = tonumber(arg1)
 
-    print(`received animation play {animationname}`)
+    print(`received input {input} {userid}`)
 
     local messageplayer = main.registeredPlayers[userid]
     local entity = messageplayer.entity
-    entity.SwitchAnimation(entity,arg1,animationname)
+    entity.InputFunctions[input]()
 end)
 
 registerMessage(9,function(entityid,index,value)
