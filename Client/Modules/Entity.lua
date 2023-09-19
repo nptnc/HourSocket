@@ -87,7 +87,8 @@ return function(api)
                          -- we gonna stop the animations from playing unless its networked.
                         entity.SwitchAnimation = api.createHook(entity.SwitchAnimation,function(hook,...)
                             local args = {...}
-                            if args[4] ~= false then
+                            local allowedAnimations = {"Death"}
+                            if table.find(allowedAnimations,args[3]) and args[4] ~= false then
                                 return
                             end
                             return hook.call(...)
