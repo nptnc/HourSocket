@@ -359,6 +359,7 @@ registerMessage("animationChange",function(userid,arg1,animationname)
 end)
 
 registerMessage(9,function(entityid,index,value)
+    entityid = tonumber(entityid)
     if index == "health" then
         value = tonumber(value)
     end
