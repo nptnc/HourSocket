@@ -348,7 +348,7 @@ registerMessage(6,function(entityid,posx,posy,posz,rosx,rosy,rosz)
     apiCall("networkEntityUpdate",entityid,posx,posy,posz,rosx,rosy,rosz)
 end)
 
-registerMessage("animationChange",function(userid,input)
+registerMessage("doInput",function(userid,input)
     userid = tonumber(userid)
 
     print(`received input {input} {userid}`)
