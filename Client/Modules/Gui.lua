@@ -61,8 +61,9 @@ return function(api)
     local packetOutFrame
     module.once = function()
         local gui : ScreenGui = Instance.new("ScreenGui")
-        gui.Parent = game:GetService("CoreGui")
+        gui.Parent = api.player.PlayerGui
         gui.Name = "MultiplayerUI"
+        gui.DisplayOrder = 999
 
         leftbar = Instance.new("Frame")
         leftbar.Parent = gui

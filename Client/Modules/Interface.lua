@@ -7,8 +7,9 @@ return function(api)
     module.once = function()
         local isActive = true
         
-        local ui = Instance.new("ScreenGui")
-        ui.Parent = game:GetService("CoreGui")
+        local ui : ScreenGui = Instance.new("ScreenGui")
+        ui.Parent = api.player.PlayerGui --game:GetService("CoreGui")
+        ui.DisplayOrder = 999
 
         rs.Heartbeat:Connect(function(dt)
             ui.Enabled = isActive

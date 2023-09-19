@@ -1,3 +1,5 @@
+setthreadidentity(3)
+
 local http = game:GetService("HttpService")
 local rs = game:GetService("RunService")
 
