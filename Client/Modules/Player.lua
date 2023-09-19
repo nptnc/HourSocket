@@ -74,7 +74,15 @@ return function(api)
         lastUpdated = {pos,rot}
     end
 
+    module.playerStateUpdate = function(userid,index,value)
+        value = api.findOutVariable(userid,index,value)
+        
+        local messageplayer = api.registeredPlayers[userid]
+        messageplayer.serverData[index] = value
+    end
+
     local knockbackPreviousValues = {}
+    local previousNumberValues = {}
     module.update = function()
         if not api.connected then
             return
@@ -88,8 +96,16 @@ return function(api)
         end--]]
 
         -- to make hellion shift, e, right click to work we must sync knockback over the network, i've only tested hellion this could add support to others though.
+        
         local myEntity = getrenv()._G.Entities[1]
         if myEntity then 
+            if previousNumberValues.speed and myEntity.SpeedMultiplier ~= previousNumberValues.speed then
+                local message = api.prepareMessage("updateState",
+                    "speed",
+                    myEntity.SpeedMultiplier
+                )
+                api.sendToServer(message)
+            end
             for knockbackIndex,knockbackData in myEntity.Knockback do
                 if knockbackPreviousValues[knockbackIndex] == nil then
                     continue
@@ -109,6 +125,7 @@ return function(api)
             for knockbackIndex,knockbackData in myEntity.Knockback do
                 knockbackPreviousValues[knockbackIndex] = knockbackData.Knockback
             end
+            previousNumberValues.speed = myEntity.SpeedMultiplier
         end
         
         for userid,playerdata in api.registeredPlayers do
@@ -140,6 +157,7 @@ return function(api)
             entity.Facing = true
             entity.Dead = playerdata.serverData.dead
             entity.TimeSpeed = 1
+            entity.SpeedMultiplier = playerdata.serverData.speed
         end
     end
 

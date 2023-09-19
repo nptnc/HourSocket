@@ -63,6 +63,20 @@ main.doesPlayerHaveEntity = function(playerdata)
     return true
 end
 
+main.findOutVariable = function(var)
+    local newVar = var
+    if newVar == "false" then
+        newVar = false
+    elseif newVar == "true" then
+        newVar = true
+    elseif tonumber(newVar) then
+        newVar = tonumber(newVar)
+    else
+        newVar = var
+    end
+    return newVar
+end
+
 main.createPlayer = function(playerdata)
     local entity = getrenv()._G.SpawnCreature({
         Name = playerdata.serverData.class,
@@ -187,20 +201,6 @@ apiCall("once")
 
 local messages = {}
 
-local findOutVariable = function(var)
-    local newVar = var
-    if newVar == "false" then
-        newVar = false
-    elseif newVar == "true" then
-        newVar = true
-    elseif tonumber(newVar) then
-        newVar = tonumber(newVar)
-    else
-        newVar = var
-    end
-    return newVar
-end
-
 local registerMessage = function(id,messageCallback)
     if type(id) == "string" then
         print(`registered message {messageIds[id]}`)
@@ -243,7 +243,7 @@ local registerPlayer = function(userid,data)
     }
 
     for index,value in main.registeredPlayers[userid].serverData do
-        main.registeredPlayers[userid].serverData[index] = findOutVariable(value)
+        main.registeredPlayers[userid].serverData[index] = main.findOutVariable(value)
     end
     
     print(`received register player {userid}`)
@@ -289,15 +289,16 @@ registerMessage(3,function(userid,key,value)
     end
 
     local messageplayer = main.registeredPlayers[userid]
-    messageplayer.serverData[key] = findOutVariable(value)
 
     if key == "class" then
+        messageplayer.serverData[key] = main.findOutVariable(value)
         local entityId = getEntityIdByEntity(messageplayer.entity)
         local entity = getrenv()._G.Entities[entityId]
         entity.Character:Destroy()
         getrenv()._G.Entities[entityId] = nil
         messageplayer.entity = nil
     end
+    apiCall("playerStateUpdate",userid,key,value)
 end)
 
 registerMessage(4,function(userid,knockbackIndex,x,y,z)
@@ -317,7 +318,7 @@ end)
 registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
     entityid = tonumber(entityid)
     damageTeam = tonumber(damageTeam)
-    isBoss = findOutVariable(isBoss)
+    isBoss = main.findOutVariable(isBoss)
     posx = tonumber(posx)
     posy = tonumber(posy)
     posz = tonumber(posz)
