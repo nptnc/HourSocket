@@ -81,7 +81,7 @@ return function(api)
                     local entity = getrenv()._G.Entities[realEntityId]
 
                     if not args.IsPlayer then
-                        entity.Update = function() end
+                        --entity.Update = function() end
                         entity.ProcessAI = function() end
 
                          -- we gonna stop the animations from playing unless its networked.
