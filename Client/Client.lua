@@ -466,8 +466,8 @@ table.insert(connections,rs.Heartbeat:Connect(function(dt)
     if tick() - sinceLastWipe > 1 then
         sinceLastWipe = tick()
         packetsSentOut = 0
-        apiCall("sentMessage", packetsSentOut, true)
         apiCall("resetPacketInformation")
+        main.isThrottling = false
     end
 
     if main.getMe() == nil then
