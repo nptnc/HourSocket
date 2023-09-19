@@ -35,6 +35,7 @@ local messageIds = {
     updateEntityCF = 6,
     doInput = 8,
     updateEntityState = 9,
+    pickTalent = 10,
 }
 
 main.player = player
@@ -365,6 +366,10 @@ registerMessage(9,function(entityid,index,value)
         value = tonumber(value)
     end
     apiCall("networkEntityStateUpdate",entityid,index,value)
+end)
+
+registerMessage(10,function(talentindex)
+    getrenv()._G.TalentChosen(talentindex)
 end)
 
 main.disconnect = function()

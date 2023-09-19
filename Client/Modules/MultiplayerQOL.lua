@@ -8,6 +8,17 @@ return function(api)
         end
         api.globals.hasCalledGameEnd = false
         api.globals.oldEndGame = old
+
+        getrenv()._G.TalentChosen = api.createHook(getrenv()._G.TalentChosen,function(hook,...)
+            if not api.connected then
+                return hook.call(...)
+            end
+            local args = {...}
+            local message = api.prepareMessage("pickTalent",args[2])
+            api.sendToServer(message)
+            print("sent picked talent to server")
+            return -- we return nothing and let the server know so they deem when we can choose
+        end)
     end
 
     module.update = function()
