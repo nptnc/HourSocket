@@ -97,7 +97,7 @@ main.createPlayer = function(playerdata)
         return
     end
     entity = getrenv()._G.Entities[entity]
-    entity.DamageTeam = 1
+    entity.DamageTeam = 2--1
     entity.specialId = tonumber(playerdata.serverData.id)
     entity.Character.Name = playerdata.serverData.id
     entity.Resources.Health = 10000
