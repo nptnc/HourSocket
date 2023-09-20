@@ -71,7 +71,7 @@ return function(api)
             return
         end
 
-        print("dealing damage")
+        print(`dealing damage tp entity {entityid}`)
 
         damageOld({
             Source = api.registeredPlayers[userid].entity.Id,
