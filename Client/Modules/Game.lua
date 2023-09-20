@@ -14,7 +14,8 @@ return function(api)
     end
 
     module.gameShowTalentPopup = function()
-        getrenv()._G.Map:Die()
+        local map = getrenv()._G.Map
+        map.Die(map)
         old()
     end
 

@@ -137,7 +137,6 @@ return function(api)
                         api.optimize(knockbackData.Knockback.Z)
                     )
                     api.sendToServer(message)
-                    print("networking knockback change")
                 end
             end
             for knockbackIndex,knockbackData in myEntity.Knockback do
