@@ -195,6 +195,10 @@ return function(api)
             local pos = entity.RootPart.Position
             local rot = entity.RootPart.Rotation
 
+            if entityDatabase.lastNetworkedInformation and (entityDatabase.lastNetworkedInformation.Position-pos).Magnitude < 1 and (entityDatabase.lastNetworkedInformation.Rotation-rot).Magnitude < 1 then
+                return
+            end
+
             local message = api.prepareMessage("updateEntityCF",
                 entityId,
                 api.hardOptimize(pos.X),
@@ -205,6 +209,11 @@ return function(api)
                 api.hardOptimize(rot.Z)
             )
             api.sendToServer(message)
+
+            entityDatabase.lastNetworkedInformation = {
+                Position = Vector3.new(pos.X,pos.Y,pos.Z),
+                Rotation = Vector3.new(rot.X,rot.Y,rot.Z)
+            }
         end
     end
 
