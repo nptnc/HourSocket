@@ -98,8 +98,8 @@ main.createPlayer = function(playerdata)
     entity.Resources.Health = 10000
     
     local nametag = entity.Character.Head2.NameTag
-    nametag.Text = playerdata.serverData.username or "no username?"
-    nametag.TextColor3 = Color3.fromRGB(255,255,255)
+    nametag.TextLabel.Text = playerdata.serverData.username or "no username?"
+    nametag.TextLabel.TextColor3 = Color3.fromRGB(255,255,255)
     --[[entity.Interrupt = function()
         
     end--]]
