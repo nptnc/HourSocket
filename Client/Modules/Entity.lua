@@ -249,15 +249,11 @@ return function(api)
     end
 
     module.getEntityFromNetworkId = function(networkid)
-        for entityId,entity in entityDatabase do
-            if entity.networkId == networkid then
-                return entity
-            end
-        end
+        return entityDatabase[networkid]
     end
 
     module.getEntityFromRealId = function(realid)
-        for entityId,entity in entityDatabase do
+        for _,entity in entityDatabase do
             if entity.realId == realid then
                 return entity
             end
