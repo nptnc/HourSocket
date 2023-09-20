@@ -19,6 +19,9 @@ return function(api)
 
             local target = nil
             api.apiCall("getEntityFromRealId",function(entity)
+                if not entity then
+                    return
+                end
                 target = entity.networkId
             end,args.Target)
 
