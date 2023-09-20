@@ -10,6 +10,7 @@ return function(api)
     end
 
     local entityDatabase = {}
+    api.globals.entityDatabase = entityDatabase
 
     local globalEntityId = 0
     local reg = function(entity,realId,entitymodelid,x,y,z,xr,yr,zr)
@@ -250,14 +251,6 @@ return function(api)
 
     module.getEntityFromNetworkId = function(networkid)
         return entityDatabase[networkid]
-    end
-
-    module.getEntityFromRealId = function(realid)
-        for _,entity in entityDatabase do
-            if getrenv()._G.Entities[entity.realId].Id == realid then
-                return entity
-            end
-        end
     end
 
     module.networkEntityStateUpdate = function(entityid,index,value)

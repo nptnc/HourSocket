@@ -13,19 +13,25 @@ return function(api)
             end
         end)
         
+        local getEntityByRealId = function(realid)
+            for _,entity in api.globals.entityDatabase do
+                print(`\nentityId: {getrenv()._G.Entities[entity.realId].Id}\ntargetId: {realid}`)
+                if getrenv()._G.Entities[entity.realId].Id == realid then
+                    return entity
+                end
+            end
+        end
+
         getrenv()._G.DamageRequest = api.createHook(getrenv()._G.DamageRequest,function(hook,...)
+            if not api.connected then
+                return hook.call(...)
+            end
+
             local args = {...}
             args = args[1]
 
-            local target = nil
-            api.apiCall("getEntityFromRealId",function(entity)
-                if not entity then
-                    return
-                end
-                target = entity.networkId
-            end,args.Target)
-
             if not api.isHost() then
+                local target = getEntityByRealId(args.Target)
                 if target then
                     local message = api.prepareMessage("damageRequest",target,args.Amount,args.PartName,args.Name,args.ScreenShake)
                     api.sendToServer(message)
