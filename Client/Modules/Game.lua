@@ -17,6 +17,16 @@ return function(api)
         local map = getrenv()._G.Map
         map.Die(map)
         old()
+
+        for index,aidata in getrenv()._G.Entities do
+            if aidata.specialId then
+                continue
+            end
+            aidata.Interrupt(aidata)
+            aidata.InterruptBase(aidata)
+            aidata.Character:Destroy()
+            getrenv()._G.Entities[index] = nil
+        end
     end
 
     return module
