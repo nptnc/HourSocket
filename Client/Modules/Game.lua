@@ -76,10 +76,7 @@ return function(api)
             if aidata.specialId then
                 continue
             end
-            aidata.Interrupt(aidata)
-            aidata.InterruptBase(aidata)
-            aidata.Character:Destroy()
-            getrenv()._G.Entities[index] = nil
+            aidata.Die()
         end
     end
 
