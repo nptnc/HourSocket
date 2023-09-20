@@ -6,13 +6,17 @@ return function(api)
         for _,timeControlModule in game.ReplicatedStorage.Scripts.TimeControl:GetChildren() do
             local newModule = require(timeControlModule)
             fakeTimeControls[timeControlModule.Name] = newModule
+            print(`created time module {timeControlModule.Name}`)
         end
     end
 
     module.playerRespawned = function()
         local tc = getrenv()._G.TimeControl
         tc.Begin = api.createHook(tc.Begin,function(hook,...)
-            local args2 = table.pack(hook.call(...))
+            local args2 = {}
+            for index,value in hook.call(...) do
+                args2[index] = value
+            end
             if tc.Active then
                 local message = api.prepareMessage("startTempo",getrenv()._G.TimePower,tc.Special)
                 api.sendToServer(message)
