@@ -394,7 +394,7 @@ registerMessage("doInput",function(userid,input)
         warn("cf is nil")
         return
     end
-    _G.AIControl:InputAction(entity.Input, entity.InputCameraCFrame)
+    getrenv()._G.AIControl:InputAction(entity.Input, entity.InputCameraCFrame)
     --entity.InputFunctions[input](entity)
 end)
 
