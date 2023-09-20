@@ -19,7 +19,18 @@ return function(api)
             entities[1].InputFunctions[inputName] = api.createHook(entities[1].InputFunctions[inputName],function(hook,...)
                 local args = {...}
                 if entities[1].Cooldowns[inputName].Cooldown <= 0 and entities[1].AnimationTables[1].ActionState == "" then
-                    local message = api.prepareMessage("doInput",inputName)
+                    local char = game.Players.LocalPlayer.Character
+                    local pos = char.HumanoidRootPart.Position
+                    local rot = char.HumanoidRootPart.Rotation
+
+                    local message = api.prepareMessage("doInput",inputName,
+                        api.hardOptimize(pos.X),
+                        api.hardOptimize(pos.Y),
+                        api.hardOptimize(pos.Z),
+                        api.hardOptimize(rot.X),
+                        api.hardOptimize(rot.Y),
+                        api.hardOptimize(rot.Z)
+                    )
                     api.sendToServer(message)
                     print(`networking input {inputName}`)
                 end
@@ -160,7 +171,7 @@ return function(api)
             entity.Facing = true
             entity.Dead = playerdata.serverData.dead
             entity.TimeSpeed = 1
-            entity.SpeedMultiplier = 1--playerdata.serverData.speed
+            --entity.SpeedMultiplier = 1
             
             for knockbackIndex,knockback in entity.knockback or {} do
                 entity.Knockback[knockbackIndex].Knockback = knockback
