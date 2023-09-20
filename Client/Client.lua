@@ -27,7 +27,7 @@ local modules = {
     "Entity",
     "MultiplayerQOL",
     "Player",
-    "Tempos",
+    "Game",
 }
 
 local main = {}
@@ -46,6 +46,7 @@ local messageIds = {
     pickTalent = 10,
     startTempo = 11,
     updateEntityKnockback = 12,
+    intermissionStarted = 13,
 }
 
 main.player = player
@@ -72,6 +73,10 @@ main.doesPlayerHaveEntity = function(playerdata)
         return false
     end
     return true
+end
+
+main.isHost = function()
+    return main.getMe().serverData.isHost
 end
 
 main.findOutVariable = function(var)
@@ -426,7 +431,7 @@ registerMessage(11,function(timeTarget,special)
     apiCall("startTempo",timeTarget)
 end)
 
-registerMessage(4,function(entityid,knockbackIndex,x,y,z)
+registerMessage(12,function(entityid,knockbackIndex,x,y,z)
     entityid = tonumber(entityid)
     knockbackIndex = tonumber(knockbackIndex)
     x = tonumber(x)
@@ -434,6 +439,14 @@ registerMessage(4,function(entityid,knockbackIndex,x,y,z)
     z = tonumber(z)
 
     apiCall("entityKnockbackUpdate",entityid,knockbackIndex,Vector3.new(x,y,z))
+end)
+
+registerMessage(13,function()
+    getrenv()._G.GameState = "Intermission"
+    getrenv()._G.TimeEnabled = false
+    local humrp = getrenv()._G.Entities[1].RootPart
+    humrp.Anchored = true
+    apiCall("gameShowTalentPopup")
 end)
 
 main.disconnect = function()
