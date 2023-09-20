@@ -150,6 +150,10 @@ return function(api)
                 -- no creaty yourselfy!
                 continue
             end
+
+            if getrenv()._G.GameState ~= "Combat" then
+                continue
+            end
     
             -- no player entity?, create one!
             if api.doesPlayerHaveEntity(playerdata) == false and getrenv()._G.GameState == "Combat" then

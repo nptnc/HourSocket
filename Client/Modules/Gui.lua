@@ -129,7 +129,7 @@ return function(api)
     end
 
     module.resetPacketInformation = function()
-        packetOutFrame.TextLabel.Text = `packets out: {packetsOut}/s{api.isThrottling and " THROTTLING" or ""}`
+        packetOutFrame.TextLabel.Text = `packets out: {0}/s{api.isThrottling and " THROTTLING" or ""}`
     end
 
     module.createNotification = function(text)

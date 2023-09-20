@@ -489,7 +489,6 @@ workspace.ChildRemoved:Connect(function(child)
         return
     end
     repeat rs.Heartbeat:Wait() until getrenv()._G.GameState ~= "Combat"
-    repeat rs.Heartbeat:Wait() until getrenv()._G.GameState == "Combat"
     main.registeredPlayers[tonumber(child.Name)].entity = nil
 end)
 
@@ -541,6 +540,12 @@ table.insert(connections,rs.Heartbeat:Connect(function(dt)
 
     if main.getMe() == nil then
         return
+    end
+
+    if getrenv()._G.GameState == "Combat" then
+        for userid,_ in main.registeredPlayers do
+            main.destroyPlayerEntity(userid)
+        end
     end
 
     if getrenv()._G.Entities ~= nil and lastMyEntity ~= getrenv()._G.Entities[1] then
