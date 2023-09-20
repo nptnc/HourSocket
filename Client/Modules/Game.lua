@@ -45,7 +45,7 @@ return function(api)
                 -- dont let players hit enemies on our screen, only let them determine whether they hit them or not
                 for userid,playerdata in api.registeredPlayers do
                     if playerdata.entity and playerdata.entity.Id == args.Source then
-                        return
+                        return -- nope this is by a player entity, this means that they hit something on our screen
                     end
                 end
             end 
@@ -58,7 +58,7 @@ return function(api)
                 else
                     warn(`entity isnt registered on server.\ntarget is nil: {target == nil}\nnetworkId: {target and target.NetworkID or "none"}`)
                 end
-                return
+                return -- stops hit from registering
             end
             return hook.call(...)
         end)
@@ -99,7 +99,16 @@ return function(api)
             if aidata.specialId then
                 continue
             end
-            aidata.Die(aidata)
+            if index == 1 then
+                continue
+            end
+            local char = aidata.Character
+            char:Destroy()
+            local ui = aidata.BossGui
+            if ui then
+                ui:Destroy()
+            end
+            getrenv()._G.Entities[index] = nil
         end
 
         local map = getrenv()._G.Map
