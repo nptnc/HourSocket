@@ -163,7 +163,7 @@ main.createHook = function(old,replace)
                 end
                 realArgs[tonumber(index) and index-1 or index] = value
             end
-            return realArgs
+            return table.unpack(realArgs)
         end,
     })
     return meta
