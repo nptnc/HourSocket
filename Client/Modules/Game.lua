@@ -36,12 +36,12 @@ return function(api)
 
             if not api.isHost() then
                 local target = getEntityByRealId(args.Target)
-                if target and target.NetworkID then
+                if target and target.NetworkID ~= nil then
                     local message = api.prepareMessage("damageRequest",target.NetworkID,args.Amount,args.PartName,args.Name,args.ScreenShake)
                     api.sendToServer(message)
                     print("networking damage request")
                 else
-                    warn("entity isnt registered on server.")
+                    warn(`entity isnt registered on server.\ntarget is nil: {target == nil}\nnetworkId: {target and target.NetworkID or "none"}`)
                 end
                 return
             elseif api.isHost() and args.Networked ~= true then
