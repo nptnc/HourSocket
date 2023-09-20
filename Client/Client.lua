@@ -397,7 +397,7 @@ registerMessage("doInput",function(userid,input)
         warn("cf is nil")
         return
     end
-    getrenv()._G.AIControl.InputAction(entity,entity.Input,entity.InputCameraCFrame)
+    --getrenv()._G.AIControl.InputAction(entity,entity.Input,entity.InputCameraCFrame)
 
     print(`received input {input} {realInput} {userid}`)
     --entity.InputFunctions[input](entity)
