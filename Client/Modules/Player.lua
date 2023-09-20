@@ -20,16 +20,16 @@ return function(api)
                 local args = {...}
                 local targCooldown = entities[1].Cooldowns[inputName] or {Cooldown = 0}
                 if targCooldown.Cooldown <= 0 and entities[1].AnimationTables[1].ActionState == "" then
-                    local camera = workspace.CurrentCamera.CFrame
+                    local cf = workspace.CurrentCamera.CFrame
 
-                    local rx, ry, rz = camera.CFrame:ToOrientation()
+                    local rx, ry, rz = cf:ToOrientation()
 			        local rotation = Vector3.new(math.deg(rx), math.deg(ry), math.deg(rz))
 
                     local message = api.prepareMessage("doInput",
                         inputName,
-                        api.hardOptimize(camera.CFrame.Position.X),
-                        api.hardOptimize(camera.CFrame.Position.Y),
-                        api.hardOptimize(camera.CFrame.Position.Z),
+                        api.hardOptimize(cf.Position.X),
+                        api.hardOptimize(cf.Position.Y),
+                        api.hardOptimize(cf.Position.Z),
                         api.hardOptimize(rotation.X),
                         api.hardOptimize(rotation.Y),
                         api.hardOptimize(rotation.Z)
