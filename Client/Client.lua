@@ -148,9 +148,22 @@ main.createHook = function(old,replace)
     end
     setmetatable(meta,{
         __call = function(t,...)
-            local packedArgs = table.pack(replace(t,...))
-            -- debug here if you want lol
-            return table.unpack(packedArgs)
+            local args = {...}
+            local args3 = table.pack(pcall(function()
+                local packedArgs = table.pack(replace(t,table.unpack(args)))
+                return table.unpack(packedArgs)
+            end))
+            if args3[1] == false then
+                warn(`caught an error in hooked function {debug.getinfo(old).name}`)
+            end
+            local realArgs = {}
+            for index,value in args3 do
+                if index == 1 then
+                    continue
+                end
+                realArgs[tonumber(index) and index-1 or index] = value
+            end
+            return realArgs
         end,
     })
     return meta
