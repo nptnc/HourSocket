@@ -22,6 +22,9 @@ return function(api)
     end
 
     module.startTempo = function(timeTarget,special)
+        if true then
+            return
+        end
         local timemodule = fakeTimeControls[timeTarget]
         timemodule.Init(timemodule)
         timemodule.Special = special
