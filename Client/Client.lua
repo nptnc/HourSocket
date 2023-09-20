@@ -441,7 +441,10 @@ registerMessage(12,function(entityid,knockbackIndex,x,y,z)
     apiCall("entityKnockbackUpdate",entityid,knockbackIndex,Vector3.new(x,y,z))
 end)
 
-registerMessage(13,function()
+registerMessage(13,function(isArena)
+    isArena = main.findOutVariable(isArena)
+
+    getrenv()._G.ArenaMode = isArena or false
     getrenv()._G.GameState = "Intermission"
     getrenv()._G.TimeEnabled = false
     local humrp = getrenv()._G.Entities[1].RootPart

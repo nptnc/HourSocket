@@ -5,11 +5,11 @@ return function(api)
     module.once = function()
         old = getrenv()._G.TalentPopup
         getrenv()._G.TalentPopup = api.createHook(getrenv()._G.TalentPopup,function(hook,...)
+            hook.call(...)
             if api.isHost() then
-                local message = api.prepareMessage("intermissionStarted")
+                local message = api.prepareMessage("intermissionStarted",getrenv()._G.ArenaMode)
                 api.sendToServer(message)
             end
-            return hook.call(...)
         end)
     end
 
