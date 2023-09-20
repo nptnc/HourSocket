@@ -35,8 +35,13 @@ return function(api)
             local args = {...}
             args = args[1]
 
+            local target = getEntityByRealId(args.Target)
+            if target and target.specialId then
+                -- this basically just means this is a player entity
+                return -- we dont want players to be hit unless they say they've been hit
+            end
+
             if not api.isHost() then
-                local target = getEntityByRealId(args.Target)
                 if target and target.NetworkID ~= nil then
                     local message = api.prepareMessage("damageRequest",target.NetworkID,args.Amount,args.PartName,args.Name,args.ScreenShake or 0)
                     api.sendToServer(message)
