@@ -120,6 +120,7 @@ return function(api)
             end
             for knockbackIndex,knockbackData in myEntity.Knockback do
                 if knockbackPreviousValues[knockbackIndex] == nil then
+                    myEntity.Knockback[knockbackIndex] = nil
                     continue
                 end
                 local previousKnockback = knockbackPreviousValues[knockbackIndex]
