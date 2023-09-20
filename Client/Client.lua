@@ -374,7 +374,24 @@ registerMessage("doInput",function(userid,input)
 
     local messageplayer = main.registeredPlayers[userid]
     local entity = messageplayer.entity
-    entity.InputFunctions[input]()
+
+    local realInput = nil
+    for index,value in entity.Inputs do
+        if value == input then
+            realInput = index
+        end 
+    end
+    
+    if not realInput then
+        warn("input non existent cant input.")
+        return
+    end
+
+    entity.Input = realInput
+    entity.InputTimer = 0.5
+    entity.InputCameraCFrame = _G.Camera.CFrame
+    _G.AIControl:InputAction(entity.Input, entity.InputCameraCFrame)
+    --entity.InputFunctions[input](entity)
 end)
 
 registerMessage(9,function(entityid,index,value)
