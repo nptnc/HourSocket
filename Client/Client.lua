@@ -80,7 +80,7 @@ local apiCall = function(method,callback,...)
                 module[method](table.unpack(args))
                 return
             end
-            callback(table.unpack(module[method](table.unpack(args))))
+            callback(table.unpack(module[method](table.unpack(args)) or {}))
         end)
         if success == false then
             warn(`an error occured while trying to call method of module {moduleName}.\n{error2}`)
@@ -501,7 +501,7 @@ main.tryToConnect = function(ip)
     main.connected = true
 
     apiCall("connected")
-    apiCall("createNotification",`connected to server {ip}`)
+    apiCall("createNotification",nil,`connected to server {ip}`)
 
     socket.OnMessage:Connect(function(msg)
         local args = string.split(msg,seperator)
