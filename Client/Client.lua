@@ -548,7 +548,7 @@ table.insert(connections,rs.Heartbeat:Connect(function(dt)
         getrenv()._G.EnemyCap = 2
     end
 
-    if getrenv()._G.GameState == "Combat" then
+    if getrenv()._G.GameState ~= "Combat" then
         for userid,_ in main.registeredPlayers do
             main.destroyPlayerEntity(userid)
         end
