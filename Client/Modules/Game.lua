@@ -15,7 +15,7 @@ return function(api)
         
         local getEntityByRealId = function(realid)
             for _,entity in api.globals.entityDatabase do
-                print(`\nentityId: {getrenv()._G.Entities[entity.realId].Id}\ntargetId: {realid}`)
+                --print(`\nentityId: {getrenv()._G.Entities[entity.realId].Id}\ntargetId: {realid}`)
                 if getrenv()._G.Entities[entity.realId].Id == realid then
                     return entity
                 end
@@ -39,6 +39,7 @@ return function(api)
                 if target then
                     local message = api.prepareMessage("damageRequest",target,args.Amount,args.PartName,args.Name,args.ScreenShake)
                     api.sendToServer(message)
+                    print("networking damage request")
                 else
                     warn("entity isnt registered on server.")
                 end
