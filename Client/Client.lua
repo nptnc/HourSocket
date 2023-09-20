@@ -1,5 +1,10 @@
 setthreadidentity(2)
 
+if getgenv()._G.LEExecuted then
+    return
+end
+getgenv()._G.LEExecuted = true
+
 local http = game:GetService("HttpService")
 local rs = game:GetService("RunService")
 
