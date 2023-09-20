@@ -5,7 +5,6 @@ return function(api)
     module.once = function()
         for _,timeControlModule in game.ReplicatedStorage.Scripts.TimeControl:GetChildren() do
             local module = require(timeControlModule)
-            module.Init(module)
             fakeTimeControls[timeControlModule.Name] = module
         end
     end
@@ -24,7 +23,7 @@ return function(api)
 
     module.startTempo = function(timeTarget,special)
         local timemodule = fakeTimeControls[timeTarget]
-        --timemodule.Init(timemodule)
+        timemodule.Init(timemodule)
         timemodule.Special = special
         timemodule.Begin(timemodule)
 
