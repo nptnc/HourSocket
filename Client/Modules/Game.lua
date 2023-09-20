@@ -41,6 +41,15 @@ return function(api)
                 return -- we dont want players to be hit unless they say they've been hit
             end
 
+            if args.Networked ~= true then
+                -- dont let players hit enemies on our screen, only let them determine whether they hit them or not
+                for userid,playerdata in api.registeredPlayers do
+                    if playerdata.entity and playerdata.entity.Id == args.Source then
+                        return
+                    end
+                end
+            end 
+
             if not api.isHost() then
                 if target and target.NetworkID ~= nil then
                     local message = api.prepareMessage("damageRequest",target.NetworkID,args.Amount,args.PartName,args.Name,args.ScreenShake or 0)
@@ -50,12 +59,6 @@ return function(api)
                     warn(`entity isnt registered on server.\ntarget is nil: {target == nil}\nnetworkId: {target and target.NetworkID or "none"}`)
                 end
                 return
-            elseif api.isHost() and args.Networked ~= true then
-                for userid,playerdata in api.registeredPlayers do
-                    if playerdata.entity and playerdata.entity.Id == args.Source then
-                        return
-                    end
-                end
             end
             return hook.call(...)
         end)
