@@ -370,8 +370,6 @@ end)
 registerMessage("doInput",function(userid,input)
     userid = tonumber(userid)
 
-    print(`received input {input} {userid}`)
-
     local messageplayer = main.registeredPlayers[userid]
     local entity = messageplayer.entity
 
@@ -395,6 +393,8 @@ registerMessage("doInput",function(userid,input)
         return
     end
     getrenv()._G.AIControl:InputAction(entity.Input, entity.InputCameraCFrame)
+
+    print(`received input {input} {realInput} {userid}`)
     --entity.InputFunctions[input](entity)
 end)
 
