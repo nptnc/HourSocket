@@ -154,7 +154,7 @@ main.createHook = function(old,replace)
                 return table.unpack(packedArgs)
             end))
             if args3[1] == false then
-                warn(`caught an error in hooked function {debug.getinfo(old).name} {args3[2]}`)
+                warn(`caught an error in hooked function {debug.getinfo(old).name}\n{args3[2]}`)
             end
             local realArgs = {}
             for index,value in args3 do

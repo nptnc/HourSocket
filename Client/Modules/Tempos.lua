@@ -14,7 +14,7 @@ return function(api)
         local tc = getrenv()._G.TimeControl
         tc.Begin = api.createHook(tc.Begin,function(hook,...)
             local args2 = {}
-            for index,value in hook.call(...) do
+            for index,value in hook.call(...) or {} do
                 args2[index] = value
             end
             if tc.Active then
