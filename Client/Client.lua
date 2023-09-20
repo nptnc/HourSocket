@@ -8,7 +8,7 @@ local player = game.Players.LocalPlayer
 local char = player.Character
 char.Archivable = true
 
-local fps = 50
+local fps = 30
 local sinceLastFPS = 0
 local seperator = ":::" -- dont change, this has to be the same on the server and the client otherwise one or the other wont receive information.
 local connections = {}

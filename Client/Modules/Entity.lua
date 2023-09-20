@@ -179,7 +179,7 @@ return function(api)
         end
 
         local networkEntities = api.len(entityDatabase)
-        local fps = (30/networkEntities)
+        local fps = (20/networkEntities)
         if networkEntities == 0 or tick() - sinceLastUpdate < 1/fps  then
             return
         end
