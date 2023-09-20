@@ -1,6 +1,19 @@
 return function(api)
     local module = {}
 
+    local getEntityByRealId = function(realid)
+        for _,entity in api.globals.entityDatabase do
+            --print(`\nentityId: {getrenv()._G.Entities[entity.realId].Id}\ntargetId: {realid}`)
+            if getrenv()._G.Entities[entity.realId].Id == realid then
+                return entity
+            end
+        end
+    end
+
+    local getEntityFromNetworkId = function(networkId)
+        return api.globals.entityDatabase[networkId]
+    end
+
     local old
     local damageOld
     module.once = function()
@@ -12,19 +25,6 @@ return function(api)
                 api.sendToServer(message)
             end
         end)
-        
-        local getEntityByRealId = function(realid)
-            for _,entity in api.globals.entityDatabase do
-                --print(`\nentityId: {getrenv()._G.Entities[entity.realId].Id}\ntargetId: {realid}`)
-                if getrenv()._G.Entities[entity.realId].Id == realid then
-                    return entity
-                end
-            end
-        end
-
-        local getEntityFromNetworkId = function(networkId)
-            return api.globals.entityDatabase[networkId]
-        end
 
         getrenv()._G.DamageRequest = api.createHook(getrenv()._G.DamageRequest,function(hook,...)
             if not api.connected then
