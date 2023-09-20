@@ -389,7 +389,7 @@ registerMessage("doInput",function(userid,input)
 
     entity.Input = realInput
     entity.InputTimer = 0.5
-    entity.InputCameraCFrame = game.Workspace.CurrentCamera.CFrame
+    entity.InputCameraCFrame = workspace.CurrentCamera.CFrame
     _G.AIControl:InputAction(entity.Input, entity.InputCameraCFrame)
     --entity.InputFunctions[input](entity)
 end)
