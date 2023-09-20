@@ -41,6 +41,7 @@ return function(api)
             PartName = partname,
             Name = damagename,
             ScreenShake = screenshake,
+            Networked = true,
             Actions = {},
         })
     end
