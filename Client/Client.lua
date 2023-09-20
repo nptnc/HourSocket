@@ -97,7 +97,7 @@ main.createPlayer = function(playerdata)
         return
     end
     entity = getrenv()._G.Entities[entity]
-    entity.DamageTeam = 2--1
+    entity.DamageTeam = 1
     entity.specialId = tonumber(playerdata.serverData.id)
     entity.Character.Name = playerdata.serverData.id
     entity.Resources.Health = 10000
@@ -383,8 +383,6 @@ registerMessage("doInput",function(userid,input,posx,posy,posz,rotx,roty,rotz)
 
     local messageplayer = main.registeredPlayers[userid]
     local entity = messageplayer.entity
-    entity.RootPart.CFrame = CFrame.new(posx,posy,posz) * CFrame.Angles(math.rad(rotx),math.rad(roty),math.rad(rotz))
-    messageplayer.cframe = CFrame.new(posx,posy,posz) * CFrame.Angles(math.rad(rotx),math.rad(roty),math.rad(rotz))
 
     local realInput = nil
     for index,value in entity.Inputs do
@@ -400,7 +398,7 @@ registerMessage("doInput",function(userid,input,posx,posy,posz,rotx,roty,rotz)
 
     entity.Input = realInput
     entity.InputTimer = 0.5
-    entity.InputCameraCFrame = workspace.CurrentCamera.CFrame
+    entity.InputCameraCFrame = CFrame.new(posx,posy,posz) * CFrame.Angles(math.rad(rotx),math.rad(roty),math.rad(rotz))
     if not entity.InputCameraCFrame then
         warn("cf is nil")
         return

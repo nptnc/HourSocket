@@ -20,17 +20,19 @@ return function(api)
                 local args = {...}
                 local targCooldown = entities[1].Cooldowns[inputName] or {Cooldown = 0}
                 if targCooldown.Cooldown <= 0 and entities[1].AnimationTables[1].ActionState == "" then
-                    local char = game.Players.LocalPlayer.Character
-                    local pos = char.HumanoidRootPart.Position
-                    local rot = char.HumanoidRootPart.Rotation
+                    local camera = workspace.CurrentCamera.CFrame
 
-                    local message = api.prepareMessage("doInput",inputName,
-                        api.hardOptimize(pos.X),
-                        api.hardOptimize(pos.Y),
-                        api.hardOptimize(pos.Z),
-                        api.hardOptimize(rot.X),
-                        api.hardOptimize(rot.Y),
-                        api.hardOptimize(rot.Z)
+                    local rx, ry, rz = camera.CFrame:ToOrientation()
+			        local rotation = Vector3.new(math.deg(rx), math.deg(ry), math.deg(rz))
+
+                    local message = api.prepareMessage("doInput",
+                        inputName,
+                        api.hardOptimize(camera.CFrame.Position.X),
+                        api.hardOptimize(camera.CFrame.Position.Y),
+                        api.hardOptimize(camera.CFrame.Position.Z),
+                        api.hardOptimize(rotation.X),
+                        api.hardOptimize(rotation.Y),
+                        api.hardOptimize(rotation.Z)
                     )
                     api.sendToServer(message)
                     print(`networking input {inputName}`)
