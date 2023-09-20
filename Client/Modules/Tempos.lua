@@ -36,6 +36,7 @@ return function(api)
         table.insert(loops,rs.Heartbeat:Connect(function()
             timemodule.UpdatePost(timemodule,(1/400)/5)
             if timemodule.Special <= 0 then
+                timemodule.Die(timemodule)
                 for _,loop in loops do
                     loop:Disconnect()
                 end
