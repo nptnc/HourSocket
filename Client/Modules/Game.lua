@@ -17,6 +17,9 @@ return function(api)
         getrenv()._G.Map:Die()
         old()
     end
+<<<<<<< HEAD
 
     return module
+=======
+>>>>>>> de2b4cb5010ffc1928efe9e6fc93ac8cd87eecb9
 end
