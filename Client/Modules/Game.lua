@@ -22,6 +22,7 @@ return function(api)
             if not api.isHost() then
                 local message = api.prepareMessage("damageRequest",target.networkId,args.Amount,args.PartName,args.Name,args.ScreenShake)
                 api.sendToServer(message)
+                return
             elseif api.isHost() then
                 for userid,playerdata in api.registeredPlayers do
                     if playerdata.entity.Id == args.Source and args.Networked ~= true then
