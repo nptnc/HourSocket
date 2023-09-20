@@ -390,6 +390,10 @@ registerMessage("doInput",function(userid,input)
     entity.Input = realInput
     entity.InputTimer = 0.5
     entity.InputCameraCFrame = workspace.CurrentCamera.CFrame
+    if not entity.InputCameraCFrame then
+        warn("cf is nil")
+        return
+    end
     _G.AIControl:InputAction(entity.Input, entity.InputCameraCFrame)
     --entity.InputFunctions[input](entity)
 end)
