@@ -479,6 +479,8 @@ registerMessage(14,function(userid,entityid,damage,partname,damagename,screensha
     entityid = tonumber(entityid)
     damage = tonumber(damage)
     screenshake = tonumber(screenshake)
+
+    print("trying to deal damage from network!")
     apiCall("gameDealDamage",nil,userid,entityid,damage,partname,damagename,screenshake)
 end)
 

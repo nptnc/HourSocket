@@ -22,6 +22,10 @@ return function(api)
             end
         end
 
+        local getEntityFromNetworkId = function(networkId)
+            return api.globals.entityDatabase[networkId]
+        end
+
         getrenv()._G.DamageRequest = api.createHook(getrenv()._G.DamageRequest,function(hook,...)
             if not api.connected then
                 return hook.call(...)
@@ -51,20 +55,16 @@ return function(api)
     end
 
     module.gameDealDamage = function(userid,entityid,damage,partname,damagename,screenshake)
-        local realId = nil
-        api.apiCall("getEntityFromNetworkId",function(entity) 
-            realId = entity.realId
-        end,entityid)
-
-        if not realId then
-            warn("no real id, cant damage entity")
+        local entity = getEntityFromNetworkId(entityid)
+        if not entity then
+            warn("entity doesnt exist cant damage them")
             return
         end
 
         damageOld({
             Source = api.registeredPlayers[userid].entity.Id,
             Amount = damage,
-            Target = realId,
+            Target = entity.Id,
             PartName = partname,
             Name = damagename,
             ScreenShake = screenshake,
