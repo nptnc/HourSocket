@@ -254,8 +254,7 @@ return function(api)
 
     module.getEntityFromRealId = function(realid)
         for _,entity in entityDatabase do
-            print(entity.realId,realid)
-            if entity.realId == realid then
+            if getrenv()._G.Entities[entity.realId].Id == realid then
                 return entity
             end
         end
