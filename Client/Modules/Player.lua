@@ -18,7 +18,8 @@ return function(api)
         for inputName,inputFunction in entities[1].InputFunctions do
             entities[1].InputFunctions[inputName] = api.createHook(entities[1].InputFunctions[inputName],function(hook,...)
                 local args = {...}
-                if entities[1].Cooldowns[inputName].Cooldown <= 0 and entities[1].AnimationTables[1].ActionState == "" then
+                local targCooldown = entities[1].Cooldowns[inputName] or {Cooldown = 0}
+                if targCooldown.Cooldown <= 0 and entities[1].AnimationTables[1].ActionState == "" then
                     local char = game.Players.LocalPlayer.Character
                     local pos = char.HumanoidRootPart.Position
                     local rot = char.HumanoidRootPart.Rotation
