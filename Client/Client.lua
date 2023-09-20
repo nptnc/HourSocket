@@ -61,10 +61,10 @@ local cutTable = function(t,ind)
             continue
         end
         if type(index) == "number" then
-            index[index-ind] = value
+            newT[index-ind] = value
             continue
         end
-        index[ind] = value
+        newT[index] = value
     end
     return newT
 end
