@@ -60,7 +60,7 @@ return function(api)
             if entity.NetworkID == nil or entity.NetworkID ~= networkId then
                 continue
             end
-            return id
+            return entity
         end
     end
 
