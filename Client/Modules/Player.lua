@@ -176,8 +176,8 @@ return function(api)
             end
 
             for cooldownName,cooldownData in entity.Cooldowns do
-                cooldownData.Charges = 1
                 cooldownData.Cooldown = 0
+                cooldownData.MaxCooldown = 0
             end
         end
     end
