@@ -18,9 +18,11 @@ return function(api)
         for inputName,inputFunction in entities[1].InputFunctions do
             entities[1].InputFunctions[inputName] = api.createHook(entities[1].InputFunctions[inputName],function(hook,...)
                 local args = {...}
-                local message = api.prepareMessage("doInput",inputName)
-                api.sendToServer(message)
-                print(`networking input {inputName}`)
+                if entities[1].Cooldowns[inputName].Charges <= 0 then
+                    local message = api.prepareMessage("doInput",inputName)
+                    api.sendToServer(message)
+                    print(`networking input {inputName}`)
+                end
                 return hook.call(...)
             end)
         end
