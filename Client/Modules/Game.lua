@@ -67,8 +67,7 @@ return function(api)
     module.gameDealDamage = function(userid,entityid,damage,partname,damagename,screenshake)
         local entity = findEntityByNetworkId(entityid)
         if not entity then
-            print(`\nentity: {entity}\nentityid: {entityid}`)
-            print("entity doesnt exist cant damage them")
+            print(`entity doesnt exist cant damage them\nentity: {entity}\nentityid: {entityid}`)
             return
         end
 
