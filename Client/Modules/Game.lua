@@ -2,9 +2,9 @@ return function(api)
     local module = {}
 
     local getEntityByRealId = function(realid)
-        for _,entity in api.globals.entityDatabase do
+        for _,entity in getrenv()._G.Entities do
             --print(`\nentityId: {getrenv()._G.Entities[entity.realId].Id}\ntargetId: {realid}`)
-            if getrenv()._G.Entities[entity.realId].Id == realid then
+            if entity.Id == realid then
                 return entity
             end
         end
