@@ -1,6 +1,7 @@
 return function(api)
     local module = {}
 
+    local talentOld = nil
     module.once = function()
         local old = getrenv()._G.EndGame
         getrenv()._G.EndGame = function()
@@ -9,6 +10,7 @@ return function(api)
         api.globals.hasCalledGameEnd = false
         api.globals.oldEndGame = old
 
+        talentOld = getrenv()._G.TalentChosen
         getrenv()._G.TalentChosen = api.createHook(getrenv()._G.TalentChosen,function(hook,...)
             if not api.connected then
                 return hook.call(...)
@@ -23,6 +25,10 @@ return function(api)
             print("received pick talent from server")
             return hook.call(...)
         end)
+    end
+
+    module.chooseTalent = function(talentindex)
+        talentOld(talentindex,true)
     end
 
     module.update = function()

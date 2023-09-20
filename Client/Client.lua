@@ -426,7 +426,7 @@ end)
 
 registerMessage(10,function(talentindex)
     talentindex = tonumber(talentindex)
-    getrenv()._G.TalentChosen(talentindex,true)
+    apiCall("chooseTalent",talentindex)
 end)
 
 registerMessage(11,function(timeTarget,special)
