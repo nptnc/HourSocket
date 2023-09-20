@@ -137,6 +137,10 @@ return function(api)
             entity.FacingPosition = (targetCF.Position + targetCF.LookVector*1000)
             entity.TargetCFrame = targetCF
             entity.Facing = true
+          
+            for knockbackIndex,knockback in entity.knockback or {} do
+                entity.Knockback[knockbackIndex].Knockback = knockback
+            end
             --entity.Dead = playerdata.serverData.dead
         end
 
@@ -234,6 +238,14 @@ return function(api)
             networkId = entityId,
         }
         getrenv()._G.Entities[realEntityId].NetworkID = entityId
+    end
+
+    module.playerEntityKnockbackUpdate = function(entityid,index,x,y,z)
+        local entity = entityDatabase[entityid]
+        if not entity.knockback then
+            entity.knockback = {}
+        end
+        entity.knockback[index] = Vector3.new(x,y,z)
     end
 
     module.networkEntityStateUpdate = function(entityid,index,value)

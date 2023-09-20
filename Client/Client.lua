@@ -45,6 +45,7 @@ local messageIds = {
     updateEntityState = 9,
     pickTalent = 10,
     startTempo = 11,
+    updateEntityKnockback = 12,
 }
 
 main.player = player
@@ -336,7 +337,6 @@ registerMessage(4,function(userid,knockbackIndex,x,y,z)
     z = tonumber(z)
 
     apiCall("playerEntityKnockbackUpdate",userid,knockbackIndex,Vector3.new(x,y,z))
-    print("receiving networked knockback for player entity")
 end)
 
 registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
@@ -424,6 +424,16 @@ end)
 registerMessage(11,function(timeTarget,special)
     special = tonumber(special)
     apiCall("startTempo",timeTarget)
+end)
+
+registerMessage(4,function(entityid,knockbackIndex,x,y,z)
+    entityid = tonumber(entityid)
+    knockbackIndex = tonumber(knockbackIndex)
+    x = tonumber(x)
+    y = tonumber(y)
+    z = tonumber(z)
+
+    apiCall("entityKnockbackUpdate",entityid,knockbackIndex,Vector3.new(x,y,z))
 end)
 
 main.disconnect = function()
