@@ -169,7 +169,7 @@ return function(api)
             entity.Facing = true
             entity.Dead = playerdata.serverData.dead
             entity.TimeSpeed = 1
-            entity.SpeedMultiplier = playerdata.serverData.speed
+            entity.SpeedMultiplier = 1--playerdata.serverData.speed
             
             for knockbackIndex,knockback in entity.knockback or {} do
                 entity.Knockback[knockbackIndex].Knockback = knockback
