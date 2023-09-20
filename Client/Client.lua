@@ -386,12 +386,13 @@ registerMessage(9,function(entityid,index,value)
 end)
 
 registerMessage(10,function(talentindex)
-    tonumber(talentindex)
+    talentindex = tonumber(talentindex)
     getrenv()._G.TalentChosen(talentindex,true)
 end)
 
 registerMessage(11,function(timeTarget,special)
-    apiCall("startTempo",timeTarget,special)
+    special = tonumber(special)
+    apiCall("startTempo",timeTarget)
 end)
 
 main.disconnect = function()
