@@ -47,6 +47,7 @@ local messageIds = {
     startTempo = 11,
     updateEntityKnockback = 12,
     intermissionStarted = 13,
+    damageRequest = 14,
 }
 
 main.player = player
@@ -67,6 +68,8 @@ local apiCall = function(method,...)
         end
     end
 end
+
+main.apiCall = apiCall
 
 main.doesPlayerHaveEntity = function(playerdata)
     if playerdata.entity == nil then
@@ -450,6 +453,14 @@ registerMessage(13,function(isArena)
     local humrp = getrenv()._G.Entities[1].RootPart
     humrp.Anchored = true
     apiCall("gameShowTalentPopup")
+end)
+
+registerMessage(14,function(userid,entityid,damage,partname,damagename,screenshake)
+    userid = tonumber(userid)
+    entityid = tonumber(entityid)
+    damage = tonumber(damage)
+    screenshake = tonumber(screenshake)
+    apiCall("gameDealDamage",userid,entityid,damage,partname,damagename,screenshake)
 end)
 
 main.disconnect = function()

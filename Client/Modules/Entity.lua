@@ -248,6 +248,22 @@ return function(api)
         entity.knockback[index] = Vector3.new(x,y,z)
     end
 
+    module.getEntityFromNetworkId = function(networkid)
+        for entityId,entity in entityDatabase do
+            if entity.networkId == networkid then
+                return entity
+            end
+        end
+    end
+
+    module.getEntityFromRealId = function(realid)
+        for entityId,entity in entityDatabase do
+            if entity.realId == realid then
+                return entity
+            end
+        end
+    end
+
     module.networkEntityStateUpdate = function(entityid,index,value)
         print(`i have received a network entity state update and i am {api.getMe().serverData.isHost and "host" or "non host."} trying to update {index} to {value}`)
         local entityData = entityDatabase[entityid]
