@@ -23,8 +23,12 @@ return function(api)
             end,args.Target)
 
             if not api.isHost() then
-                local message = api.prepareMessage("damageRequest",target,args.Amount,args.PartName,args.Name,args.ScreenShake)
-                api.sendToServer(message)
+                if target then
+                    local message = api.prepareMessage("damageRequest",target,args.Amount,args.PartName,args.Name,args.ScreenShake)
+                    api.sendToServer(message)
+                else
+                    warn("entity isnt registered on server.")
+                end
                 return
             elseif api.isHost() then
                 for userid,playerdata in api.registeredPlayers do
