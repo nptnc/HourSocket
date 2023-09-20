@@ -94,7 +94,6 @@ return function(api)
     end
 
     local knockbackPreviousValues = {}
-    local previousNumberValues = {}
     module.update = function()
         if not api.connected then
             return
@@ -111,13 +110,6 @@ return function(api)
         
         local myEntity = getrenv()._G.Entities[1]
         if myEntity then 
-            if previousNumberValues.speed and myEntity.SpeedMultiplier ~= previousNumberValues.speed then
-                local message = api.prepareMessage("updateState",
-                    "speed",
-                    myEntity.SpeedMultiplier
-                )
-                api.sendToServer(message)
-            end
             for knockbackIndex,knockbackData in myEntity.Knockback do
                 if knockbackPreviousValues[knockbackIndex] == nil then
                     continue
@@ -137,7 +129,6 @@ return function(api)
             for knockbackIndex,knockbackData in myEntity.Knockback do
                 knockbackPreviousValues[knockbackIndex] = knockbackData.Knockback
             end
-            previousNumberValues.speed = myEntity.SpeedMultiplier
         end
         
         for userid,playerdata in api.registeredPlayers do
