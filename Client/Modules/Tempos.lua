@@ -35,8 +35,10 @@ return function(api)
         end))
         table.insert(loops,rs.Heartbeat:Connect(function()
             timemodule.UpdatePost(timemodule,(1/400)/5)
-            for _,loop in loops do
-                loop:Disconect()
+            if timemodule.Special <= 0 then
+                for _,loop in loops do
+                    loop:Disconnect()
+                end
             end
         end))
     end
