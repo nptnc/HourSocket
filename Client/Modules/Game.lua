@@ -44,9 +44,9 @@ return function(api)
                     warn("entity isnt registered on server.")
                 end
                 return
-            elseif api.isHost() then
+            elseif api.isHost() and args.Networked ~= true then
                 for userid,playerdata in api.registeredPlayers do
-                    if playerdata.entity and playerdata.entity.Id == args.Source and args.Networked ~= true then
+                    if playerdata.entity and playerdata.entity.Id == args.Source then
                         return
                     end
                 end
@@ -58,9 +58,11 @@ return function(api)
     module.gameDealDamage = function(userid,entityid,damage,partname,damagename,screenshake)
         local entity = getEntityFromNetworkId(entityid)
         if not entity then
-            warn("entity doesnt exist cant damage them")
+            print("entity doesnt exist cant damage them")
             return
         end
+
+        print("dealing damage")
 
         damageOld({
             Source = api.registeredPlayers[userid].entity.Id,
@@ -75,16 +77,16 @@ return function(api)
     end
 
     module.gameShowTalentPopup = function()
-        local map = getrenv()._G.Map
-        map.Die(map)
-        old()
-
         for index,aidata in getrenv()._G.Entities do
             if aidata.specialId then
                 continue
             end
-            aidata.Die()
+            aidata.Die(aidata)
         end
+
+        local map = getrenv()._G.Map
+        map.Die(map)
+        old()
     end
 
     return module
