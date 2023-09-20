@@ -54,18 +54,34 @@ main.player = player
 main.registeredPlayers = {}
 main.globals = {}
 
+local cutTable = function(t,ind)
+    local newT = {}
+    for index,value in t do
+        if type(index) == "number" and index <= ind then
+            continue
+        end
+        if type(index) == "number" then
+            index[index-ind] = value
+            continue
+        end
+        index[ind] = value
+    end
+    return newT
+end
+
 local apiCall = function(method,...)
     for moduleName, module in requiredModules do
         if not module[method] then
             continue
         end
         local args = {...}
-        local success,error = pcall(function()
+        local newArgs = table.pack(pcall(function()
             module[method](table.unpack(args))
-        end)
-        if not success then
-            warn(`an error occured while trying to call method of module {moduleName}.\n{error}`)
+        end))
+        if newArgs[1] == false then
+            warn(`an error occured while trying to call method of module {moduleName}.\n{newArgs[2]}`)
         end
+        return table.unpack(cutTable(newArgs,1))
     end
 end
 
