@@ -469,6 +469,7 @@ registerMessage(13,function(isArena)
     getrenv()._G.ArenaMode = isArena or false
     getrenv()._G.GameState = "Intermission"
     getrenv()._G.TimeEnabled = false
+    getrenv()._G.SetCameraLock(false)
     local humrp = getrenv()._G.Entities[1].RootPart
     humrp.Anchored = true
     apiCall("gameShowTalentPopup")

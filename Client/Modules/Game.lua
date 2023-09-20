@@ -38,7 +38,7 @@ return function(api)
             if not api.isHost() then
                 local target = getEntityByRealId(args.Target)
                 if target and target.NetworkID ~= nil then
-                    local message = api.prepareMessage("damageRequest",target.NetworkID,args.Amount,args.PartName,args.Name,args.ScreenShake)
+                    local message = api.prepareMessage("damageRequest",target.NetworkID,args.Amount,args.PartName,args.Name,args.ScreenShake or 0)
                     api.sendToServer(message)
                     print("networking damage request")
                 else
