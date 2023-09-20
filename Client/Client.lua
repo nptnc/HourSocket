@@ -69,19 +69,22 @@ local cutTable = function(t,ind)
     return newT
 end
 
-local apiCall = function(method,...)
+local apiCall = function(method,callback,...)
     for moduleName, module in requiredModules do
         if not module[method] then
             continue
         end
         local args = {...}
-        local newArgs = table.pack(pcall(function()
-            module[method](table.unpack(args))
-        end))
-        if newArgs[1] == false then
-            warn(`an error occured while trying to call method of module {moduleName}.\n{newArgs[2]}`)
+        local success,error2 = pcall(function()
+            if not callback then
+                module[method](table.unpack(args))
+                return
+            end
+            callback(table.unpack(module[method](table.unpack(args))))
+        end)
+        if success == false then
+            warn(`an error occured while trying to call method of module {moduleName}.\n{error2}`)
         end
-        return table.unpack(cutTable(newArgs,1))
     end
 end
 
@@ -162,12 +165,12 @@ main.isThrottling = false
 main.sendToServer = function(...)
     if packetsSentOut > throttleAt then
         main.isThrottling = true
-        apiCall("sentMessage", packetsSentOut, packetsSentOut <= throttleAt and true or false)
+        apiCall("sentMessage",nil, packetsSentOut, packetsSentOut <= throttleAt and true or false)
         return
     end
     packetsSentOut += 1
     main.socket:Send(...)
-    apiCall("sentMessage", packetsSentOut, packetsSentOut <= throttleAt and true or false)
+    apiCall("sentMessage",nil, packetsSentOut, packetsSentOut <= throttleAt and true or false)
 end
 
 main.createHook = function(old,replace)
@@ -278,7 +281,7 @@ end)
 registerMessage(0,function(userId)
     userId = tonumber(userId)
 
-    apiCall("playerDisconnected",userId)
+    apiCall("playerDisconnected",nil,userId)
     main.destroyPlayerEntity(userId)
     main.registeredPlayers[userId] = nil
     print(`received disconnect for player {userId}`)
@@ -300,7 +303,7 @@ local registerPlayer = function(userid,data)
     
     print(`received register player {userid}`)
 
-    apiCall("playerRegistered",userid,main.registeredPlayers[userid])
+    apiCall("playerRegistered",nil,userid,main.registeredPlayers[userid])
     if tonumber(userid) ~= player.UserId then
         return
     end
@@ -350,7 +353,7 @@ registerMessage(3,function(userid,key,value)
         getrenv()._G.Entities[entityId] = nil
         messageplayer.entity = nil
     end
-    apiCall("playerStateUpdate",userid,key,value)
+    apiCall("playerStateUpdate",nil,userid,key,value)
 end)
 
 registerMessage(4,function(userid,knockbackIndex,x,y,z)
@@ -360,7 +363,7 @@ registerMessage(4,function(userid,knockbackIndex,x,y,z)
     y = tonumber(y)
     z = tonumber(z)
 
-    apiCall("playerEntityKnockbackUpdate",userid,knockbackIndex,Vector3.new(x,y,z))
+    apiCall("playerEntityKnockbackUpdate",nil,userid,knockbackIndex,Vector3.new(x,y,z))
 end)
 
 registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
@@ -381,7 +384,7 @@ registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
         Bypass = true,
     })
 
-    apiCall("networkedEntityCreated",entityid,realEntityId,posx,posy,posz)
+    apiCall("networkedEntityCreated",nil,entityid,realEntityId,posx,posy,posz)
 end)
 
 registerMessage(6,function(entityid,posx,posy,posz,rosx,rosy,rosz)
@@ -393,7 +396,7 @@ registerMessage(6,function(entityid,posx,posy,posz,rosx,rosy,rosz)
     rosy = tonumber(rosy)
     rosz = tonumber(rosz)
 
-    apiCall("networkEntityUpdate",entityid,posx,posy,posz,rosx,rosy,rosz)
+    apiCall("networkEntityUpdate",nil,entityid,posx,posy,posz,rosx,rosy,rosz)
 end)
 
 registerMessage("doInput",function(userid,input,posx,posy,posz,rotx,roty,rotz)
@@ -437,17 +440,17 @@ registerMessage(9,function(entityid,index,value)
     if index == "health" then
         value = tonumber(value)
     end
-    apiCall("networkEntityStateUpdate",entityid,index,value)
+    apiCall("networkEntityStateUpdate",nil,entityid,index,value)
 end)
 
 registerMessage(10,function(talentindex)
     talentindex = tonumber(talentindex)
-    apiCall("chooseTalent",talentindex)
+    apiCall("chooseTalent",nil,talentindex)
 end)
 
 registerMessage(11,function(timeTarget,special)
     special = tonumber(special)
-    apiCall("startTempo",timeTarget)
+    apiCall("startTempo",nil,timeTarget)
 end)
 
 registerMessage(12,function(entityid,knockbackIndex,x,y,z)
@@ -457,7 +460,7 @@ registerMessage(12,function(entityid,knockbackIndex,x,y,z)
     y = tonumber(y)
     z = tonumber(z)
 
-    apiCall("entityKnockbackUpdate",entityid,knockbackIndex,Vector3.new(x,y,z))
+    apiCall("entityKnockbackUpdate",nil,entityid,knockbackIndex,Vector3.new(x,y,z))
 end)
 
 registerMessage(13,function(isArena)
@@ -476,7 +479,7 @@ registerMessage(14,function(userid,entityid,damage,partname,damagename,screensha
     entityid = tonumber(entityid)
     damage = tonumber(damage)
     screenshake = tonumber(screenshake)
-    apiCall("gameDealDamage",userid,entityid,damage,partname,damagename,screenshake)
+    apiCall("gameDealDamage",nil,userid,entityid,damage,partname,damagename,screenshake)
 end)
 
 main.disconnect = function()

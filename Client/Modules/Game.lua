@@ -16,12 +16,14 @@ return function(api)
         getrenv()._G.DamageRequest = api.createHook(getrenv()._G.DamageRequest,function(hook,...)
             local args = {...}
             args = args[1]
-            
-            print(args.Target)
-            local target = api.apiCall("getEntityFromRealId",args.Target)
+
+            local target = nil
+            api.apiCall("getEntityFromRealId",function(entity)
+                target = entity.networkId
+            end,args.Target)
 
             if not api.isHost() then
-                local message = api.prepareMessage("damageRequest",target.networkId,args.Amount,args.PartName,args.Name,args.ScreenShake)
+                local message = api.prepareMessage("damageRequest",target,args.Amount,args.PartName,args.Name,args.ScreenShake)
                 api.sendToServer(message)
                 return
             elseif api.isHost() then
@@ -29,17 +31,27 @@ return function(api)
                     if playerdata.entity and playerdata.entity.Id == args.Source and args.Networked ~= true then
                         return
                     end
-                end 
+                end
             end
             return hook.call(...)
         end)
     end
 
     module.gameDealDamage = function(userid,entityid,damage,partname,damagename,screenshake)
+        local realId = nil
+        api.apiCall("getEntityFromNetworkId",function(entity) 
+            realId = entity.realId
+        end,entityid)
+
+        if not realId then
+            warn("no real id, cant damage entity")
+            return
+        end
+
         damageOld({
             Source = api.registeredPlayers[userid].entity.Id,
             Amount = damage,
-            Target = api.apiCall("getEntityFromNetworkId",entityid).realId,
+            Target = realId,
             PartName = partname,
             Name = damagename,
             ScreenShake = screenshake,
