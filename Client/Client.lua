@@ -22,6 +22,7 @@ local modules = {
     "Entity",
     "MultiplayerQOL",
     "Player",
+    "Tempos",
 }
 
 local main = {}
@@ -38,6 +39,7 @@ local messageIds = {
     doInput = 8,
     updateEntityState = 9,
     pickTalent = 10,
+    startTempo = 11,
 }
 
 main.player = player
@@ -373,6 +375,10 @@ end)
 registerMessage(10,function(talentindex)
     tonumber(talentindex)
     getrenv()._G.TalentChosen(talentindex,true)
+end)
+
+registerMessage(11,function(timeTarget,special)
+    apiCall("startTempo",timeTarget,special)
 end)
 
 main.disconnect = function()
