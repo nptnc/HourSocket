@@ -254,6 +254,7 @@ return function(api)
 
     module.getEntityFromRealId = function(realid)
         for _,entity in entityDatabase do
+            print(entity.realId,realid)
             if entity.realId == realid then
                 return entity
             end
@@ -261,8 +262,10 @@ return function(api)
     end
 
     module.networkEntityStateUpdate = function(entityid,index,value)
-        print(`i have received a network entity state update and i am {api.getMe().serverData.isHost and "host" or "non host."} trying to update {index} to {value}`)
         local entityData = entityDatabase[entityid]
+        if not entityData then
+            return
+        end
         entityData[index] = value
     end
 
