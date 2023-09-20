@@ -13,15 +13,11 @@ return function(api)
     module.playerRespawned = function()
         local tc = getrenv()._G.TimeControl
         tc.Begin = api.createHook(tc.Begin,function(hook,...)
-            local args2 = {}
-            for index,value in hook.call(...) or {} do
-                args2[index] = value
-            end
+            hook.call(...)
             if tc.Active then
                 local message = api.prepareMessage("startTempo",getrenv()._G.TimePower,tc.Special)
                 api.sendToServer(message)
             end
-            return table.unpack(args2)
         end)
     end
 
