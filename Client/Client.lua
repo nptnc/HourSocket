@@ -83,7 +83,7 @@ local apiCall = function(method,callback,...)
             callback(table.unpack(module[method](table.unpack(args)) or {}))
         end)
         if success == false then
-            warn(`an error occured while trying to call method of module {moduleName}.\n{error2}`)
+            warn(`an error occured while trying to call method of module {moduleName} {method}.\n{error2}`)
         end
     end
 end
@@ -548,9 +548,7 @@ end)
 local hookToMyEntity = function()
     print("hooked to me")
 
-    warn(`dead state changed false`)
     getrenv()._G.Entities[1].Dead = false
-
     apiCall("playerRespawned")
 
     local getVariableChanged = function(a,b,onChanged)
@@ -564,7 +562,6 @@ local hookToMyEntity = function()
     end
     
     getVariableChanged(getrenv()._G.Entities[1],"Dead",function(value)
-        warn(`dead state changed {value}`)
         if value then
             apiCall("playerDied")
         end

@@ -16,19 +16,16 @@ return function(api)
                 return hook.call(...)
             end
             local args = {...}
-            if args[2] ~= true then
-                local message = api.prepareMessage("pickTalent",args[1])
-                api.sendToServer(message)
-                print("sent picked talent to server")
-                return -- we return nothing and let the server know so they deem when we can choose
-            end
-            print("received pick talent from server")
-            return hook.call(...)
+            local message = api.prepareMessage("pickTalent",args[1])
+            api.sendToServer(message)
+            print("sent picked talent to server")
+            return -- we return nothing and let the server know so they deem when we can choose
         end)
     end
 
     module.chooseTalent = function(talentindex)
-        talentOld(talentindex,true)
+        print(`picking talent {talentindex}`)
+        talentOld(talentindex)
     end
 
     module.update = function()
