@@ -26,6 +26,7 @@ return function(api)
             end
         end)
 
+        damageOld = getrenv()._G.DamageRequest
         getrenv()._G.DamageRequest = api.createHook(getrenv()._G.DamageRequest,function(hook,...)
             if not api.connected then
                 return hook.call(...)
