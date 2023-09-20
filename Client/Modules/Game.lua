@@ -17,6 +17,7 @@ return function(api)
             local args = {...}
             args = args[1]
             
+            print(args.Target)
             local target = api.apiCall("getEntityFromRealId",args.Target)
 
             if not api.isHost() then
@@ -25,7 +26,7 @@ return function(api)
                 return
             elseif api.isHost() then
                 for userid,playerdata in api.registeredPlayers do
-                    if playerdata.entity.Id == args.Source and args.Networked ~= true then
+                    if playerdata.entity and playerdata.entity.Id == args.Source and args.Networked ~= true then
                         return
                     end
                 end 
