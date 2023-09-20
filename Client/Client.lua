@@ -466,13 +466,13 @@ end)
 registerMessage(13,function(isArena)
     isArena = main.findOutVariable(isArena)
 
-    getrenv()._G.ArenaMode = isArena or false
     getrenv()._G.GameState = "Intermission"
     getrenv()._G.TimeEnabled = false
     getrenv()._G.SetCameraLock(false)
     local humrp = getrenv()._G.Entities[1].RootPart
     humrp.Anchored = true
     apiCall("gameShowTalentPopup")
+    getrenv()._G.ArenaMode = isArena or false
 end)
 
 registerMessage(14,function(userid,entityid,damage,partname,damagename,screenshake)
