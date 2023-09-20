@@ -4,8 +4,8 @@ return function(api)
     local fakeTimeControls = {}
     module.once = function()
         for _,timeControlModule in game.ReplicatedStorage.Scripts.TimeControl:GetChildren() do
-            local module = require(timeControlModule)
-            fakeTimeControls[timeControlModule.Name] = module
+            local newModule = require(timeControlModule)
+            fakeTimeControls[timeControlModule.Name] = newModule
         end
     end
 
