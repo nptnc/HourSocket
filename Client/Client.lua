@@ -312,10 +312,7 @@ registerMessage(4,function(userid,knockbackIndex,x,y,z)
     y = tonumber(y)
     z = tonumber(z)
 
-    local messageplayer = main.registeredPlayers[userid]
-    local entityId = getEntityIdByEntity(messageplayer.entity)
-    local entity = getrenv()._G.Entities[entityId]
-    entity.Knockback[knockbackIndex].Knockback = Vector3.new(x,y,z)
+    apiCall("playerEntityKnockbackUpdate",userid,knockbackIndex,Vector3.new(x,y,z))
     print("receiving networked knockback for player entity")
 end)
 

@@ -170,12 +170,24 @@ return function(api)
             entity.Dead = playerdata.serverData.dead
             entity.TimeSpeed = 1
             entity.SpeedMultiplier = playerdata.serverData.speed
+            
+            for knockbackIndex,knockback in entity.knockback or {} do
+                entity.Knockback[knockbackIndex].Knockback = knockback
+            end
 
             for cooldownName,cooldownData in entity.Cooldowns do
-                cooldownData.Charges = 99
+                cooldownData.Charges = 1
                 cooldownData.Cooldown = 0
             end
         end
+    end
+
+    module.playerEntityKnockbackUpdate = function(userid,index,x,y,z)
+        local messageplayer = api.registeredPlayers[userid]
+        if not messageplayer.knockback then
+            messageplayer.knockback = {}
+        end
+        messageplayer.knockback[index] = Vector3.new(x,y,z)
     end
 
     module.onDisconnect = function()
