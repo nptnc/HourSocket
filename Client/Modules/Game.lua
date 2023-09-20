@@ -55,9 +55,19 @@ return function(api)
         end)
     end
 
+    local findEntityByNetworkId = function(networkId)
+        for id,entity in getrenv()._G.Entities do
+            if entity.NetworkID == nil or entity.NetworkID ~= networkId then
+                continue
+            end
+            return id
+        end
+    end
+
     module.gameDealDamage = function(userid,entityid,damage,partname,damagename,screenshake)
-        local entity = getEntityFromNetworkId(entityid)
+        local entity = findEntityByNetworkId(entityid)
         if not entity then
+            print(`\nentity: {entity}\nentityid: {entityid}`)
             print("entity doesnt exist cant damage them")
             return
         end

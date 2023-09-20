@@ -9,8 +9,7 @@ return function(api)
         return api.hardOptimize(v3.X),api.hardOptimize(v3.Y),api.hardOptimize(v3.Z)
     end
 
-    local entityDatabase = {}
-    api.globals.entityDatabase = entityDatabase
+    api.globals.entityDatabase = {}
 
     local globalEntityId = 0
     local reg = function(entity,realId,entitymodelid,x,y,z,xr,yr,zr)
@@ -18,7 +17,7 @@ return function(api)
 
         getrenv()._G.Entities[realId].NetworkID = globalEntityId
 
-        entityDatabase[globalEntityId] = {
+        api.globals.entityDatabase[globalEntityId] = {
             cframe = CFrame.new(x,y,z) * CFrame.Angles(math.rad(xr),math.rad(yr),math.rad(zr)),
             realId = realId,
             networkId = globalEntityId,
@@ -110,13 +109,13 @@ return function(api)
 
     module.update = function()
         -- non host
-        for entityId,entityData in api.getMe().serverData.isHost and {} or entityDatabase do
+        for entityId,entityData in api.getMe().serverData.isHost and {} or api.globals.entityDatabase do
             local realId = entityData.realId
             local entity = getrenv()._G.Entities[realId]
 
             if findEntityByNetworkId(entityData.networkId) == nil or entity == nil then
                 warn("unregistered entity non host")
-                entityDatabase[entityId] = nil
+                api.globals.entityDatabase[entityId] = nil
                 continue
             end
 
@@ -146,18 +145,18 @@ return function(api)
         end
 
         -- host
-        for entityId,entityData in api.getMe().serverData.isHost and entityDatabase or {} do
+        for entityId,entityData in api.getMe().serverData.isHost and api.globals.entityDatabase or {} do
             local realId = entityData.realId
             local entity = getrenv()._G.Entities[realId]
             if entity == nil then
                 warn("unregistered entity host loop 1")
-                entityDatabase[entityId] = nil
+                api.globals.entityDatabase[entityId] = nil
                 continue
             end
 
             if findEntityByNetworkId(entityData.networkId) == nil or entity == nil then
                 warn("unregistered entity host loop 1")
-                entityDatabase[entityId] = nil
+                api.globals.entityDatabase[entityId] = nil
                 continue
             end
 
@@ -183,7 +182,7 @@ return function(api)
             lastEntityStuff[entityId].health = entityHealth
         end
 
-        local networkEntities = api.len(entityDatabase)
+        local networkEntities = api.len(api.globals.entityDatabase)
         local fps = (20/networkEntities)
         if networkEntities == 0 or tick() - sinceLastUpdate < 1/fps  then
             return
@@ -193,14 +192,14 @@ return function(api)
         sinceLastUpdate = tick()
 
         -- host
-        for entityId,entityData in api.getMe().serverData.isHost and entityDatabase or {} do
+        for entityId,entityData in api.getMe().serverData.isHost and api.globals.entityDatabase or {} do
             local realId = entityData.realId
             local entity = getrenv()._G.Entities[realId]
             
             local pos = entity.RootPart.Position
             local rot = entity.RootPart.Rotation
 
-            if entityDatabase.lastNetworkedInformation and (entityDatabase.lastNetworkedInformation.Position-pos).Magnitude < 1 and (entityDatabase.lastNetworkedInformation.Rotation-rot).Magnitude < 1 then
+            if entityData.lastNetworkedInformation and (entityData.lastNetworkedInformation.Position-pos).Magnitude < 1 and (entityData.lastNetworkedInformation.Rotation-rot).Magnitude < 1 then
                 return
             end
 
@@ -215,7 +214,7 @@ return function(api)
             )
             api.sendToServer(message)
 
-            entityDatabase.lastNetworkedInformation = {
+            entityData.lastNetworkedInformation = {
                 Position = Vector3.new(pos.X,pos.Y,pos.Z),
                 Rotation = Vector3.new(rot.X,rot.Y,rot.Z)
             }
@@ -223,7 +222,7 @@ return function(api)
     end
 
     module.networkEntityUpdate = function(entityid,posx,posy,posz,rotx,roty,rotz)
-        local entityData = entityDatabase[entityid]
+        local entityData = api.globals.entityDatabase[entityid]
         if not entityData then
             return
         end
@@ -232,7 +231,7 @@ return function(api)
 
     module.networkedEntityCreated = function(entityId,realEntityId,posx,posy,posz)
         warn(`non host, registering entity {entityId} in script entity database`)
-        entityDatabase[entityId] = {
+        api.globals.entityDatabase[entityId] = {
             cframe = CFrame.new(posx,posy,posz),
             realId = realEntityId,
             health = getrenv()._G.Entities[realEntityId].Resources.Health or 100,
@@ -242,19 +241,15 @@ return function(api)
     end
 
     module.playerEntityKnockbackUpdate = function(entityid,index,x,y,z)
-        local entity = entityDatabase[entityid]
+        local entity = api.globals.entityDatabase[entityid]
         if not entity.knockback then
             entity.knockback = {}
         end
         entity.knockback[index] = Vector3.new(x,y,z)
     end
 
-    module.getEntityFromNetworkId = function(networkid)
-        return entityDatabase[networkid]
-    end
-
     module.networkEntityStateUpdate = function(entityid,index,value)
-        local entityData = entityDatabase[entityid]
+        local entityData = api.globals.entityDatabase[entityid]
         if not entityData then
             return
         end
