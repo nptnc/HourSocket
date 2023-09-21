@@ -17,7 +17,7 @@ return function(api)
     local talentScreen = function(yes)
         local toHide = {"Talent1","Talent2","Talent3","Skip"}
         for _,object in toHide do
-            getrenv()._G.AllGui.Talents[object].Visible = yes and false or true
+            getrenv()._G.AllGui.Talents[object].Visible = not yes
         end
         getrenv()._G.AllGui.Talents.Instruction.Text = yes and "Waiting for others." or "Choose an upgrade."
     end
