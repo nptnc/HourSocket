@@ -15,11 +15,12 @@ return function(api)
     end
 
     local talentScreen = function(yes)
+        local talentui = getrenv()._G.AllGui.Talents
         local toHide = {"Talent1","Talent2","Talent3","Skip"}
         for _,object in toHide do
-            getrenv()._G.AllGui.Talents[object].Visible = not yes
+            talentui[object].Visible = not yes
         end
-        getrenv()._G.AllGui.Talents.Instruction.Text = yes and "Waiting for others." or "Choose an upgrade."
+        talentui.Instruction.Text = yes and "Waiting for others." or "Choose an upgrade."
     end
 
     local old
@@ -52,7 +53,7 @@ return function(api)
 
         damageOld = getrenv()._G.DamageRequest
         getrenv()._G.DamageRequest = api.createHook(getrenv()._G.DamageRequest,function(hook,...)
-            if not api.connected then
+            if not api.connected or not api.getMe() then
                 return hook.call(...)
             end
 
