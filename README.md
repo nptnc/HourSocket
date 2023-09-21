@@ -20,7 +20,7 @@ This is a Roblox "Hack" that connects to an external server using websockets whi
 - Run `main.py` and optionally `webserver.py`
 
 ### Connecting to a server
-- Using an executor of your choice (we suggest [Synapse X](https://x.synapse.to)<sub>Unavailable</sub> or [krnl](https://krnl.place))
+- Using an executor of your choice (we suggest [Synapse X](https://x.synapse.to)<sub>Paid, Unavailable</sub> or [krnl](https://krnl.place)<sub>Free</sub>)
 - Inject into Roblox using your executor
 - Optionally set your server's IP and Port (If you aren't using a private server you can skip this step)
 - Execute the script:
