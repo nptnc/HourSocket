@@ -14,7 +14,7 @@ return function(api)
         rs.Heartbeat:Connect(function(dt)
             ui.Enabled = isActive
 
-            local shouldLock = isActive
+            local shouldLock = not isActive
             if getrenv()._G.Pause then
                 shouldLock = false
             end
