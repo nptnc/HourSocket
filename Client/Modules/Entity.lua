@@ -144,6 +144,15 @@ return function(api)
             --entity.Dead = playerdata.serverData.dead
         end
 
+        local networkEntities = api.len(api.globals.entityDatabase)
+        local fps = (20/networkEntities)
+        if networkEntities == 0 or tick() - sinceLastUpdate < 1/fps  then
+            return
+        end
+
+        --print(`entity update fps is {fps} {networkEntities}`)
+        sinceLastUpdate = tick()
+
         -- host
         for entityId,entityData in api.getMe().serverData.isHost and api.globals.entityDatabase or {} do
             local realId = entityData.realId
@@ -181,15 +190,6 @@ return function(api)
 
             lastEntityStuff[entityId].health = entityHealth
         end
-
-        local networkEntities = api.len(api.globals.entityDatabase)
-        local fps = (20/networkEntities)
-        if networkEntities == 0 or tick() - sinceLastUpdate < 1/fps  then
-            return
-        end
-
-        --print(`entity update fps is {fps} {networkEntities}`)
-        sinceLastUpdate = tick()
 
         -- host
         for entityId,entityData in api.getMe().serverData.isHost and api.globals.entityDatabase or {} do
