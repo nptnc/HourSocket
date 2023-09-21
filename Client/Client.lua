@@ -367,9 +367,11 @@ registerMessage(3,function(userid,key,value)
         messageplayer.serverData[key] = main.findOutVariable(value)
         local entityId = getEntityIdByEntity(messageplayer.entity)
         local entity = getrenv()._G.Entities[entityId]
-        entity.Character:Destroy()
-        getrenv()._G.Entities[entityId] = nil
-        messageplayer.entity = nil
+        if entity then
+            entity.Character:Destroy()
+            getrenv()._G.Entities[entityId] = nil
+            messageplayer.entity = nil
+        end
     end
     apiCall("playerStateUpdate",nil,userid,key,value)
 end)
