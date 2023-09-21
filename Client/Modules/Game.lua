@@ -91,6 +91,7 @@ return function(api)
     module.chooseTalent = function(talentindex)
         print(`picking talent {talentindex}`)
         talentOld(talentindex)
+        talentScreen(false)
     end
     
     local findEntityByNetworkId = function(networkId)
