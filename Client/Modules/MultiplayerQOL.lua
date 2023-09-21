@@ -11,7 +11,7 @@ return function(api)
     end
 
     module.update = function()
-        if getrenv()._G.Entities[1].Dead == true then
+        if getrenv()._G.Entities[1] and getrenv()._G.Entities[1].Dead == true then
             local deadPeople = {}
             for userid,playerdata in api.registeredPlayers do
                 if userid == api.player.UserId then
