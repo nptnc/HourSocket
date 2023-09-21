@@ -539,7 +539,8 @@ registerMessage(15,function(entityid,input)
         print("entity id is nil from network")
         return
     end
-    print(`trying to deal damage to entity {entityid} from network!`)
+    
+    print(`doing entity input {input}`)
     apiCall("entityDoInput",nil,entityid,input)
 end)
 
