@@ -26,6 +26,7 @@ return function(api)
         local message = api.prepareMessage("registerEntity",globalEntityId,entitymodelid,entity.DamageTeam,entity.IsBoss or false,x,y,z,xr,yr,zr)
         api.sendToServer(message)
         print(`registering entity {realId} as {globalEntityId} on network`)
+        return globalEntityId
     end
 
     module.playerRegistered = function(playerid,data)
@@ -40,6 +41,26 @@ return function(api)
             local xr,yr,zr = getVector3(entity.RootPart.Rotation)
             reg(entity,entity.Name,x,y,z,xr,yr,zr)
         end--]]
+    end
+
+    local getEntityByRealId = function(realid)
+        for _,entity in getrenv()._G.Entities do
+            if entity.Id == realid then
+                return entity
+            end
+        end
+    end
+
+    local getRealEntityFromNetworkId = function(networkId)
+        for _,entity in getrenv()._G.Entities do
+            if entity.networkId == networkId then
+                return entity
+            end
+        end
+    end
+
+    local getEntityFromNetworkId = function(networkId)
+        return api.globals.entityDatabase[networkId]
     end
 
     module.once = function()
@@ -70,7 +91,14 @@ return function(api)
 
                 -- lets stop from creating infinite loops of players
                 if not args.IsPlayer then
-                    reg(entity,realEntityId,args.Name,x,y,z,xr,yr,zr)
+                    local entitynetworkid = reg(entity,realEntityId,args.Name,x,y,z,xr,yr,zr)
+                    for inputName,_ in entity.InputFunctions do
+                        entity.InputFunctions[inputName] = api.createHook(entity.InputFunctions[inputName],function(hook2,...)
+                            local message = api.prepareMessage("entityInput",entitynetworkid,inputName)
+                            api.sendToServer(message)
+                            return hook2.call(...)
+                        end)
+                    end
                 end
 
                 return realEntityId
@@ -81,8 +109,7 @@ return function(api)
                     local entity = getrenv()._G.Entities[realEntityId]
 
                     if not args.IsPlayer then
-                        --entity.Update = function() end
-                        entity.ProcessAI = function() end
+                        entity.ProcessAI = function() end -- bye bye ai
                     end
 
                     return realEntityId
@@ -254,6 +281,19 @@ return function(api)
             return
         end
         entityData[index] = value
+    end
+
+    module.entityDoInput = function(entityid,input)
+        local entity = getRealEntityFromNetworkId(entityid)
+        if not entity then
+            return
+        end
+        local inputFunction = entity.InputFunctions[input]
+        if not inputFunction then
+            warn(`input function {input} doesnt exist for entity {entityid}`)
+            return
+        end
+        entity.InputFunctions[input]() -- hopefully this will never require arguments 😭😭😭😭
     end
 
     return module

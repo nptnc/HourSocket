@@ -69,6 +69,7 @@ local messageIds = {
     updateEntityKnockback = 12,
     intermissionStarted = 13,
     damageRequest = 14,
+    entityInput = 15,
 }
 
 main.player = player
@@ -528,6 +529,18 @@ registerMessage(14,function(userid,entityid,damage,partname,damagename,screensha
     end
     print(`trying to deal damage to entity {entityid} from network!`)
     apiCall("gameDealDamage",nil,userid,entityid,damage,partname,damagename,screenshake)
+end)
+
+-- entity input
+registerMessage(15,function(entityid,input)
+    entityid = tonumber(entityid)
+
+    if not entityid then
+        print("entity id is nil from network")
+        return
+    end
+    print(`trying to deal damage to entity {entityid} from network!`)
+    apiCall("entityDoInput",nil,entityid,input)
 end)
 
 main.disconnect = function()
