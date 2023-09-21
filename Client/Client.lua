@@ -13,6 +13,27 @@ local player = game.Players.LocalPlayer
 local char = player.Character
 char.Archivable = true
 
+local websocketLayer = {}
+local exploit = "Unsupported Exploit"
+
+if Krnl then
+    exploit = "Krnl"
+    websocketLayer = {
+        connect = Krnl.WebSocket.connect,
+    }
+elseif syn then
+    exploit = "Synapse X"
+    websocketLayer = {
+        connect = syn.websocket.connect,
+    }
+end
+
+if exploit == "Unsupported Exploit" then
+    error("Unsupported Exploit")
+    getgenv()._G.LEExecuted = false
+    return
+end
+
 local fps = 30
 local sinceLastFPS = 0
 local seperator = ":::" -- dont change, this has to be the same on the server and the client otherwise one or the other wont receive information.
@@ -523,7 +544,7 @@ main.disconnect = function()
 end
 
 main.tryToConnect = function(ip)
-    local socket = Krnl.WebSocket.connect(ip)
+    local socket = websocketLayer.connect(ip)
     main.socket = socket
     main.connected = true
 

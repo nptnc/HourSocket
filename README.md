@@ -13,7 +13,6 @@ This is a Roblox "Hack" that connects to an external server using websockets whi
 
 ## How do I play?
 ~~If you're stupid, here's a video tutorial on how to play on a [public server](https://google.com/) or [private server](https://google.com/).~~
-
 ### Creating a server
 - [Download Python](https://www.python.org/downloads/release/python-3110/) (If you already have Python, skip this step)
 - Clone this repository using `git clone https://github.com/nptnc/HourSocket`
@@ -22,7 +21,7 @@ This is a Roblox "Hack" that connects to an external server using websockets whi
 
 ### Connecting to a server
 - Using an executor of your choice (we suggest [Synapse X](https://x.synapse.to)<sub>Unavailable</sub> or [krnl](https://krnl.place))
-- Inject in to Roblox using your executor
+- Inject into Roblox using your executor
 - Optionally set your server's IP and Port (If you aren't using a private server you can skip this step)
 - Execute the script:
 ```lua
