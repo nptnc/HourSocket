@@ -13,9 +13,14 @@ return function(api)
 
         rs.Heartbeat:Connect(function(dt)
             ui.Enabled = isActive
-            if isActive then
+
+            local shouldLock = isActive
+            if getrenv()._G.Pause then
+                shouldLock = false
+            end
+            if shouldLock == false then
                 uis.MouseBehavior = Enum.MouseBehavior.Default
-            elseif not isActive and getrenv()._G.GameState == "Combat" then
+            elseif shouldLock and getrenv()._G.GameState == "Combat" then
                 uis.MouseBehavior = Enum.MouseBehavior.LockCenter
             end
         end)
