@@ -14,16 +14,40 @@ return function(api)
         return api.globals.entityDatabase[networkId]
     end
 
+    local talentScreen = function(yes)
+        local toHide = {"Talent1","Talent2","Talent3","Skip"}
+        for _,object in toHide do
+            getrenv()._G.AllGui.Talents[object].Visible = yes and false or true
+        end
+        getrenv()._G.AllGui.Talents.Instruction.Text = yes and "Waiting for others." or "Choose an upgrade."
+    end
+
     local old
     local damageOld
+    local talentOld
     module.once = function()
         old = getrenv()._G.TalentPopup
         getrenv()._G.TalentPopup = api.createHook(getrenv()._G.TalentPopup,function(hook,...)
             hook.call(...)
+            talentScreen(false)
             if api.isHost() then
                 local message = api.prepareMessage("intermissionStarted",getrenv()._G.ArenaMode)
                 api.sendToServer(message)
             end
+        end)
+
+        talentOld = getrenv()._G.TalentChosen
+        getrenv()._G.TalentChosen = api.createHook(getrenv()._G.TalentChosen,function(hook,...)
+            if not api.connected then
+                return hook.call(...)
+            end
+            local args = {...}
+
+            talentScreen(true)
+            local message = api.prepareMessage("pickTalent",args[1])
+            api.sendToServer(message)
+            print("sent picked talent to server")
+            return -- we return nothing and let the server know so they deem when we can choose
         end)
 
         damageOld = getrenv()._G.DamageRequest
@@ -43,7 +67,7 @@ return function(api)
 
             if args.Networked ~= true then
                 -- dont let players hit enemies on our screen, only let them determine whether they hit them or not
-                for userid,playerdata in api.registeredPlayers do
+                for _,playerdata in api.registeredPlayers do
                     if playerdata.entity and playerdata.entity.Id == args.Source then
                         return -- nope this is by a player entity, this means that they hit something on our screen
                     end
@@ -64,6 +88,11 @@ return function(api)
         end)
     end
 
+    module.chooseTalent = function(talentindex)
+        print(`picking talent {talentindex}`)
+        talentOld(talentindex)
+    end
+    
     local findEntityByNetworkId = function(networkId)
         for id,entity in getrenv()._G.Entities do
             if entity.NetworkID == nil or entity.NetworkID ~= networkId then
@@ -80,7 +109,7 @@ return function(api)
             return
         end
 
-        print(`dealing damage tp entity {entityid}`)
+        print(`dealing damage to entity {entityid}`)
 
         damageOld({
             Source = api.registeredPlayers[userid].entity.Id,
