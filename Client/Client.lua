@@ -101,6 +101,24 @@ main.isHost = function()
     return main.getMe().serverData.isHost
 end
 
+main.destroyAllEntities = function()
+    for index,aidata in getrenv()._G.Entities do
+        if aidata.specialId then
+            continue
+        end
+        if index == 1 then
+            continue
+        end
+        local aichar = aidata.Character
+        aichar:Destroy()
+        local ui = aidata.BossGui
+        if ui then
+            ui:Destroy()
+        end
+        getrenv()._G.Entities[index] = nil
+    end
+end
+
 main.findOutVariable = function(var)
     local newVar = var
     if newVar == "false" then

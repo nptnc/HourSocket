@@ -126,21 +126,7 @@ return function(api)
     end
 
     module.gameShowTalentPopup = function()
-        for index,aidata in getrenv()._G.Entities do
-            if aidata.specialId then
-                continue
-            end
-            if index == 1 then
-                continue
-            end
-            local char = aidata.Character
-            char:Destroy()
-            local ui = aidata.BossGui
-            if ui then
-                ui:Destroy()
-            end
-            getrenv()._G.Entities[index] = nil
-        end
+        api.destroyAllEntities()
 
         local map = getrenv()._G.Map
         map.Die(map)

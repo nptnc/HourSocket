@@ -53,6 +53,16 @@ return function(api)
         hook2()
     end
 
+    module.playerRegistered = function(userid)
+        if userid ~= game.Players.LocalPlayer.UserId then
+            return
+        end
+        if api.isHost() then
+            return
+        end
+        api.destroyAllEntities()
+    end
+
     module.playerDied = function()
         local message = api.prepareMessage("updateState","dead",true)
         api.sendToServer(message)
