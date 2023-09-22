@@ -411,7 +411,7 @@ registerMessage(1,function(userId,jsonDataForPlayer)
     end
 end)
 
-expectMessage(2,{"number"})
+expectMessage(2,{"number","number","number","number","number","number","number"})
 registerMessage(2,function(userid,x,y,z,xr,yr,zr)
     if not main.registeredPlayers[userid] then
         warn(`no userid ({userid}) is not a userid`)
