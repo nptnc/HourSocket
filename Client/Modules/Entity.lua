@@ -203,7 +203,7 @@ return function(api)
                 continue
             end
 
-            local entityHealth = entity.Resources.Health
+            local entityHealth = math.ceil(entity.Resources.Health)
             if not lastEntityStuff[entityId] then
                 lastEntityStuff[entityId] = {
                     health = entityHealth or 100,
