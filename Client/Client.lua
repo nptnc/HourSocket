@@ -446,18 +446,18 @@ registerMessage(4,function(userid,knockbackIndex,x,y,z)
 end)
 
 expectMessage(5,{"number","string","number","boolean","number","number","number"})
-registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
-    print(`received spawn entity packet {entityid} {entityname} {damageTeam} {isBoss} {posx} {posy} {posz}`)
+registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz,rotx,roty,rotz)
+    print(`received spawn entity packet {entityid} {entityname} {damageTeam} {isBoss} {posx} {posy} {posz} {rotx} {roty} {rotz}`)
 
     local realEntityId = getrenv()._G.SpawnCreature({
         Name = entityname,
-        SpawnCFrame = CFrame.new(posx,posy,posz),
+        SpawnCFrame = CFrame.new(posx,posy,posz) * CFrame.Angles(math.rad(rotx),math.rad(roty),math.rad(rotz)),
         DamageTeam = damageTeam,
         IsBoss = isBoss,
         Bypass = true,
     })
 
-    apiCall("networkedEntityCreated",nil,entityid,realEntityId,posx,posy,posz)
+    apiCall("networkedEntityCreated",nil,entityid,realEntityId,posx,posy,posz,rotx,roty,rotz)
 end)
 
 expectMessage(6,{"number","number","number","number","number","number","number"})
