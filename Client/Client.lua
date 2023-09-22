@@ -445,7 +445,7 @@ registerMessage(4,function(userid,knockbackIndex,x,y,z)
     apiCall("playerEntityKnockbackUpdate",nil,userid,knockbackIndex,Vector3.new(x,y,z))
 end)
 
-expectMessage(5,{"number","string","number","boolean","number","number","number","number"})
+expectMessage(5,{"number","string","number","boolean","number","number","number"})
 registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
     print(`received spawn entity packet {entityid} {entityname} {damageTeam} {isBoss} {posx} {posy} {posz}`)
 
@@ -460,7 +460,7 @@ registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
     apiCall("networkedEntityCreated",nil,entityid,realEntityId,posx,posy,posz)
 end)
 
-expectMessage(8,{"number","number","number","number","number","number","number"})
+expectMessage(6,{"number","number","number","number","number","number","number"})
 registerMessage(6,function(entityid,posx,posy,posz,rosx,rosy,rosz)
     apiCall("networkEntityUpdate",nil,entityid,posx,posy,posz,rosx,rosy,rosz)
 end)
@@ -494,7 +494,7 @@ registerMessage(8,function(userid,input,posx,posy,posz,rotx,roty,rotz)
     entity.InputFunctions[input](entity)
 end)
 
-expectMessage(10,{"number","any","any"})
+expectMessage(9,{"number","any","any"})
 registerMessage(9,function(entityid,index,value)
     if index == "health" then
         value = tonumber(value)
@@ -587,13 +587,13 @@ main.tryToConnect = function(ip)
         local args = string.split(msg,seperator)
         local messageId = tonumber(args[1])
         if not messages[messageId] then
-            warn(`message id {messageId} is not a valid message id, this usually means the server is modified.`)
+            warn(`message id {messageId} is not a valid message id.\nthis usually means the server is modified.`)
             return
         end
         apiCall("receivedMessage")
 
         if messagesExpectedTypes[messageId] and #args-1 > #messagesExpectedTypes[messageId] then
-            warn(`message id {messageId} received more arguments than its meant to, this usually means the server is modified.`)
+            warn(`message id {messageId} expected {#messagesExpectedTypes[messageId]} arguments, got {#args-1}.\nthis usually means the server is modified.`)
             return
         end
 
@@ -607,7 +607,7 @@ main.tryToConnect = function(ip)
             end
             value = main.findOutVariableWithTarget(value,messagesExpectedTypes[messageId][index])
             if value == nil then
-                warn(`message id {messageId} expected {messagesExpectedTypes[messageId][index]} got {value} as a string, this usually means the server is modified`)
+                warn(`message id {messageId} index {index} expected {messagesExpectedTypes[messageId][index]}.\nthis usually means the server is modified`)
                 return
             end
             newArgs[index] = value
