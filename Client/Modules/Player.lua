@@ -21,7 +21,7 @@ return function(api)
         end)
 
         local rs = game:GetService("RunService")
-        local entity = getrenv()._G.Entities[1]
+        local entity = getrenv()._G.Entities[1] -- get the games player entity
         local lastInput = entity.Input
         rs.Heartbeat:Connect(function(dt)
             if lastInput ~= entity.Input and entity.Input ~= nil then
