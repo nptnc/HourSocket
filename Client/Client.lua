@@ -441,7 +441,7 @@ registerMessage(6,function(entityid,posx,posy,posz,rosx,rosy,rosz)
     apiCall("networkEntityUpdate",nil,entityid,posx,posy,posz,rosx,rosy,rosz)
 end)
 
-registerMessage("doInput",function(userid,input,posx,posy,posz,rotx,roty,rotz)
+registerMessage(8,function(userid,input,posx,posy,posz,rotx,roty,rotz)
     userid = tonumber(userid)
     posx = tonumber(posx)
     posy = tonumber(posy)

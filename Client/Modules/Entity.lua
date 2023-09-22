@@ -53,7 +53,7 @@ return function(api)
 
     local getRealEntityFromNetworkId = function(networkId)
         for _,entity in getrenv()._G.Entities do
-            if entity.networkId == networkId then
+            if entity.NetworkId == networkId then
                 return entity
             end
         end
