@@ -605,6 +605,9 @@ main.tryToConnect = function(ip)
             if not messagesExpectedTypes[messageId] then
                 continue
             end
+            if not messagesExpectedTypes[messageId][index] then
+                continue
+            end
             if value ~= nil then
                 continue
             end
