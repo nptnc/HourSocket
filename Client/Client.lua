@@ -465,7 +465,7 @@ registerMessage("doInput",function(userid,input,posx,posy,posz,rotx,roty,rotz)
         return
     end
 
-    entity.Input = realInput
+    --entity.Input = realInput
     entity.InputTimer = 0.5
     entity.InputCameraCFrame = CFrame.new(posx,posy,posz) * CFrame.Angles(math.rad(rotx),math.rad(roty),math.rad(rotz))
     if not entity.InputCameraCFrame then
@@ -474,7 +474,7 @@ registerMessage("doInput",function(userid,input,posx,posy,posz,rotx,roty,rotz)
     end
 
     print(`received input {input} {realInput} {userid}`)
-    --entity.InputFunctions[input](entity)
+    entity.InputFunctions[input](entity)
 end)
 
 registerMessage(9,function(entityid,index,value)
