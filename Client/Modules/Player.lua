@@ -15,6 +15,11 @@ return function(api)
             return hook.call(...)
         end)--]]
 
+        getrenv()._G.TimeControl.Begin = createHook(getrenv()._G.TimeControl.Begin,function(hook)
+            local message = api.prepareMessage("startTempo",getrenv()._G.TimePower,getrenv()._G.TimeControl.Special)
+            api.sendToServer(message)
+        end)
+
         for inputName,inputFunction in entities[1].InputFunctions do
             entities[1].InputFunctions[inputName] = api.createHook(entities[1].InputFunctions[inputName],function(hook,...)
                 local args = {...}
