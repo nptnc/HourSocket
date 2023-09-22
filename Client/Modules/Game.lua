@@ -98,6 +98,40 @@ return function(api)
         talentOld(talentindex)
         talentScreen(false)
     end
+
+    module.startTempo = function(tempoPower,special)
+        local timeControl = {}
+
+        local scriptDatabase = getrenv()._G.ScriptDatabase
+        for index,value in scriptDatabase.TimeControlBase do
+            timeControl[index] = value
+        end
+
+        local timeControlTarget = scriptDatabase[tempoPower]
+        for index,value in timeControlTarget do
+            timeControl[index] = value
+        end
+
+        timeControl.Init(timeControl)
+        timeControl.Reset(timeControl)
+
+        timeControl.Special = 100
+        timeControl.Begin(timeControl)
+
+        local rs = game:GetService("RunService")
+        local loops = {}
+        table.insert(loops,rs.Heartbeat:Connect(function(dt)
+            timeControl.UpdateRender(timeControl,dt/15)
+            timeControl.Update(timeControl,dt/15)
+            timeControl.UpdatePost(timeControl,dt/15)
+            if timeControl.Special <= 0 then
+                for _,loop in loops do
+                    loop:Disconnect()
+                end
+                timeControl.Die(timeControl)
+            end
+        end))
+    end
     
     local findEntityByNetworkId = function(networkId)
         for id,entity in getrenv()._G.Entities do
