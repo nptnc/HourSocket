@@ -180,11 +180,11 @@ main.findOutVariableWithTarget = function(var,targetType)
             end
             return newValue
         elseif type(findOutVariableFromString[targetType]) == "table" then
-            for stringValue,variableValue in findOutVariableFromString[targetType] do
-                if stringValue ~= var then
+            for _,variableValue in findOutVariableFromString[targetType] do
+                if variableValue[1] ~= var then
                     continue
                 end
-                return variableValue
+                return variableValue[2]
             end
         end
     end
