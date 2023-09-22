@@ -534,6 +534,7 @@ end)
 -- entity input
 registerMessage(15,function(entityid,someIndex,input)
     entityid = tonumber(entityid)
+    someIndex = tonumber(someIndex)
 
     if not entityid then
         print("entity id is nil from network")
