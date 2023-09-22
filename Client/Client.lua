@@ -445,7 +445,7 @@ registerMessage(4,function(userid,knockbackIndex,x,y,z)
     apiCall("playerEntityKnockbackUpdate",nil,userid,knockbackIndex,Vector3.new(x,y,z))
 end)
 
-expectMessage(5,{"number","string","number","boolean","number","number","number"})
+expectMessage(5,{"number","string","number","boolean","number","number","number","number"})
 registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
     print(`received spawn entity packet {entityid} {entityname} {damageTeam} {isBoss} {posx} {posy} {posz}`)
 
@@ -603,9 +603,6 @@ main.tryToConnect = function(ip)
                 continue
             end
             if not messagesExpectedTypes[messageId][index] then
-                continue
-            end
-            if value == nil then
                 continue
             end
             value = main.findOutVariableWithTarget(value,messagesExpectedTypes[messageId][index])
