@@ -365,8 +365,6 @@ end)
 
 expectMessage(0,{"number"})
 registerMessage(0,function(userId)
-    userId = tonumber(userId)
-
     apiCall("playerDisconnected",nil,userId)
     main.destroyPlayerEntity(userId)
     main.registeredPlayers[userId] = nil
@@ -399,7 +397,6 @@ end
 
 expectMessage(1,{"number","string"})
 registerMessage(1,function(userId,jsonDataForPlayer)
-    userId = tonumber(userId)
     if userId == -1 then
         local decoded = http:JSONDecode(jsonDataForPlayer)
         for foundUserId,data in decoded do
@@ -414,7 +411,7 @@ end)
 expectMessage(2,{"number","number","number","number","number","number","number"})
 registerMessage(2,function(userid,x,y,z,xr,yr,zr)
     if not main.registeredPlayers[userid] then
-        warn(`no userid ({userid}) is not a userid`)
+        warn(`no userid ({userid}, {typeof(userid)}) is not a userid`)
         return
     end
     local messageplayer = main.registeredPlayers[userid]
