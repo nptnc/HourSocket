@@ -20,31 +20,31 @@ return function(api)
             api.sendToServer(message)
         end)
 
-        for inputName,inputFunction in entities[1].InputFunctions do
-            entities[1].InputFunctions[inputName] = api.createHook(entities[1].InputFunctions[inputName],function(hook,...)
-                local args = {...}
-                local targCooldown = entities[1].Cooldowns[inputName] or {Cooldown = 0}
-                if targCooldown.Cooldown <= 0 and entities[1].AnimationTables[1].ActionState == "" then
-                    local cf = workspace.CurrentCamera.CFrame
+        local rs = game:GetService("RunService")
+        local entity = getrenv()._G.Entities[1]
+        local lastInput = entity.Input
+        rs.Heartbeat:Connect(function(dt)
+            if lastInput ~= entity.Input and entity.Input ~= nil then
+                local input = entity.Inputs[entity.Input] -- we need to get the actual input name lol
 
-                    local rx, ry, rz = cf:ToOrientation()
-			        local rotation = Vector3.new(math.deg(rx), math.deg(ry), math.deg(rz))
+                local cf = workspace.CurrentCamera.CFrame
 
-                    local message = api.prepareMessage("doInput",
-                        inputName,
-                        api.hardOptimize(cf.Position.X),
-                        api.hardOptimize(cf.Position.Y),
-                        api.hardOptimize(cf.Position.Z),
-                        api.hardOptimize(rotation.X),
-                        api.hardOptimize(rotation.Y),
-                        api.hardOptimize(rotation.Z)
-                    )
-                    api.sendToServer(message)
-                    print(`networking input {inputName}`)
-                end
-                return hook.call(...)
-            end)
-        end
+                local rx, ry, rz = cf:ToOrientation()
+                local rotation = Vector3.new(math.deg(rx), math.deg(ry), math.deg(rz))
+        
+                local message = api.prepareMessage("doInput",
+                    input,
+                    api.hardOptimize(cf.Position.X),
+                    api.hardOptimize(cf.Position.Y),
+                    api.hardOptimize(cf.Position.Z),
+                    api.hardOptimize(rotation.X),
+                    api.hardOptimize(rotation.Y),
+                    api.hardOptimize(rotation.Z)
+                )
+                api.sendToServer(message)
+            end
+            lastInput = entity.Input
+        end)
     end
 
     module.playerRespawned = function()

@@ -474,7 +474,7 @@ registerMessage(8,function(userid,input,posx,posy,posz,rotx,roty,rotz)
     for index,value in entity.Inputs do
         if value == input then
             realInput = index
-        end 
+        end
     end
     
     if not realInput then
