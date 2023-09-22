@@ -263,10 +263,10 @@ return function(api)
         entityData.cframe = CFrame.new(posx,posy,posz) * CFrame.Angles(math.rad(rotx),math.rad(roty),math.rad(rotz))
     end
 
-    module.networkedEntityCreated = function(entityId,realEntityId,posx,posy,posz)
+    module.networkedEntityCreated = function(entityId,realEntityId,posx,posy,posz,rotx,roty,rotz)
         warn(`non host, registering entity {entityId} in script entity database`)
         api.globals.entityDatabase[entityId] = {
-            cframe = CFrame.new(posx,posy,posz),
+            cframe = CFrame.new(posx,posy,posz) * CFrame.Angles(math.rad(rotx),math.rad(roty),math.rad(rotz)),
             realId = realEntityId,
             health = getrenv()._G.Entities[realEntityId].Resources.Health or 100,
             networkId = entityId,
