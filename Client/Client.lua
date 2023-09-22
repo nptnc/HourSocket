@@ -610,7 +610,7 @@ main.tryToConnect = function(ip)
             end
             value = main.findOutVariableWithTarget(value,messagesExpectedTypes[messageId][index])
             if value == nil then
-                warn(`message id {messageId} has received the wrong information, this usually means the server is modified`)
+                warn(`message id {messageId} expected {messagesExpectedTypes[messageId][index]} got {value} as a string, this usually means the server is modified`)
                 return
             end
             newArgs[index] = value
