@@ -92,6 +92,8 @@ return function(api)
                 -- lets stop from creating infinite loops of players
                 if not args.IsPlayer then
                     local entitynetworkid = reg(entity,realEntityId,args.Name,x,y,z,xr,yr,zr)
+
+                    -- syncs enemy attacks (kinda, some break the game, im trying to figure out how to do this properly.)
                     entity.SwitchAnimation = api.createHook(entity.SwitchAnimation,function(hook2,...)
                         local args2 = {...}
 
