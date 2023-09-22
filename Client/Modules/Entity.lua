@@ -94,9 +94,9 @@ return function(api)
                     local entitynetworkid = reg(entity,realEntityId,args.Name,x,y,z,xr,yr,zr)
                     entity.SwitchAnimation = api.createHook(entity.SwitchAnimation,function(hook2,...)
                         local args = {...}
-                        local message = api.prepareMessage("entityInput",entitynetworkid,args[2])
+                        local message = api.prepareMessage("entityInput",entitynetworkid,args[2],args[3])
                         api.sendToServer(message)
-                        print(`networking entity attack {args[2]}`)
+                        print(`networking entity attack {args[2]} {args[3]}`)
                         return hook2.call(...)
                     end)
                 end
@@ -283,9 +283,10 @@ return function(api)
         entityData[index] = value
     end
 
-    module.entityDoInput = function(entityid,input)
+    module.entityDoInput = function(entityid,someIndex,input)
         local entity = getRealEntityFromNetworkId(entityid)
         if not entity then
+            print("entity doesnt exist cant do input")
             return
         end
         local inputFunction = entity.InputFunctions[input]
@@ -293,7 +294,7 @@ return function(api)
             warn(`input function {input} doesnt exist for entity {entityid}`)
             return
         end
-        entity.SwitchAnimation(entity,input)
+        entity.SwitchAnimation(entity,someIndex,input)
     end
 
     return module

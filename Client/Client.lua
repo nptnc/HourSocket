@@ -532,7 +532,7 @@ registerMessage(14,function(userid,entityid,damage,partname,damagename,screensha
 end)
 
 -- entity input
-registerMessage(15,function(entityid,input)
+registerMessage(15,function(entityid,someIndex,input)
     entityid = tonumber(entityid)
 
     if not entityid then
@@ -541,7 +541,7 @@ registerMessage(15,function(entityid,input)
     end
     
     print(`doing entity input {input}`)
-    apiCall("entityDoInput",nil,entityid,input)
+    apiCall("entityDoInput",nil,entityid,someIndex,input)
 end)
 
 main.disconnect = function()
