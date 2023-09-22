@@ -97,7 +97,7 @@ return function(api)
 
                         local animationName = args2[3]
                         local blacklistedAnimations = {"Idle","Run","Death"}
-                        if table.find(blacklistedAnimations,animationName) then
+                        if not table.find(blacklistedAnimations,animationName) then
                             local message = api.prepareMessage("entityInput",entitynetworkid,args2[2],args2[3])
                             api.sendToServer(message)
                             print(`networking entity attack {args2[2]} {args2[3]}`)
