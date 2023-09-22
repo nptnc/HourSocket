@@ -129,6 +129,7 @@ return function(api)
     end
 
     local sinceLastUpdate = tick()
+    local sinceLastHealthCheck = tick()
     local warnedAboutNoCFrame = {}
     local lastEntityStuff = {}
 
@@ -178,6 +179,48 @@ return function(api)
             --entity.Dead = playerdata.serverData.dead
         end
 
+        if tick() - sinceLastHealthCheck > 1/10 then
+            -- host
+            for entityId,entityData in api.getMe().serverData.isHost and api.globals.entityDatabase or {} do
+                local realId = entityData.realId
+                local entity = getrenv()._G.Entities[realId]
+                if entity == nil then
+                    warn("unregistered entity host loop 1")
+                    api.globals.entityDatabase[entityId] = nil
+                    continue
+                end
+
+                if findEntityByNetworkId(entityData.networkId) == nil or entity == nil then
+                    warn("unregistered entity host loop 1")
+                    api.globals.entityDatabase[entityId] = nil
+                    continue
+                end
+
+                local entityHealth = math.ceil(entity.Resources.Health)
+                if not lastEntityStuff[entityId] then
+                    lastEntityStuff[entityId] = {
+                        health = entityHealth or 100,
+                    }
+                end
+
+                local lastEntityHealth = lastEntityStuff[entityId].health
+
+                if entityHealth ~= lastEntityHealth then
+                    local message = api.prepareMessage("updateEntityState",
+                        entityId,
+                        "health",
+                        entityHealth
+                    )
+                    api.sendToServer(message)
+                    print("updating entity health, guh hopefully this doesnt spam the server")
+                end
+
+                lastEntityStuff[entityId].health = entityHealth
+            end
+
+            sinceLastHealthCheck = tick()
+        end
+
         local networkEntities = api.len(api.globals.entityDatabase)
         local fps = (20/networkEntities)
         if networkEntities == 0 or tick() - sinceLastUpdate < 1/fps  then
@@ -186,44 +229,6 @@ return function(api)
 
         --print(`entity update fps is {fps} {networkEntities}`)
         sinceLastUpdate = tick()
-
-        -- host
-        for entityId,entityData in api.getMe().serverData.isHost and api.globals.entityDatabase or {} do
-            local realId = entityData.realId
-            local entity = getrenv()._G.Entities[realId]
-            if entity == nil then
-                warn("unregistered entity host loop 1")
-                api.globals.entityDatabase[entityId] = nil
-                continue
-            end
-
-            if findEntityByNetworkId(entityData.networkId) == nil or entity == nil then
-                warn("unregistered entity host loop 1")
-                api.globals.entityDatabase[entityId] = nil
-                continue
-            end
-
-            local entityHealth = math.ceil(entity.Resources.Health)
-            if not lastEntityStuff[entityId] then
-                lastEntityStuff[entityId] = {
-                    health = entityHealth or 100,
-                }
-            end
-
-            local lastEntityHealth = lastEntityStuff[entityId].health
-
-            if entityHealth ~= lastEntityHealth then
-                local message = api.prepareMessage("updateEntityState",
-                    entityId,
-                    "health",
-                    entityHealth
-                )
-                api.sendToServer(message)
-                print("updating entity health, guh hopefully this doesnt spam the server")
-            end
-
-            lastEntityStuff[entityId].health = entityHealth
-        end
 
         -- host
         for entityId,entityData in api.getMe().serverData.isHost and api.globals.entityDatabase or {} do
