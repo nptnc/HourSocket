@@ -293,7 +293,7 @@ return function(api)
             warn(`input function {input} doesnt exist for entity {entityid}`)
             return
         end
-        entity.SwitchAnimation(entity,input) 
+        entity.SwitchAnimation(entity,input)
     end
 
     return module
