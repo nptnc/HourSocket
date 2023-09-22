@@ -92,14 +92,13 @@ return function(api)
                 -- lets stop from creating infinite loops of players
                 if not args.IsPlayer then
                     local entitynetworkid = reg(entity,realEntityId,args.Name,x,y,z,xr,yr,zr)
-                    for inputName,_ in entity.ActionFunctions do
-                        entity.ActionFunctions[inputName] = api.createHook(entity.ActionFunctions[inputName],function(hook2,...)
-                            local message = api.prepareMessage("entityInput",entitynetworkid,inputName)
-                            api.sendToServer(message)
-                            print(`networking entity attack {inputName}`)
-                            return hook2.call(...)
-                        end)
-                    end
+                    entity.SwitchAnimation = api.createHook(entity.SwitchAnimation,function(hook2,...)
+                        local args = {...}
+                        local message = api.prepareMessage("entityInput",entitynetworkid,args[2])
+                        api.sendToServer(message)
+                        print(`networking entity attack {args[2]}`)
+                        return hook2.call(...)
+                    end)
                 end
 
                 return realEntityId
@@ -294,7 +293,7 @@ return function(api)
             warn(`input function {input} doesnt exist for entity {entityid}`)
             return
         end
-        entity.ActionFunctions[input]() -- hopefully this will never require arguments 😭😭😭😭
+        entity.SwitchAnimation(entity,input) 
     end
 
     return module
