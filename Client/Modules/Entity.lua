@@ -96,6 +96,7 @@ return function(api)
                         entity.ActionFunctions[inputName] = api.createHook(entity.ActionFunctions[inputName],function(hook2,...)
                             local message = api.prepareMessage("entityInput",entitynetworkid,inputName)
                             api.sendToServer(message)
+                            print(`networking entity attack {inputName}`)
                             return hook2.call(...)
                         end)
                     end
