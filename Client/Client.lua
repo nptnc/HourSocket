@@ -605,7 +605,7 @@ main.tryToConnect = function(ip)
             if not messagesExpectedTypes[messageId][index] then
                 continue
             end
-            if value ~= nil then
+            if value == nil then
                 continue
             end
             value = main.findOutVariableWithTarget(value,messagesExpectedTypes[messageId][index])
