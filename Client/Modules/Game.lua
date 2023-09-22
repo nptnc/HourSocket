@@ -73,7 +73,11 @@ return function(api)
                         return -- nope this is by a player entity, this means that they hit something on our screen
                     end
                 end
-            end 
+            end
+
+            if args.Source ~= 1 then
+                return hook.call(...)
+            end
 
             if not api.isHost() then
                 if target and target.NetworkID ~= nil then

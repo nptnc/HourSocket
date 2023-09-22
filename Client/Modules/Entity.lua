@@ -94,9 +94,14 @@ return function(api)
                     local entitynetworkid = reg(entity,realEntityId,args.Name,x,y,z,xr,yr,zr)
                     entity.SwitchAnimation = api.createHook(entity.SwitchAnimation,function(hook2,...)
                         local args2 = {...}
-                        local message = api.prepareMessage("entityInput",entitynetworkid,args2[2],args2[3])
-                        api.sendToServer(message)
-                        print(`networking entity attack {args2[2]} {args2[3]}`)
+
+                        local animationName = args2[3]
+                        local blacklistedAnimations = {"Idle","Run","Death"}
+                        if table.find(blacklistedAnimations,animationName) then
+                            local message = api.prepareMessage("entityInput",entitynetworkid,args2[2],args2[3])
+                            api.sendToServer(message)
+                            print(`networking entity attack {args2[2]} {args2[3]}`)
+                        end
                         return hook2.call(...)
                     end)
                 end
