@@ -47,19 +47,17 @@ start_time = datetime.datetime.now()
 
 data = {
     "statistics": {
-        "Packets received": 0,
-        "Commit hash as of start": "i nunno" 
+        "packets_received": 0,
+        "started_at": datetime.datetime.now().strftime("%d-%m-%Y / %H:%M:%S"),
+        "elapsed_runtime": "??:??:??"
     },
     "players": {},
     "world": {
+        "host": None,
         "entities": {},
-        "state": "Start"
+        "state": "Start",
     }
 }
-
-process = subprocess.Popen(["git", "ls-remote", 'https://github.com/nptnc/HourSocket.git'], stdout=subprocess.PIPE)
-stdout, stderr = process.communicate()
-data['statistics']["Commit hash as of start"] = re.split(r'\t+', stdout.decode('ascii'))[0][:7]
 
 websockets = {}
 webserver_websockets = []
@@ -100,6 +98,26 @@ async def send_all_ws(message, except_for: list = None, include_webservers: bool
         for ws in webserver_websockets:
             if not ws.closed:
                 await ws.send(message)
+
+
+async def GetterGetter(part: None):
+    if part is None:
+        for userid in data.get('players'):
+            if data.get('players')[userid]['isHost']:
+                return userid
+    if isinstance(part,server.WebSocketServerProtocol):
+        for userid in websockets:
+            if websockets[userid] == part:
+                return userid
+    if isinstance(part,int):
+        for userid in websockets:
+            if userid == part:
+                return websockets[userid]
+
+
+async def alert(ws, error: str, error_code: int):
+    logger.warning(error)
+    return await ws.send(create_message(999,error,error_code))
 
 @createPacket(-1)
 async def getWebData(ws):
@@ -142,10 +160,16 @@ async def registerPlayer(ws, userid: int, username: str, _class: str):
             "position": [0,0,0],
             "rotation": [0,0,0],
             "isHost": len(data['players']) == 0,
+            "speed": 1,
+            "picked": False,
+            "pickedIndex": 0,
         }
     })
     websockets.update({
         userid: ws
+    })
+    data['world'].update({
+        "host": ws if data['players'][userid]['isHost'] else data['world']['host']
     })
     await ws.send(create_message(
         1, -1, json.dumps(data['players'])
@@ -190,11 +214,11 @@ async def updatePlayerState(ws, userid: int, key: str, value: any):
 updatePlayerState()
 
 @createPacket(4)
-async def doAttack(ws, userid: int, attackInformationType: int, attack: str, arg1: any = None, arg2: any = None):
+async def updateKnockback(ws,userid: int,knockbackIndex: int,x: float,y: float,z: float):
     await send_all_ws(create_message(
-        4, userid, attackInformationType, attack, arg1, arg2 # we dont know what arg1 or 2 is ☠️💀☠️💀☠️💀
-    ), except_for=[userid])
-doAttack()
+        4,userid,knockbackIndex,x,y,z
+    ),except_for=userid)
+updateKnockback()
 
 @createPacket(5)
 async def registerEntity(ws, userid: int, entityid: int, entityname: str, team: int, is_boss: bool, pos_x: float = 0, pos_y: float = 0, pos_z: float = 0, rot_x: float = 0, rot_y: float = 0, rot_z: float = 0):
@@ -209,6 +233,9 @@ async def registerEntity(ws, userid: int, entityid: int, entityname: str, team: 
             "name": entityname,
             "position": [pos_x,pos_y,pos_z],
             "rotation": [0,0,0],
+            "health": 100,
+            "isBoss": is_boss,
+            "team": team,
         }
     })
     await send_all_ws(create_message(
@@ -250,47 +277,108 @@ async def updateWorldState(ws, userid: int, newstate: str):
 updateWorldState()
 
 @createPacket(8)
-async def playAnimation(ws, userid: int, arg1: float, animationname: str):
+async def doInput(ws, userid: int, input: str, pos_x: float = 0, pos_y: float = 0, pos_z: float = 0, rot_x: float = 0, rot_y: float = 0, rot_z: float = 0):
     await send_all_ws(create_message(
-        8, userid, arg1, animationname
+        8, userid, input, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z
     ), except_for=[userid])
-playAnimation()
+doInput()
 
 @createPacket(9)
 async def updateEntityState(ws, userid: int, entityid: int, key: str, value: any):
     if not data['players'][userid]['isHost']:
         logger.warning(f"{userid} is not allowed to update entity states!")
         return
+    if entityid not in data["world"]["entities"]:
+        return
+
     data['world']['entities'][entityid].update({
         key: value,
     })
     await send_all_ws(create_message(
         9, entityid, key, value
-    ))
-    if key == "health" and value <= 0:
+    ), except_for=[userid])
+    if key == "health" and float(value) <= 0:
         del data['world']['entities'][entityid]
         logger.debug(f"Deleted entity {entityid} because it fucking died")
-
 updateEntityState()
+
+@createPacket(10)
+async def pickTalentPacket(ws, userid: int, talentindex: int):
+    if userid not in data['players']:
+        return
+    data['players'][userid].update({
+        "picked": True,
+        "pickedIndex": talentindex
+    })
+    for player in data['players']:
+        if not data['players'][player]['picked']:
+            return
+    for player in data['players']:
+        data['players'][player].update({
+            "picked": False
+        })
+        await websockets[data['players'][player]['id']].send(create_message(
+            10, data["players"][player]["pickedIndex"]
+        ))
+pickTalentPacket()
+
+@createPacket(11)
+async def startTempo(ws, userid: int, timePower: str, special: int):
+    if userid not in data['players']:
+        return
+    await send_all_ws(create_message(
+        11, timePower, special
+    ))#, except_for=[userid])
+startTempo()
+
+@createPacket(12)
+async def updateEntityKnockback(ws, userid: int, entityid: int, knockbackIndex: int, x: float, y: float, z: float):
+    await send_all_ws(create_message(
+        12,entityid, knockbackIndex, x, y, z
+    ),except_for=userid)
+updateEntityKnockback()
+
+@createPacket(13)
+async def talentPopup(ws, userid: int, isArena: bool):
+    await send_all_ws(create_message(
+        13, isArena
+    ),except_for=userid)
+talentPopup()
+
+@createPacket(14)
+async def damageRequest(ws,userid: int, entityid: int, damage: int, partname: str, damagename: str = None, screenshake: int = 0):
+    if userid not in data['players']:
+        return
+    await data['world']['host'].send(create_message(
+        14, userid, entityid, damage, partname, damagename, screenshake   
+    ))
+damageRequest()
+
+@createPacket(15)
+async def entityInput(ws, userid: int, entityId: int, someIndex: int, input: str):
+    if not data['players'][userid]["isHost"]:
+        return
+    await send_all_ws(create_message(
+        15, entityId, someIndex, input
+    ), except_for=[userid])
+entityInput()
+
+async def handle_incoming(ws):
+    try:
+        raw_msg = await ws.recv()
+    except (exceptions.ConnectionClosed, ConnectionResetError):
+        return await packet_handlers.get(0)(ws,socket_id) if (socket_id := await ws_to_userid(ws)) is not None else None
+    data.get('statistics')["packets_received"] += 1
+    msg = str(raw_msg).split(":::")
+    msg_type = int(msg.pop(0))
+    return await packet_handlers.get(msg_type)(ws,*msg) if msg_type is not None else await alert(ws,f"Unregistered Message Type {msg_type}",0)
 
 async def handler(ws: server.WebSocketServerProtocol):
     while True:
-        try:
-            message = await ws.recv()
-            data['statistics']["Packets received"] += 1
-        except (exceptions.ConnectionClosedOK, exceptions.ConnectionClosedError, exceptions.ConnectionClosed, ConnectionResetError):
-            socket_id = await ws_to_userid(ws)
-            if socket_id is None:
-                return
-            return await packet_handlers.get(0)(ws,socket_id)
-        message = str(message).split(":::")
-        message_type = int(message.pop(0))
-        if packet_handlers.get(message_type) is None:
-            logger.warning(f"Message type {message_type} is unregistered, did you forget to call it?")
-            return await ws.send(create_message(
-                999,"Unregistered Message Type",0
-            ))
-        await packet_handlers.get(message_type)(ws,*message)
+        elapsed_runtime = datetime.datetime.now() - datetime.datetime.strptime(data.get('statistics')['started_at'],"%d-%m-%Y / %H:%M:%S")
+        data.get('statistics')['elapsed_runtime'] = str((elapsed_runtime - datetime.timedelta(microseconds=elapsed_runtime.microseconds)))
+
+        await handle_incoming(ws)
         
 
 async def start_socket():
