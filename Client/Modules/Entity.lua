@@ -93,10 +93,10 @@ return function(api)
                 if not args.IsPlayer then
                     local entitynetworkid = reg(entity,realEntityId,args.Name,x,y,z,xr,yr,zr)
                     entity.SwitchAnimation = api.createHook(entity.SwitchAnimation,function(hook2,...)
-                        local args = {...}
-                        local message = api.prepareMessage("entityInput",entitynetworkid,args[2],args[3])
+                        local args2 = {...}
+                        local message = api.prepareMessage("entityInput",entitynetworkid,args2[2],args2[3])
                         api.sendToServer(message)
-                        print(`networking entity attack {args[2]} {args[3]}`)
+                        print(`networking entity attack {args2[2]} {args2[3]}`)
                         return hook2.call(...)
                     end)
                 end
