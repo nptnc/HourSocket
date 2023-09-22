@@ -155,6 +155,41 @@ main.findOutVariable = function(var)
     return newVar
 end
 
+local findOutVariableFromString = {
+    ["number"] = function(a)
+        if not tonumber(a) then
+            return false
+        end
+        return true,tonumber(a)
+    end,
+    ["string"] = function(a)
+        return true,a -- its always a string lil bro.
+    end,
+    ["any"] = function(a)
+        return true,a -- uh its any
+    end,
+    ["boolean"] = {{"false",false},{"true",true}},
+}
+main.findOutVariableWithTarget = function(var,targetType)
+    if findOutVariableFromString[targetType] then
+        if type(findOutVariableFromString[targetType]) == "function" then
+            -- unimplemented
+            local success,newValue = findOutVariableFromString[targetType](var)
+            if not success then
+                return nil
+            end
+            return newValue
+        elseif type(findOutVariableFromString[targetType]) == "table" then
+            for stringValue,variableValue in findOutVariableFromString[targetType] do
+                if stringValue ~= var then
+                    continue
+                end
+                return variableValue
+            end
+        end
+    end
+end
+
 main.createPlayer = function(playerdata)
     local entity = getrenv()._G.SpawnCreature({
         Name = playerdata.serverData.class,
@@ -295,6 +330,14 @@ repeat rs.Heartbeat:Wait() until hasLoadedModules
 apiCall("once")
 
 local messages = {}
+local messagesExpectedTypes = {}
+
+local expectMessage = function(id,types)
+    messagesExpectedTypes[id] = {}
+    for index,datatype in types do
+        messagesExpectedTypes[id][index] = datatype
+    end
+end
 
 local registerMessage = function(id,messageCallback)
     if type(id) == "string" then
@@ -314,10 +357,12 @@ local getEntityIdByEntity = function(entity)
     end
 end
 
+expectMessage(999,{"string"})
 registerMessage(999,function(errorMessage)
     print(`server caught error {errorMessage}`)
 end)
 
+expectMessage(0,{"number"})
 registerMessage(0,function(userId)
     userId = tonumber(userId)
 
@@ -351,6 +396,7 @@ local registerPlayer = function(userid,data)
     warn("client registered")
 end
 
+expectMessage(1,{"number","string"})
 registerMessage(1,function(userId,jsonDataForPlayer)
     userId = tonumber(userId)
     if userId == -1 then
@@ -364,9 +410,8 @@ registerMessage(1,function(userId,jsonDataForPlayer)
     end
 end)
 
+expectMessage(2,{"number"})
 registerMessage(2,function(userid,x,y,z,xr,yr,zr)
-    userid = tonumber(userid)
-
     if not main.registeredPlayers[userid] then
         warn(`no userid ({userid}) is not a userid`)
         return
@@ -375,9 +420,8 @@ registerMessage(2,function(userid,x,y,z,xr,yr,zr)
     messageplayer.cframe = CFrame.new(x,y,z) * CFrame.Angles(math.rad(xr),math.rad(yr),math.rad(zr))
 end)
 
+expectMessage(3,{"number","any","any"})
 registerMessage(3,function(userid,key,value)
-    userid = tonumber(userid)
-
     if not main.registeredPlayers[userid] then
         warn(`no userid ({userid}) is not a userid`)
         return
@@ -398,24 +442,13 @@ registerMessage(3,function(userid,key,value)
     apiCall("playerStateUpdate",nil,userid,key,value)
 end)
 
+expectMessage(4,{"number","number","number","number","number"})
 registerMessage(4,function(userid,knockbackIndex,x,y,z)
-    userid = tonumber(userid)
-    knockbackIndex = tonumber(knockbackIndex)
-    x = tonumber(x)
-    y = tonumber(y)
-    z = tonumber(z)
-
     apiCall("playerEntityKnockbackUpdate",nil,userid,knockbackIndex,Vector3.new(x,y,z))
 end)
 
+expectMessage(5,{"number","string","number","boolean","number","number","number"})
 registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
-    entityid = tonumber(entityid)
-    damageTeam = tonumber(damageTeam)
-    isBoss = main.findOutVariable(isBoss)
-    posx = tonumber(posx)
-    posy = tonumber(posy)
-    posz = tonumber(posz)
-
     print(`received spawn entity packet {entityid} {entityname} {damageTeam} {isBoss} {posx} {posy} {posz}`)
 
     local realEntityId = getrenv()._G.SpawnCreature({
@@ -429,27 +462,13 @@ registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz)
     apiCall("networkedEntityCreated",nil,entityid,realEntityId,posx,posy,posz)
 end)
 
+expectMessage(8,{"number","number","number","number","number","number","number"})
 registerMessage(6,function(entityid,posx,posy,posz,rosx,rosy,rosz)
-    entityid = tonumber(entityid)
-    posx = tonumber(posx)
-    posy = tonumber(posy)
-    posz = tonumber(posz)
-    rosx = tonumber(rosx)
-    rosy = tonumber(rosy)
-    rosz = tonumber(rosz)
-
     apiCall("networkEntityUpdate",nil,entityid,posx,posy,posz,rosx,rosy,rosz)
 end)
 
+expectMessage(8,{"number","string","number","number","number","number","number","number"})
 registerMessage(8,function(userid,input,posx,posy,posz,rotx,roty,rotz)
-    userid = tonumber(userid)
-    posx = tonumber(posx)
-    posy = tonumber(posy)
-    posz = tonumber(posz)
-    rotx = tonumber(rotx)
-    roty = tonumber(roty)
-    rotz = tonumber(rotz)
-
     local messageplayer = main.registeredPlayers[userid]
     local entity = messageplayer.entity
 
@@ -477,34 +496,31 @@ registerMessage(8,function(userid,input,posx,posy,posz,rotx,roty,rotz)
     entity.InputFunctions[input](entity)
 end)
 
+expectMessage(10,{"number","any","any"})
 registerMessage(9,function(entityid,index,value)
-    entityid = tonumber(entityid)
     if index == "health" then
         value = tonumber(value)
     end
     apiCall("networkEntityStateUpdate",nil,entityid,index,value)
 end)
 
+expectMessage(10,{"number"})
 registerMessage(10,function(talentindex)
-    talentindex = tonumber(talentindex)
     apiCall("chooseTalent",nil,talentindex)
 end)
 
+expectMessage(11,{"string","number"})
 registerMessage(11,function(timeTarget,special)
-    special = tonumber(special)
-    apiCall("startTempo",nil,timeTarget)
+    apiCall("startTempo",nil,timeTarget,special)
 end)
 
+expectMessage(12,{"number","number","number","number","number"})
 registerMessage(12,function(entityid,knockbackIndex,x,y,z)
-    entityid = tonumber(entityid)
-    knockbackIndex = tonumber(knockbackIndex)
-    x = tonumber(x)
-    y = tonumber(y)
-    z = tonumber(z)
-
     apiCall("entityKnockbackUpdate",nil,entityid,knockbackIndex,Vector3.new(x,y,z))
 end)
 
+-- talent popup for non hosts.
+expectMessage(13,{"boolean"})
 registerMessage(13,function(isArena)
     isArena = main.findOutVariable(isArena)
 
@@ -517,6 +533,8 @@ registerMessage(13,function(isArena)
     getrenv()._G.ArenaMode = isArena or false
 end)
 
+-- damage entity for host
+expectMessage(14,{"number","string","number","string","string","number"})
 registerMessage(14,function(userid,entityid,damage,partname,damagename,screenshake)
     userid = tonumber(userid)
     entityid = tonumber(entityid)
@@ -532,6 +550,7 @@ registerMessage(14,function(userid,entityid,damage,partname,damagename,screensha
 end)
 
 -- entity input
+expectMessage(15,{"number","number","string"})
 registerMessage(15,function(entityid,someIndex,input)
     entityid = tonumber(entityid)
     someIndex = tonumber(someIndex)
@@ -568,19 +587,32 @@ main.tryToConnect = function(ip)
 
     socket.OnMessage:Connect(function(msg)
         local args = string.split(msg,seperator)
-        --warn(`server sent {msg}`)
-        apiCall("receivedMessage")
         local messageId = tonumber(args[1])
-        local newArgs = {}
-        for index,value in args do
-            if index == 1 then
+        if not messages[messageId] then
+            warn(`message id {messageId} is not a valid message id, this usually means the server is modified.`)
+            return
+        end
+        apiCall("receivedMessage")
+
+        if messagesExpectedTypes[messageId] and #args-1 > #messagesExpectedTypes[messageId] then
+            warn(`message id {messageId} received more arguments than its meant to, this usually means the server is modified.`)
+            return
+        end
+
+        local newArgs = cutTable(args,1)
+        for index,value in newArgs do
+            if not messagesExpectedTypes[messageId] then
                 continue
             end
-            newArgs[index-1] = value
-        end
-        if not messages[messageId] then
-            warn(`message id {messageId} does not exist.`)
-            return
+            if value ~= nil then
+                continue
+            end
+            value = main.findOutVariableWithTarget(value,messagesExpectedTypes[messageId][index])
+            if value == nil then
+                warn(`message id {messageId} has received the wrong information, this usually means the server is modified`)
+                return
+            end
+            newArgs[index] = value
         end
         messages[messageId](table.unpack(newArgs))
     end)

@@ -9,7 +9,9 @@ This requires the Microsoft Store Roblox Version [2.592.586.0](https://github.co
 Server programmed by [PeeblyWeeb](https://discord.com/users/904032786854346795)  
 Client programmed by [nptnc](https://discord.com/users/397930609894490122)
 
-This is a Roblox "Hack" that connects to an external server using websockets which sends information and receives information from it.
+This is a Roblox "Hack" that connects to an external server using websockets which sends information and receives information from it,
+I am not held liable for any modifications users make to the server or the client, anyone can modify either side to overload or send modified information,
+Please only connect to servers that you trust as it may be unsafe, do not use modified clients unless they are safe because they could open up vulnerabilities.
 
 ### Creating a server
 - [Download Python](https://www.python.org/downloads/release/python-3110/) (If you already have Python, skip this step)
