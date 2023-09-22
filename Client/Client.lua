@@ -333,6 +333,7 @@ local messages = {}
 local messagesExpectedTypes = {}
 
 local expectMessage = function(id,types)
+    print(`expected message {id}'s response with {table.concat(types,", ")}`)
     messagesExpectedTypes[id] = {}
     for index,datatype in types do
         messagesExpectedTypes[id][index] = datatype
