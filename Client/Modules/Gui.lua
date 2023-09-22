@@ -5,7 +5,7 @@ return function(api)
     local rightbar
     local middle
     
-    local createFrame = function(text,parent)
+    local createFrame = function(text,parent,isHost)
         local frame = Instance.new("Frame")
         frame.Parent = parent
         frame.BackgroundColor3 = Color3.fromRGB()
@@ -18,9 +18,24 @@ return function(api)
         textlabel.Text = text
         textlabel.BackgroundTransparency = 1
         textlabel.Size = UDim2.new(1,0,0.75,0)
+        textlabel.Position = UDim2.new(0.55,0,0.5,0)
+        textlabel.AnchorPoint = Vector2.new(0.5,0.5)
         textlabel.TextColor3 = Color3.fromRGB(255,255,255)
         textlabel.TextScaled = true
-        --textlabel.Font = Enum.Font.Code
+        textlabel.TextXAlignment = Enum.TextXAlignment.Left
+        textlabel.Font = Enum.Font.RobotoMono
+
+        if isHost == true then
+            textlabel.Position = UDim2.new(0.75,0,0.5,0)
+
+            local imageLabel = Instance.new("ImageLabel")
+            imageLabel.Parent = frame
+            imageLabel.Position = UDim2.new(0.04,0,0.475,0)
+            imageLabel.BackgroundTransparency = 1
+            imageLabel.Size = UDim2.new(0.185,0,0.9,0)
+            imageLabel.AnchorPoint = Vector2.new(0,0.5)
+            imageLabel.Image = "rbxassetid://14842080275"
+        end
 
         if parent == rightbar then
             frame.Position = UDim2.new(1,0,0,0)
@@ -110,8 +125,7 @@ return function(api)
         if userid ~= api.player.UserId then
             createNotification(`{data.serverData.username} has joined the server`)
         end
-        local frame = createFrame(data.serverData.username,leftbar)
-        frame.BackgroundColor3 = data.serverData.isHost == false and Color3.fromRGB(0,0,0) or Color3.fromRGB(255, 253, 123)
+        local frame = createFrame(data.serverData.username,leftbar,data.serverData.isHost)
         corresponding[userid] = frame
     end
 
