@@ -289,11 +289,6 @@ return function(api)
             print("entity doesnt exist cant do input")
             return
         end
-        local inputFunction = entity.InputFunctions[input]
-        if not inputFunction then
-            warn(`input function {input} doesnt exist for entity {entityid}`)
-            return
-        end
         entity.SwitchAnimation(entity,someIndex,input)
     end
 
