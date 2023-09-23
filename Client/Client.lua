@@ -539,7 +539,7 @@ registerMessage(13,function(isArena)
 end)
 
 -- damage entity for host
-expectMessage(14,{"number","string","number","string","string","number"})
+expectMessage(14,{"number","number","number","string","string","number"})
 registerMessage(14,function(userid,entityid,damage,partname,damagename,screenshake)
     if not entityid then
         print("entity id is nil from network")
