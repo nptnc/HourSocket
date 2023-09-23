@@ -596,6 +596,17 @@ registerMessage(16,function(userid,text)
     })
 end)
 
+-- damage for host to non hosts
+expectMessage(17,{"number","number","number","string","string","number"})
+registerMessage(17,function(userid,entityid,damage,partname,damagename,screenshake)
+    if not entityid then
+        print("entity id is nil from network")
+        return
+    end
+    print(`trying to deal damage to entity {entityid} from network, non host`)
+end)
+
+
 player.Chatted:Connect(function(message)
     if not main.connected then
         return

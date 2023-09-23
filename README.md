@@ -13,6 +13,10 @@ This is a Roblox "Hack" that connects to an external server using websockets whi
 I am not held liable for any modifications users make to the server or the client, anyone can modify either side to overload or send modified information,
 Please only connect to servers that you trust as it may be unsafe as people can modify the server to log your ip address, do not use modified clients unless they are safe because they could open up vulnerabilities.
 
+### Supported Executors
+[Synapse X](https://x.synapse.to)<sub> $20</sub>
+[krnl](https://krnl.place)<sub> Free</sub>
+
 ### Creating a server
 - [Download Python](https://www.python.org/downloads/release/python-3110/) (If you already have Python, skip this step)
 - Clone this repository using `git clone https://github.com/nptnc/HourSocket`
@@ -20,7 +24,7 @@ Please only connect to servers that you trust as it may be unsafe as people can 
 - Run `main.py` and optionally `webserver.py`
 
 ### Connecting to a server
-- Using an executor of your choice (we suggest [Synapse X](https://x.synapse.to)<sub>Paid, Unavailable</sub> or [krnl](https://krnl.place)<sub>Free</sub>)
+- Using a supported executor of your choice
 - Inject into Roblox using your executor
 - Execute the script:
 ```lua
