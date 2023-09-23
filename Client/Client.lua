@@ -526,7 +526,7 @@ end)
 
 expectMessage(11,{"string","number"})
 registerMessage(11,function(timeTarget,special)
-    apiCall("startTempo",nil,timeTarget,special)
+    --apiCall("startTempo",nil,timeTarget,special)
 end)
 
 expectMessage(12,{"number","number","number","number","number"})
@@ -551,11 +551,6 @@ end)
 -- damage entity for host
 expectMessage(14,{"number","string","number","string","string","number"})
 registerMessage(14,function(userid,entityid,damage,partname,damagename,screenshake)
-    userid = tonumber(userid)
-    entityid = tonumber(entityid)
-    damage = tonumber(damage)
-    screenshake = tonumber(screenshake)
-
     if not entityid then
         print("entity id is nil from network")
         return

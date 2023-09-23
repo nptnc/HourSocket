@@ -100,7 +100,7 @@ return function(api)
     end
 
     module.startTempo = function(tempoPower,special)
-        local timeControl = {}
+        --[[local timeControl = {}
 
         local scriptDatabase = getrenv()._G.ScriptDatabase
         for index,value in scriptDatabase.TimeControlBase do
@@ -130,7 +130,7 @@ return function(api)
                 end
                 timeControl.Die(timeControl)
             end
-        end))
+        end))--]]
     end
     
     local findEntityByNetworkId = function(networkId)
