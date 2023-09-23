@@ -70,6 +70,7 @@ local messageIds = {
     intermissionStarted = 13,
     damageRequest = 14,
     entityInput = 15,
+    sayChatMessage = 16,
 }
 
 main.player = player
@@ -375,9 +376,21 @@ local registerPlayer = function(userid,data)
     if main.registeredPlayers[userid] then
         return
     end
+
+    local chatColors = {
+        Color3.fromRGB(255, 0, 72),
+        Color3.fromRGB(247, 0, 255),
+        Color3.fromRGB(0, 234, 255),
+        Color3.fromRGB(77, 255, 0),
+        Color3.fromRGB(255, 255, 0),
+        Color3.fromRGB(255, 89, 0),
+        Color3.fromRGB(255, 0, 0),
+    }
+
     main.registeredPlayers[userid] = {
         model = nil,
         cframe = CFrame.new(data.position[1],data.position[2],data.position[3]) * CFrame.Angles(math.rad(data.rotation[1]),math.rad(data.rotation[2]),math.rad(data.rotation[3])),
+        chatcolor = chatColors[math.random(1,#chatColors)],
         serverData = data,
     }
 
@@ -554,9 +567,6 @@ end)
 -- entity input
 expectMessage(15,{"number","number","string"})
 registerMessage(15,function(entityid,someIndex,input)
-    entityid = tonumber(entityid)
-    someIndex = tonumber(someIndex)
-
     if not entityid then
         print("entity id is nil from network")
         return
@@ -564,6 +574,27 @@ registerMessage(15,function(entityid,someIndex,input)
     
     print(`doing entity input {input}`)
     apiCall("entityDoInput",nil,entityid,someIndex,input)
+end)
+
+-- player text messages
+expectMessage(16,{"number","string"})
+registerMessage(16,function(userid,text)
+    local messageplayer = main.registeredPlayers[userid]
+    game.StarterGui:SetCore("ChatMakeSystemMessage",{
+        Text = `[{messageplayer.serverData.username}]: {text}`,
+        Color = messageplayer.chatcolor,
+        Font = Enum.Font.SourceSansBold,
+        TextSize = 18,
+    })
+end)
+
+player.Chatted:Connect(function(message)
+    if not main.connected then
+        return
+    end
+
+    local message = main.prepareMessage("sayChatMessage",message)
+    main.sendToServer(message)
 end)
 
 main.disconnect = function()
