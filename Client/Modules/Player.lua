@@ -24,7 +24,7 @@ return function(api)
         local entity = getrenv()._G.Entities[1] -- get the games player entity
         local lastInput = entity.Input
         rs.Heartbeat:Connect(function(dt)
-            if lastInput ~= entity.Input and entity.Input ~= nil then
+            if lastInput ~= entity.Input and entity.Input ~= nil and entity.Input ~= false then
                 local input = entity.Inputs[entity.Input] -- we need to get the actual input name lol
 
                 local cf = workspace.CurrentCamera.CFrame
