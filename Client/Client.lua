@@ -1,6 +1,6 @@
 setthreadidentity(2)
 
-if getgenv()._G.LEExecuted then
+if getgenv()._G.LEExecuted == true then
     return
 end
 getgenv()._G.LEExecuted = true
@@ -29,8 +29,8 @@ elseif syn then
 end
 
 if exploit == "Unsupported Exploit" then
-    error("Unsupported Exploit")
     getgenv()._G.LEExecuted = false
+    error("Unsupported Exploit")
     return
 end
 
