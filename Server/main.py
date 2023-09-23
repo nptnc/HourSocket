@@ -363,6 +363,13 @@ async def entityInput(ws, userid: int, entityId: int, someIndex: int, input: str
     ), except_for=[userid])
 entityInput()
 
+@createPacket(16)
+async def sayChatMessage(ws, userid: int, input: str):
+    await send_all_ws(create_message(
+        16, userid, input
+    ), except_for=[userid])
+sayChatMessage()
+
 async def handle_incoming(ws):
     try:
         raw_msg = await ws.recv()
