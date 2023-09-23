@@ -24,6 +24,7 @@ return function(api)
             end
             if #deadPeople == api.len(api.registeredPlayers)-1 and api.globals.hasCalledGameEnd == false then
                 api.globals.hasCalledGameEnd = true
+                api.respawnPlayer()
                 api.globals.oldEndGame()
             end
         else

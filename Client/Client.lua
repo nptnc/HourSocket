@@ -124,6 +124,27 @@ main.isHost = function()
     return main.getMe().serverData.isHost
 end
 
+main.respawnPlayer = function()
+    local aidata = getrenv()._G.Entities[1]
+    if aidata then
+        local aichar = aidata.Character
+        game.Players.LocalPlayer.Character.Parent = workspace
+        aichar:Destroy()
+        local ui = aidata.BossGui
+        if ui then
+            ui:Destroy()
+        end
+        getrenv()._G.Entities[1] = nil
+    end
+    for _,frame in getrenv()._G.Player.PlayerGui.AllGui.AllFrame.Skills:GetChildren() do
+        if not frame:IsA("Frame") then
+            continue
+        end
+        frame:Destroy()
+    end
+    getrenv()._G.PreparePlayerCharacter({})
+end
+
 main.destroyAllEntities = function()
     for index,aidata in getrenv()._G.Entities do
         if aidata.specialId then
