@@ -125,6 +125,8 @@ main.isHost = function()
 end
 
 main.respawnPlayer = function()
+    hookToMyEntity()
+
     local aidata = getrenv()._G.Entities[1]
     if aidata then
         local aichar = aidata.Character
@@ -672,7 +674,7 @@ workspace.ChildRemoved:Connect(function(child)
     main.registeredPlayers[tonumber(child.Name)].entity = nil
 end)
 
-local hookToMyEntity = function()
+hookToMyEntity = function()
     print("hooked to me")
 
     getrenv()._G.Entities[1].Dead = false
