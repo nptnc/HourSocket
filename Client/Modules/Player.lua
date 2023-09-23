@@ -26,6 +26,11 @@ return function(api)
         rs.Heartbeat:Connect(function(dt)
             if lastInput ~= entity.Input and entity.Input ~= nil and entity.Input ~= false then
                 local input = entity.Inputs[entity.Input] -- we need to get the actual input name lol
+                if input == nil then
+                    -- this shouldnt happen but protection is always needed when inserting new things into the codebase!
+                    lastInput = entity.Input
+                    return
+                end
 
                 local cf = workspace.CurrentCamera.CFrame
 
