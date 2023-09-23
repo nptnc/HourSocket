@@ -495,6 +495,9 @@ registerMessage(8,function(userid,input,posx,posy,posz,rotx,roty,rotz)
     end
 
     print(`received input {input} {userid}`)
+    if not entity.InputFunctions[input] then
+        return
+    end
     entity.InputFunctions[input](entity)
 end)
 

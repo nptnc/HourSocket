@@ -31,6 +31,8 @@ return function(api)
 
                 local rx, ry, rz = cf:ToOrientation()
                 local rotation = Vector3.new(math.deg(rx), math.deg(ry), math.deg(rz))
+
+                print(`networking input {input}`)
         
                 local message = api.prepareMessage("doInput",
                     input,
