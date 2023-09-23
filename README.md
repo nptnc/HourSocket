@@ -14,7 +14,7 @@ I am not held liable for any modifications users make to the server or the clien
 Please only connect to servers that you trust as it may be unsafe as people can modify the server to log your ip address, do not use modified clients unless they are safe because they could open up vulnerabilities.
 
 ### Supported Executors
-[Synapse X](https://x.synapse.to)<sub> $20</sub>
+[Synapse X](https://x.synapse.to)<sub> $20</sub>  
 [krnl](https://krnl.place)<sub> Free</sub>
 
 ### Creating a server
