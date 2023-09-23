@@ -469,6 +469,10 @@ expectMessage(8,{"number","string","number","number","number","number","number",
 registerMessage(8,function(userid,input,posx,posy,posz,rotx,roty,rotz)
     local messageplayer = main.registeredPlayers[userid]
     local entity = messageplayer.entity
+    if entity == nil then
+        warn("cant do input, player entity is nil")
+        return
+    end
 
     local realInput = nil
     for index,value in entity.Inputs do
