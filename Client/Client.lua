@@ -620,7 +620,7 @@ main.disconnect = function()
     if not main.socket then
         return
     end
-    main.socket:close()
+    main.socket:Close()
     main.connected = false
     main.socket = nil
     for userid,_ in main.registeredPlayers do
