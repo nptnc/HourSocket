@@ -626,6 +626,7 @@ main.disconnect = function()
         main.destroyPlayerEntity(userid)
     end
     main.registeredPlayers = {}
+    apiCall("onDisconnected")
 end
 
 main.tryToConnect = function(ip)
@@ -765,7 +766,3 @@ table.insert(connections,rs.Heartbeat:Connect(function(dt)
 
     apiCall("updateWithFPS")
 end))
-
-game.Players.PlayerRemoving:Connect(function()
-    apiCall("onDisconnect")
-end)

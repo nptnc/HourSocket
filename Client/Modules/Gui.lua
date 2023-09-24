@@ -129,6 +129,13 @@ return function(api)
         corresponding[userid] = frame
     end
 
+    module.onDisconnected = function()
+        for _,ui in corresponding do
+            ui:Destroy()
+        end
+        corresponding = {}
+    end
+
     module.playerDisconnected = function(userid,data)
        corresponding[userid]:Destroy()
        corresponding[userid] = nil
