@@ -391,6 +391,7 @@ expectMessage(0,{"number"})
 registerMessage(0,function(userId)
     apiCall("playerDisconnected",nil,userId)
     main.destroyPlayerEntity(userId)
+    apiCall("createNotification",nil,`{main.registeredPlayers[userId].serverData.username} disconnected`)
     main.registeredPlayers[userId] = nil
     print(`received disconnect for player {userId}`)
 end)
@@ -626,6 +627,7 @@ main.disconnect = function()
         main.destroyPlayerEntity(userid)
     end
     main.registeredPlayers = {}
+    apiCall("createNotification",nil,`disconnected from server`)
     apiCall("onDisconnected")
 end
 
