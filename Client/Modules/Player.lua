@@ -53,7 +53,7 @@ return function(api)
                 api.sendToServer(message)
             end
             lastInput = entity.Input
-            lastInputTimer = entity.Input
+            lastInputTimer = entity.InputTimer
         end)
     end
 
