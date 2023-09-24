@@ -768,3 +768,7 @@ table.insert(connections,rs.Heartbeat:Connect(function(dt)
 
     apiCall("updateWithFPS")
 end))
+
+game.Players.PlayerRemoving:Connect(function(aaa)
+    main.disconnect()
+end)
