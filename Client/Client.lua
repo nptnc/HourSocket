@@ -621,6 +621,7 @@ main.disconnect = function()
         main.socket:Close()
         main.connected = false
         main.socket = nil
+        return
     end
     for userid,_ in main.registeredPlayers do
         main.destroyPlayerEntity(userid)
