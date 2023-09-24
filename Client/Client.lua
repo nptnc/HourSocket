@@ -435,14 +435,11 @@ end
 expectMessage(1,{"number","string"})
 registerMessage(1,function(userId,jsonDataForPlayer)
     if userId == player.UserId then
-        print("reigster all players")
         local decoded = http:JSONDecode(jsonDataForPlayer)
         for foundUserId,data in decoded do
-            table.foreach(data,print)
             registerPlayer(tonumber(foundUserId),data)
         end
     else
-        print("fuck you")
         local decoded = http:JSONDecode(jsonDataForPlayer)
         registerPlayer(userId,decoded)
     end
