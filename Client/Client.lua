@@ -434,8 +434,7 @@ end
 
 expectMessage(1,{"number","string"})
 registerMessage(1,function(userId,jsonDataForPlayer)
-    print(userId,jsonDataForPlayer)
-    if userId == nil then
+    if userId ~= player.UserId then
         local decoded = http:JSONDecode(jsonDataForPlayer)
         for foundUserId,data in decoded do
             registerPlayer(tonumber(foundUserId),data)
