@@ -127,9 +127,9 @@ return function(api)
 
     module.playerStateUpdate = function(userid,index,value)
         value = api.findOutVariable(userid,index,value)
+        print(`updating player state {index} {value}`)
         
-        local messageplayer = api.registeredPlayers[userid]
-        messageplayer.serverData[index] = value
+        api.registeredPlayers[userid].serverData[index] = value
     end
 
     local previousValues = {}
@@ -155,6 +155,7 @@ return function(api)
             }
 
             if currentValues.health ~= previousValues.health then
+                print("networking current health")
                 local message = api.prepareMessage("updateState",
                     "health",
                     currentValues.health
@@ -209,7 +210,7 @@ return function(api)
             local theirCF = playerdata.cframe
     
             local distanceFromTarget = (theirCF.Position-erp).Magnitude
-            entity.Resources.Health = playerdata.serverData.health and playerdata.serverData.health or 10000
+            entity.Resources.Health = playerdata.serverData.health or 10000
             entity.MoveDirection = {distanceFromTarget > 0.5 and 1 or 0,0}
             entity.MovePosition = theirCF.Position
             entity.FacingPosition = (theirCF.Position + theirCF.LookVector*1000)

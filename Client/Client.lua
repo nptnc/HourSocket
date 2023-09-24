@@ -509,7 +509,7 @@ registerMessage(8,function(userid,input,posx,posy,posz,rotx,roty,rotz)
         warn("cant do input, player entity is nil")
         return
     end
-    --entity.Input = realInput
+    entity.Input = input
     entity.InputTimer = 0.5
     entity.InputCameraCFrame = CFrame.new(posx,posy,posz) * CFrame.Angles(math.rad(rotx),math.rad(roty),math.rad(rotz))
     if not entity.InputCameraCFrame then
@@ -518,10 +518,7 @@ registerMessage(8,function(userid,input,posx,posy,posz,rotx,roty,rotz)
     end
 
     print(`received input {input} {userid}`)
-    if not entity.InputFunctions[input] then
-        return
-    end
-    entity.InputFunctions[input](entity)
+    --entity.InputFunctions[input](entity)
 end)
 
 expectMessage(9,{"number","any","any"})
