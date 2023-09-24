@@ -606,13 +606,12 @@ registerMessage(17,function(userid,entityid,damage,partname,damagename,screensha
     print(`trying to deal damage to entity {entityid} from network, non host`)
 end)
 
-
-player.Chatted:Connect(function(message)
+player.Chatted:Connect(function(messagecontents)
     if not main.connected then
         return
     end
 
-    local message = main.prepareMessage("sayChatMessage",message)
+    local message = main.prepareMessage("sayChatMessage",messagecontents)
     main.sendToServer(message)
 end)
 
