@@ -617,12 +617,11 @@ player.Chatted:Connect(function(message)
 end)
 
 main.disconnect = function()
-    if not main.socket then
-        return
+    if main.socket then
+        main.socket:Close()
+        main.connected = false
+        main.socket = nil
     end
-    main.socket:Close()
-    main.connected = false
-    main.socket = nil
     for userid,_ in main.registeredPlayers do
         main.destroyPlayerEntity(userid)
     end
