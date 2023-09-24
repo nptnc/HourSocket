@@ -182,7 +182,7 @@ return function(api)
                 knockbackPreviousValues[knockbackIndex] = knockbackData.Knockback
             end
             
-            previousValues = currentValues
+            previousValues = table.clone(currentValues)
         end
         
         for userid,playerdata in api.registeredPlayers do
