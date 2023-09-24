@@ -1,6 +1,8 @@
 return function(api)
     local module = {}
 
+    local toDisconnect = {}
+
     local hook2 = function()
         local entities = getrenv()._G.Entities
         --[[entities[1].SwitchAnimation = api.createHook(entities[1].SwitchAnimation,function(hook,...)
@@ -25,7 +27,7 @@ return function(api)
         
         local lastInput = entity.Input
         local lastInputTimer = entity.InputTimer
-        rs.Heartbeat:Connect(function(dt)
+        table.insert(toDisconnect,rs.Heartbeat:Connect(function(dt)
             if lastInput ~= entity.Input and entity.Input ~= nil and entity.Input ~= false or lastInput == entity.Input and lastInputTimer < entity.InputTimer then
                 local input = entity.Inputs[entity.Input] -- we need to get the actual input name lol
                 if input == nil then
@@ -54,7 +56,13 @@ return function(api)
             end
             lastInput = entity.Input
             lastInputTimer = entity.InputTimer
-        end)
+        end))
+    end
+
+    module.onDisconnected = function()
+        for _,loop in toDisconnect do
+            loop:Disconnect()
+        end
     end
 
     module.playerRespawned = function()
@@ -237,10 +245,6 @@ return function(api)
             messageplayer.knockback = {}
         end
         messageplayer.knockback[index] = Vector3.new(x,y,z)
-    end
-
-    module.onDisconnect = function()
-        api.socket:Close()
     end
 
     return module

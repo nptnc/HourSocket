@@ -28,5 +28,11 @@ Please only connect to servers that you trust as it may be unsafe as people can 
 - Inject into Roblox using your executor
 - Execute the script:
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/nptnc/HourSocket/main/Client/Client.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nptnc/HourSocket/main/Client/Client.lua"))()("github")
+
+--[[ 
+for dev testing, we need to run the code locally so you dont have to spam commit to github!
+local path = "HoursMPSource/Client"
+loadfile(`{path}/Client.lua`)()("local",path)
+--]]
 ````
