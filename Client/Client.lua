@@ -672,6 +672,7 @@ main.tryToConnect = function(ip)
 
     socket.OnClose:Connect(function()
         warn("Connection was closed")
+        main.disconnect()
     end)
 end
 
