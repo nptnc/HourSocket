@@ -515,13 +515,13 @@ registerMessage(8,function(userid,input,posx,posy,posz,rotx,roty,rotz)
     entity.Input = input
     entity.InputTimer = 0.5
     entity.InputCameraCFrame = CFrame.new(posx,posy,posz) * CFrame.Angles(math.rad(rotx),math.rad(roty),math.rad(rotz))
+    entity.InputFunctions[input](entity)
     if not entity.InputCameraCFrame then
         warn("cf is nil")
         return
     end
 
     print(`received input {input} {userid}`)
-    --entity.InputFunctions[input](entity)
 end)
 
 expectMessage(9,{"number","any","any"})
