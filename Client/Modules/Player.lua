@@ -26,7 +26,7 @@ return function(api)
         local lastInput = entity.Input
         local lastInputTimer = entity.InputTimer
         rs.Heartbeat:Connect(function(dt)
-            if lastInput ~= entity.Input and entity.Input ~= nil and entity.Input ~= false or lastInput == entity.Input and lastInputTimer ~= entity.InputTimer then
+            if lastInput ~= entity.Input and entity.Input ~= nil and entity.Input ~= false or lastInput == entity.Input and lastInputTimer < entity.InputTimer then
                 local input = entity.Inputs[entity.Input] -- we need to get the actual input name lol
                 if input == nil then
                     -- this shouldnt happen but protection is always needed when inserting new things into the codebase!
