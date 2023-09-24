@@ -132,6 +132,7 @@ return function(api)
         messageplayer.serverData[index] = value
     end
 
+    local previousValues = {}
     local knockbackPreviousValues = {}
     module.update = function()
         if not api.connected then
@@ -148,7 +149,19 @@ return function(api)
         -- to make hellion shift, e, right click to work we must sync knockback over the network, i've only tested hellion this could add support to others though.
         
         local myEntity = getrenv()._G.Entities[1]
-        if myEntity then 
+        if myEntity then
+            local currentValues = {
+                health = math.ceil(myEntity.Resources.Health),
+            }
+
+            if currentValues.health ~= previousValues.health then
+                local message = api.prepareMessage("updateState",
+                    "health",
+                    currentValues.health
+                )
+                api.sendToServer(message)
+            end
+
             for knockbackIndex,knockbackData in myEntity.Knockback do
                 if knockbackPreviousValues[knockbackIndex] == nil then
                     continue
@@ -167,6 +180,8 @@ return function(api)
             for knockbackIndex,knockbackData in myEntity.Knockback do
                 knockbackPreviousValues[knockbackIndex] = knockbackData.Knockback
             end
+            
+            previousValues = currentValues
         end
         
         for userid,playerdata in api.registeredPlayers do
@@ -194,7 +209,7 @@ return function(api)
             local theirCF = playerdata.cframe
     
             local distanceFromTarget = (theirCF.Position-erp).Magnitude
-            entity.Resources.Health = 10000
+            entity.Resources.Health = playerdata.serverData.health and playerdata.serverData.health or 10000
             entity.MoveDirection = {distanceFromTarget > 0.5 and 1 or 0,0}
             entity.MovePosition = theirCF.Position
             entity.FacingPosition = (theirCF.Position + theirCF.LookVector*1000)
