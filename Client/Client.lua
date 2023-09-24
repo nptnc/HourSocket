@@ -473,6 +473,8 @@ registerMessage(3,function(userid,key,value)
             messageplayer.entity = nil
         end
     end
+
+    warn(userid,key,value)
     apiCall("playerStateUpdate",nil,userid,key,value)
 end)
 
