@@ -24,11 +24,18 @@ return function(api)
 
         local rs = game:GetService("RunService")
         local entity = getrenv()._G.Entities[1] -- get the games player entity
+
+        local canDoInput = function(input)
+            if entity.Cooldowns[input] and entity.Cooldowns[input].Cooldown > 0 and entity.Cooldowns[input].Charges > 0 then
+                return false
+            end
+            return true
+        end
         
         local lastInput = entity.Input
         local lastInputTimer = entity.InputTimer
-        table.insert(toDisconnect,rs.Heartbeat:Connect(function(dt)
-            if lastInput ~= entity.Input and entity.Input ~= nil and entity.Input ~= false or lastInput == entity.Input and lastInputTimer < entity.InputTimer then
+        table.insert(toDisconnect,rs.Stepped:Connect(function(dt)
+            if lastInput ~= entity.Input and entity.Input ~= nil and canDoInput() and entity.Input ~= false or lastInput == entity.Input and lastInputTimer < entity.InputTimer and canDoInput() then
                 local input = entity.Inputs[entity.Input] -- we need to get the actual input name lol
                 if input == nil then
                     -- this shouldnt happen but protection is always needed when inserting new things into the codebase!
