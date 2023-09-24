@@ -22,9 +22,11 @@ return function(api)
 
         local rs = game:GetService("RunService")
         local entity = getrenv()._G.Entities[1] -- get the games player entity
+        
         local lastInput = entity.Input
+        local lastInputTimer = entity.InputTimer
         rs.Heartbeat:Connect(function(dt)
-            if lastInput ~= entity.Input and entity.Input ~= nil and entity.Input ~= false then
+            if lastInput ~= entity.Input and entity.Input ~= nil and entity.Input ~= false or lastInput == entity.Input and lastInputTimer ~= entity.InputTimer then
                 local input = entity.Inputs[entity.Input] -- we need to get the actual input name lol
                 if input == nil then
                     -- this shouldnt happen but protection is always needed when inserting new things into the codebase!
@@ -51,6 +53,7 @@ return function(api)
                 api.sendToServer(message)
             end
             lastInput = entity.Input
+            lastInputTimer = entity.Input
         end)
     end
 

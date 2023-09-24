@@ -125,7 +125,7 @@ main.isHost = function()
 end
 
 main.respawnPlayer = function()
-    hookToMyEntity()
+    --[[hookToMyEntity()
 
     local aidata = getrenv()._G.Entities[1]
     if aidata then
@@ -144,7 +144,7 @@ main.respawnPlayer = function()
         end
         frame:Destroy()
     end
-    getrenv()._G.PreparePlayerCharacter({})
+    getrenv()._G.PreparePlayerCharacter({})--]]
 end
 
 main.destroyAllEntities = function()
