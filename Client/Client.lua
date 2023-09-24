@@ -434,6 +434,7 @@ end
 
 expectMessage(1,{"number","string"})
 registerMessage(1,function(userId,jsonDataForPlayer)
+    print(userId,jsonDataForPlayer)
     if userId == -1 then
         local decoded = http:JSONDecode(jsonDataForPlayer)
         for foundUserId,data in decoded do
