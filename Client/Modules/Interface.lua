@@ -184,22 +184,29 @@ return function(api)
                 Text = label,
                 TextXAlignment = Enum.TextXAlignment.Center,
             })
+
+            local buttonapi = {
+                changeText = function(t)
+                    box.Text = t
+                end
+            }
             box.MouseButton1Click:Connect(function()
-                callback()
+                callback(buttonapi)
             end)
+            return buttonapi
         end
         
         createLabel("you can press [ to hide this ui")
         local ip = createTextbox("ip","salamithecat.com")
         local port = createTextbox("port","7171")
-        createButton("connect",function()
+        createButton("connect",function(button)
             if api.connected then
+                api.disconnect()
+                button.changeText(api.connected and "disconnect" or "connect")
                 return
             end
             api.tryToConnect(`http://{ip.get()}:{port.get()}`)
-        end)
-        createButton("disconnect",function()
-            api.disconnect()
+            button.changeText(api.connected and "disconnect" or "connect")
         end)
         --createCheckbox("hi")
     end

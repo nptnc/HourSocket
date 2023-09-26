@@ -1,3 +1,5 @@
+local TextService = game:GetService("TextService")
+local TweenService = game:GetService("TweenService")
 return function(api)
     local module = {}
 
@@ -48,8 +50,7 @@ return function(api)
     local createNotification = function(text,duration)
         local frame = Instance.new("Frame")
         frame.Parent = middle
-        frame.BackgroundColor3 = Color3.fromRGB()
-        frame.BackgroundTransparency = 0.7
+        frame.BackgroundTransparency = 1
         frame.BorderSizePixel = 0
         frame.Size = UDim2.new(0,0,0.04,0)
         frame.AutomaticSize = Enum.AutomaticSize.X
@@ -57,13 +58,20 @@ return function(api)
         local textlabel = Instance.new("TextLabel")
         textlabel.Parent = frame
         textlabel.Text = text
-        textlabel.BackgroundTransparency = 1
+        textlabel.BackgroundTransparency = 0.7
+        textlabel.BorderSizePixel = 0
+        textlabel.BackgroundColor3 = Color3.fromRGB()
         textlabel.Size = UDim2.new(1,0,0.75,0)
+        textlabel.AnchorPoint = Vector2.new(0,0.5)
+        textlabel.Position = UDim2.new(0,0,0.5,0)
         textlabel.TextColor3 = Color3.fromRGB(255,255,255)
         textlabel.TextScaled = false
         textlabel.AutomaticSize = Enum.AutomaticSize.X
 
         task.delay(duration or 5,function()
+            local t = TweenService:Create(textlabel,TweenInfo.new(1),{BackgroundTransparency = 1,TextTransparency = 1})
+            t:Play()
+            t.Completed:Wait()
             frame:Destroy()
         end)
 
