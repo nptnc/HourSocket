@@ -1,0 +1,33 @@
+Date : 2023-09-26 17:15:07
+Directory : c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Client
+Total : 7 files,  1637 codes, 40 comments, 272 blanks, all 1949 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Lua      |          7 |      1,637 |         40 |        272 |      1,949 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                                            | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                                               |          7 |      1,637 |         40 |        272 |      1,949 |
+| . (Files)                                                                                                                                       |          1 |        666 |         11 |        101 |        778 |
+| Modules                                                                                                                                         |          6 |        971 |         29 |        171 |      1,171 |
++-------------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                                                                        | language | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Client\Client.lua                 | Lua      |        666 |         11 |        101 |        778 |
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Client\Modules\Entity.lua         | Lua      |        246 |         12 |         50 |        308 |
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Client\Modules\Game.lua           | Lua      |        145 |          4 |         26 |        175 |
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Client\Modules\Gui.lua            | Lua      |        150 |          0 |         29 |        179 |
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Client\Modules\Interface.lua      | Lua      |        196 |          1 |         18 |        215 |
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Client\Modules\MultiplayerQOL.lua | Lua      |         31 |          1 |          4 |         36 |
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Client\Modules\Player.lua         | Lua      |        203 |         11 |         44 |        258 |
+| Total                                                                                                                                           |          |      1,637 |         40 |        272 |      1,949 |
++-------------------------------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

@@ -438,11 +438,13 @@ return function(executionMethod,localPath)
     expectMessage(1,{"number","string"})
     registerMessage(1,function(userId,jsonDataForPlayer)
         if userId == player.UserId then
+            -- this means we registered so we are being sent every player including us.
             local decoded = http:JSONDecode(jsonDataForPlayer)
             for foundUserId,data in decoded do
                 registerPlayer(tonumber(foundUserId),data)
             end
         else
+            -- this means someone registered, we are getting their player.
             local decoded = http:JSONDecode(jsonDataForPlayer)
             registerPlayer(userId,decoded)
         end
@@ -690,27 +692,9 @@ return function(executionMethod,localPath)
         main.registeredPlayers[tonumber(child.Name)].entity = nil
     end)
     
-    hookToMyEntity = function()
+    local hookToMyEntity = function()
         print("hooked to me")
-    
-        getrenv()._G.Entities[1].Dead = false
         apiCall("playerRespawned")
-    
-        local getVariableChanged = function(a,b,onChanged)
-            local last = a[b]
-            rs.Heartbeat:Connect(function(dt)
-                if last ~= a[b] then
-                    onChanged(a[b])
-                end
-                last = a[b]
-            end)
-        end
-        
-        getVariableChanged(getrenv()._G.Entities[1],"Dead",function(value)
-            if value then
-                apiCall("playerDied")
-            end
-        end)
     end
     
     if getrenv()._G.Entities[1] ~= nil then

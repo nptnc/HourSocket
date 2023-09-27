@@ -10,8 +10,8 @@ Server programmed by [PeeblyWeeb](https://discord.com/users/904032786854346795)
 Client programmed by [nptnc](https://discord.com/users/397930609894490122)
 
 This is a Roblox "Hack" that connects to an external server using websockets which sends information and receives information from it,
-I am not held liable for any modifications users make to the server or the client, anyone can modify either side to overload or send modified information,
-Please only connect to servers that you trust as it may be unsafe as people can modify the server to log your ip address, do not use modified clients unless they are safe because they could open up vulnerabilities.
+Do note that anyone can modify the client or the server to overload or send modified information,
+Please only connect to servers that you trust as it may be unsafe as people can modify the server to log information that you might not want to be logged (ip addresses).
 
 ### Supported Executors
 [Synapse X](https://x.synapse.to)<sub> $20</sub>  

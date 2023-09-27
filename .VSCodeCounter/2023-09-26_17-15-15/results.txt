@@ -1,0 +1,51 @@
+Date : 2023-09-26 17:15:15
+Directory : c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource
+Total : 14 files,  2219 codes, 52 comments, 365 blanks, all 2636 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| Lua        |          7 |      1,637 |         40 |        272 |      1,949 |
+| Python     |          2 |        385 |         12 |         59 |        456 |
+| JavaScript |          1 |         66 |          0 |         12 |         78 |
+| CSS        |          1 |         63 |          0 |          7 |         70 |
+| Markdown   |          2 |         46 |          0 |         14 |         60 |
+| HTML       |          1 |         22 |          0 |          1 |         23 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                                            | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                                               |         14 |      2,219 |         52 |        365 |      2,636 |
+| . (Files)                                                                                                                                       |          2 |         46 |          0 |         14 |         60 |
+| Client                                                                                                                                          |          7 |      1,637 |         40 |        272 |      1,949 |
+| Client (Files)                                                                                                                                  |          1 |        666 |         11 |        101 |        778 |
+| Client\Modules                                                                                                                                  |          6 |        971 |         29 |        171 |      1,171 |
+| Server                                                                                                                                          |          5 |        536 |         12 |         79 |        627 |
+| Server (Files)                                                                                                                                  |          2 |        385 |         12 |         59 |        456 |
+| Server\static                                                                                                                                   |          2 |        129 |          0 |         19 |        148 |
+| Server\templates                                                                                                                                |          1 |         22 |          0 |          1 |         23 |
++-------------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                                                        | language   | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Client\Client.lua                 | Lua        |        666 |         11 |        101 |        778 |
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Client\Modules\Entity.lua         | Lua        |        246 |         12 |         50 |        308 |
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Client\Modules\Game.lua           | Lua        |        145 |          4 |         26 |        175 |
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Client\Modules\Gui.lua            | Lua        |        150 |          0 |         29 |        179 |
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Client\Modules\Interface.lua      | Lua        |        196 |          1 |         18 |        215 |
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Client\Modules\MultiplayerQOL.lua | Lua        |         31 |          1 |          4 |         36 |
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Client\Modules\Player.lua         | Lua        |        203 |         11 |         44 |        258 |
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\LICENSE.md                        | Markdown   |         17 |          0 |          4 |         21 |
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\README.md                         | Markdown   |         29 |          0 |         10 |         39 |
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Server\main.py                    | Python     |        372 |         11 |         52 |        435 |
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Server\static\index.js            | JavaScript |         66 |          0 |         12 |         78 |
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Server\static\style.css           | CSS        |         63 |          0 |          7 |         70 |
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Server\templates\index.html       | HTML       |         22 |          0 |          1 |         23 |
+| c:\Users\Small Penis\AppData\Local\Packages\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\AC\workspace\HoursMPSource\Server\webserver.py               | Python     |         13 |          1 |          7 |         21 |
+| Total                                                                                                                                           |            |      2,219 |         52 |        365 |      2,636 |
++-------------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

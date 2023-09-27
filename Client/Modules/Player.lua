@@ -4,19 +4,6 @@ return function(api)
     local toDisconnect = {}
 
     local hook2 = function()
-        local entities = getrenv()._G.Entities
-        --[[entities[1].SwitchAnimation = api.createHook(entities[1].SwitchAnimation,function(hook,...)
-            local args = {...}
-            local blacklistedAnimations = {"Idle","Run"}
-
-            -- we dont really need idle or run to be networked since they are already handled by the games ai when we create a player.
-            if not table.find(blacklistedAnimations,args[3]) then
-                local message = api.prepareMessage("animationChange",args[2],args[3])
-                api.sendToServer(message)
-            end
-            return hook.call(...)
-        end)--]]
-
         --[[getrenv()._G.TimeControl.Begin = api.createHook(getrenv()._G.TimeControl.Begin,function(hook)
             local message = api.prepareMessage("startTempo",getrenv()._G.TimePower,getrenv()._G.TimeControl.Special)
             api.sendToServer(message)
@@ -77,9 +64,6 @@ return function(api)
             return
         end
         
-        local message = api.prepareMessage("updateState","dead",false)
-        api.sendToServer(message)
-
         hook2()
     end
 
@@ -91,11 +75,6 @@ return function(api)
             return
         end
         api.destroyAllEntities()
-    end
-
-    module.playerDied = function()
-        local message = api.prepareMessage("updateState","dead",true)
-        api.sendToServer(message)
     end
 
     module.connected = function()
