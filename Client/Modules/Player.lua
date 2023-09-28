@@ -78,7 +78,14 @@ return function(api)
     end
 
     module.connected = function()
-        local message = api.prepareMessage("registerPlayer",api.player.Name,getrenv()._G.Class)
+        local entity = getrenv()._G.Entities[1] -- get the games player entity
+
+        local message = api.prepareMessage("registerPlayer",
+            api.player.Name,
+            getrenv()._G.Class,
+            api.encodeV3(entity.RootPart.Position),
+            api.encodeV3(entity.RootPart.Rotation)
+        )
         api.sendToServer(message)
 
         if getrenv()._G.Entities[1] then

@@ -1,0 +1,57 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "HourSocketServerCS/1.0.0": {
+        "dependencies": {
+          "Coroutine": "2.1.5",
+          "WatsonWebsocket": "4.0.11"
+        },
+        "runtime": {
+          "HourSocketServerCS.dll": {}
+        }
+      },
+      "Coroutine/2.1.5": {
+        "runtime": {
+          "lib/net6.0/Coroutine.dll": {
+            "assemblyVersion": "2.1.5.0",
+            "fileVersion": "2.1.5.0"
+          }
+        }
+      },
+      "WatsonWebsocket/4.0.11": {
+        "runtime": {
+          "lib/net6.0/WatsonWebsocket.dll": {
+            "assemblyVersion": "4.0.11.0",
+            "fileVersion": "4.0.11.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "HourSocketServerCS/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Coroutine/2.1.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-oqBFi+ivqCQHi0evkbIUvYDyT6UbZ+vWT06vqhJ+QrksHR3NEvOiHUyJ5Dd7GD7QeXdsbYjRvy/msoL+QBd4DA==",
+      "path": "coroutine/2.1.5",
+      "hashPath": "coroutine.2.1.5.nupkg.sha512"
+    },
+    "WatsonWebsocket/4.0.11": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/k4ow9wohcDtJXX3UAC03YpvmDxhcIfeo5FD9+HdgoOuMBR12+TxmnHpZ+NgAq4uqR3Pj9fuZ7sIwraDmcKJwg==",
+      "path": "watsonwebsocket/4.0.11",
+      "hashPath": "watsonwebsocket.4.0.11.nupkg.sha512"
+    }
+  }
+}

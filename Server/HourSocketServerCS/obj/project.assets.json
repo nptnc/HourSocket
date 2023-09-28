@@ -1,0 +1,156 @@
+{
+  "version": 3,
+  "targets": {
+    "net6.0": {
+      "Coroutine/2.1.5": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Coroutine.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Coroutine.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "WatsonWebsocket/4.0.11": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/WatsonWebsocket.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/WatsonWebsocket.dll": {
+            "related": ".xml"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Coroutine/2.1.5": {
+      "sha512": "oqBFi+ivqCQHi0evkbIUvYDyT6UbZ+vWT06vqhJ+QrksHR3NEvOiHUyJ5Dd7GD7QeXdsbYjRvy/msoL+QBd4DA==",
+      "type": "package",
+      "path": "coroutine/2.1.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Logo.png",
+        "README.md",
+        "coroutine.2.1.5.nupkg.sha512",
+        "coroutine.nuspec",
+        "lib/net45/Coroutine.dll",
+        "lib/net45/Coroutine.xml",
+        "lib/net6.0/Coroutine.dll",
+        "lib/net6.0/Coroutine.xml",
+        "lib/netstandard2.0/Coroutine.dll",
+        "lib/netstandard2.0/Coroutine.xml"
+      ]
+    },
+    "WatsonWebsocket/4.0.11": {
+      "sha512": "/k4ow9wohcDtJXX3UAC03YpvmDxhcIfeo5FD9+HdgoOuMBR12+TxmnHpZ+NgAq4uqR3Pj9fuZ7sIwraDmcKJwg==",
+      "type": "package",
+      "path": "watsonwebsocket/4.0.11",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "README.md",
+        "lib/net461/WatsonWebsocket.dll",
+        "lib/net48/WatsonWebsocket.dll",
+        "lib/net6.0/WatsonWebsocket.dll",
+        "lib/net6.0/WatsonWebsocket.xml",
+        "lib/net7.0/WatsonWebsocket.dll",
+        "lib/netcoreapp3.1/WatsonWebsocket.dll",
+        "lib/netcoreapp3.1/WatsonWebsocket.xml",
+        "lib/netstandard2.1/WatsonWebsocket.dll",
+        "lib/netstandard2.1/WatsonWebsocket.xml",
+        "watson.png",
+        "watsonwebsocket.4.0.11.nupkg.sha512",
+        "watsonwebsocket.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net6.0": [
+      "Coroutine >= 2.1.5",
+      "WatsonWebsocket >= 4.0.11"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Small Penis\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\Small Penis\\source\\repos\\HourSocketServerCS\\HourSocketServerCS\\HourSocketServerCS.csproj",
+      "projectName": "HourSocketServerCS",
+      "projectPath": "C:\\Users\\Small Penis\\source\\repos\\HourSocketServerCS\\HourSocketServerCS\\HourSocketServerCS.csproj",
+      "packagesPath": "C:\\Users\\Small Penis\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Small Penis\\source\\repos\\HourSocketServerCS\\HourSocketServerCS\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\Small Penis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net6.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net6.0": {
+        "targetAlias": "net6.0",
+        "dependencies": {
+          "Coroutine": {
+            "target": "Package",
+            "version": "[2.1.5, )"
+          },
+          "WatsonWebsocket": {
+            "target": "Package",
+            "version": "[4.0.11, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

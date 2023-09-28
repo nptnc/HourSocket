@@ -147,6 +147,10 @@ return function(executionMethod,localPath)
         end
         getrenv()._G.PreparePlayerCharacter({})--]]
     end
+
+    main.encodeV3 = function(vector3)
+        return `{vector3.X}_{vector3.Y}_{vector3.Z}`
+    end
     
     main.destroyAllEntities = function()
         for index,aidata in getrenv()._G.Entities do
@@ -189,6 +193,10 @@ return function(executionMethod,localPath)
         end,
         ["string"] = function(a)
             return true,a -- its always a string lil bro.
+        end,
+        ["vector3"] = function(a)
+            local split = string.split(a,"_")
+            return true,Vector3.new(split[1],split[2],split[3])
         end,
         ["any"] = function(a)
             return true,a -- uh its any
@@ -317,7 +325,7 @@ return function(executionMethod,localPath)
     
     main.prepareMessage = function(messageId,...)
         messageId = messageIds[messageId] or messageId
-        local endString = `{messageId}{seperator}{player.UserId}{seperator}`
+        local endString = `{messageId}{seperator}`
         if #{...} > 0 then
             for index,value in {...} do
                 if index < #{...} then
@@ -418,7 +426,7 @@ return function(executionMethod,localPath)
     
         main.registeredPlayers[userid] = {
             model = nil,
-            cframe = CFrame.new(data.position[1],data.position[2],data.position[3]) * CFrame.Angles(math.rad(data.rotation[1]),math.rad(data.rotation[2]),math.rad(data.rotation[3])),
+            cframe = CFrame.new(data.position.X,data.position.Y,data.position.Z) * CFrame.Angles(math.rad(data.rotation.X),math.rad(data.rotation.Y),math.rad(data.rotation.Z)),
             chatcolor = chatColors[math.random(1,#chatColors)],
             serverData = data,
         }
@@ -435,19 +443,15 @@ return function(executionMethod,localPath)
         end
     end
     
-    expectMessage(1,{"number","string"})
-    registerMessage(1,function(userId,jsonDataForPlayer)
-        if userId == player.UserId then
-            -- this means we registered so we are being sent every player including us.
-            local decoded = http:JSONDecode(jsonDataForPlayer)
-            for foundUserId,data in decoded do
-                registerPlayer(tonumber(foundUserId),data)
-            end
-        else
-            -- this means someone registered, we are getting their player.
-            local decoded = http:JSONDecode(jsonDataForPlayer)
-            registerPlayer(userId,decoded)
-        end
+    expectMessage(1,{"number","string","string","vector3","vector3","boolean"})
+    registerMessage(1,function(userId,username,class,position,rotation,isHost)
+        registerPlayer(userId,{
+            username = username,
+            class = class,
+            position = position,
+            rotation = rotation,
+            isHost = isHost,
+        })
     end)
     
     expectMessage(2,{"number","number","number","number","number","number","number"})
@@ -681,7 +685,6 @@ return function(executionMethod,localPath)
         end)
     
         main.socket.OnClose:Connect(function()
-            warn("Connection was closed")
             main.disconnect()
         end)
     end
