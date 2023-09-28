@@ -8,7 +8,7 @@ This requires the Microsoft Store Roblox Version [2.592.586.0](https://github.co
 
 Old Server programmed by [PeeblyWeeb](https://discord.com/users/904032786854346795)  
 
-Client programmed by [nptnc](https://discord.com/users/397930609894490122)
+Client programmed by [nptnc](https://discord.com/users/397930609894490122)  
 Server programmed by [nptnc](https://discord.com/users/397930609894490122)
 
 This is a Roblox "Hack" that connects to an external server using websockets which sends information and receives information from it,
