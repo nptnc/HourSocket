@@ -72,6 +72,7 @@ return function(executionMethod,localPath)
         damageRequest = 14,
         entityInput = 15,
         sayChatMessage = 16,
+        subjectPotionAdd = 17,
     }
     
     main.player = player
@@ -244,6 +245,14 @@ return function(executionMethod,localPath)
         --[[entity.Interrupt = function()
             
         end--]]
+
+        entity.NetworkFunctions = {}
+        if entity.Name == "Class7" then
+            entity.NetworkFunctions.addPotion = entity.ActionFunctions.AddPotion
+            entity.ActionFunctions.AddPotion = main.createHook(entity.ActionFunctions.AddPotion,function(hook,...)
+                return -- we return because we dont want to dictate what their potions are, we let them do it
+            end)
+        end
     
         if playerdata.cframe then
             entity.RootPart.CFrame = playerdata.cframe
@@ -613,6 +622,19 @@ return function(executionMethod,localPath)
             return
         end
         print(`trying to deal damage to entity {entityid} from network, non host`)
+    end)
+
+    -- subject potion sync
+    expectMessage(17,{"number","string","number"})
+    registerMessage(17,function(userid,section,index)
+        if not main.registeredPlayers[userid].entity then
+            return
+        end
+        main.registeredPlayers[userid].entity.NetworkFunctions.addPotion({
+            section,
+            index,
+        })
+        print(`subject potion add`)
     end)
     
     player.Chatted:Connect(function(messagecontents)
