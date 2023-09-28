@@ -67,6 +67,7 @@ return function(api)
         textlabel.TextColor3 = Color3.fromRGB(255,255,255)
         textlabel.TextScaled = false
         textlabel.AutomaticSize = Enum.AutomaticSize.X
+        textlabel.RichText = true
 
         task.delay(duration or 5,function()
             local t = TweenService:Create(textlabel,TweenInfo.new(1),{BackgroundTransparency = 1,TextTransparency = 1})

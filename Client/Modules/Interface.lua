@@ -4,6 +4,14 @@ return function(api)
 
     local module = {}
 
+    local createInstance = function(Type,data)
+        local object = Instance.new(Type)
+        for index,value in data do
+            object[index] = value
+        end
+        return object
+    end
+
     module.once = function()
         local isActive = true
         
@@ -11,8 +19,29 @@ return function(api)
         ui.Parent = api.player.PlayerGui --game:GetService("CoreGui")
         ui.DisplayOrder = 999
 
+        local hovertext : TextLabel = createInstance("TextLabel",{
+            Size = UDim2.new(0,0,0.02,0),
+            Position = UDim2.new(1.5,0,0.1,0),
+            AnchorPoint = Vector2.new(1,0.9),
+            Parent = ui,
+            AutomaticSize = Enum.AutomaticSize.X,
+            BorderSizePixel = 0,
+            BackgroundColor3 = Color3.new(0,0,0),
+            BackgroundTransparency = 0.5,
+            TextTransparency = 0,
+            TextColor3 = Color3.fromRGB(255,255,255),
+            ZIndex = 99,
+            Text = `GOOGOO GA GA!!!`,
+            TextXAlignment = Enum.TextXAlignment.Left
+        })
+
+        local showHoverThing = false
         rs.Heartbeat:Connect(function(dt)
             ui.Enabled = isActive
+
+            local mousepos = uis:GetMouseLocation()
+            hovertext.Visible = showHoverThing
+            hovertext.Position = UDim2.new(0,mousepos.X,0,mousepos.Y)
 
             local shouldLock = not isActive
             if getrenv()._G.Pause then
@@ -34,14 +63,6 @@ return function(api)
                 isActive = not isActive
             end
         end)
-        
-        local createInstance = function(Type,data)
-            local object = Instance.new(Type)
-            for index,value in data do
-                object[index] = value
-            end
-            return object
-        end
         
         local frame = createInstance("Frame",{
             Size = UDim2.new(0.24,0,0.3,0),
@@ -133,6 +154,67 @@ return function(api)
                 end
             }
         end
+
+        local createEnum = function(data)
+            local newFrame = createInstance("Frame",{
+                Size = UDim2.new(0,0,0.06,0),
+                Parent = frame,
+                BorderSizePixel = 0,
+                BackgroundTransparency = 0,
+                ZIndex = 4,
+                LayoutOrder = 1,
+            })
+            local box = createInstance("TextButton",{
+                Size = UDim2.new(0,0,1,0),
+                Position = UDim2.new(0.5,0,0.5,0),
+                AnchorPoint = Vector2.new(0.5,0.5),
+                Parent = newFrame,
+                BorderSizePixel = 1,
+                BorderColor3 = Color3.fromRGB(255,255,255),
+                BackgroundTransparency = 0.2,
+                BackgroundColor3 = Color3.fromRGB(0,0,0),
+                TextTransparency = 0,
+                AutomaticSize = Enum.AutomaticSize.X,
+                TextColor3 = Color3.fromRGB(255,255,255),
+                ZIndex = 7,
+                Text = "",
+                TextXAlignment = Enum.TextXAlignment.Center,
+            })
+
+            if data.tooltip then
+                box.MouseEnter:Connect(function()
+                    showHoverThing = true
+                    hovertext.Text = data.tooltip
+                end)
+                box.MouseLeave:Connect(function()
+                    showHoverThing = false
+                end)
+            end
+
+            local selectedIndex = 1
+            local selectedType = data.options[selectedIndex]
+            local updateTheThing = function()
+                box.Text = data.display and string.format(data.display,selectedType.text) or selectedType.text
+            end
+            updateTheThing()
+
+            box.MouseButton1Click:Connect(function()
+                selectedIndex += 1
+                selectedType = data.options[selectedIndex]
+                if selectedType == nil then
+                    selectedIndex = 1
+                    selectedType = data.options[selectedIndex]
+                end
+                updateTheThing()
+            end)
+
+            local enumapi = {
+                getSelected = function()
+                    return selectedType.id
+                end
+            }
+            return enumapi
+        end
         
         local createLabel = function(label)
             local newFrame = createInstance("Frame",{
@@ -199,13 +281,27 @@ return function(api)
         createLabel("you can press [ to hide this ui")
         local ip = createTextbox("ip","salamithecat.com")
         local port = createTextbox("port","7171")
+        local connectType = createEnum({
+            display = "connect type: %s",
+            tooltip = "some servers require secure connections, you would have to change this.",
+            options = {
+                {
+                    text = "WebSocket",
+                    id = "ws",
+                },
+                {
+                    text = "WebSocket Secure",
+                    id = "wss",
+                }
+            }
+        })
         createButton("connect",function(button)
             if api.connected then
                 api.disconnect()
                 button.changeText(api.connected and "disconnect" or "connect")
                 return
             end
-            api.tryToConnect(`http://{ip.get()}:{port.get()}`)
+            api.tryToConnect(`{connectType.getSelected()}://{ip.get()}:{port.get()}`)
             button.changeText(api.connected and "disconnect" or "connect")
         end)
         --createCheckbox("hi")

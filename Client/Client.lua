@@ -636,14 +636,19 @@ return function(executionMethod,localPath)
     end
     
     main.tryToConnect = function(ip)
-        local socket = websocketLayer.connect(ip)
-        main.socket = socket
+        local success,error = pcall(function()
+            main.socket = websocketLayer.connect(ip)
+        end)
+        if not success then
+            apiCall("createNotification",nil,`failed to connect to server\neither the server is down or you used the wrong connection type.`)
+            return
+        end
         main.connected = true
     
         apiCall("connected")
         apiCall("createNotification",nil,`connected to server {ip}`)
     
-        socket.OnMessage:Connect(function(msg)
+        main.socket.OnMessage:Connect(function(msg)
             local args = string.split(msg,seperator)
             local messageId = tonumber(args[1])
             if not messages[messageId] then
@@ -675,7 +680,7 @@ return function(executionMethod,localPath)
             messages[messageId](table.unpack(newArgs))
         end)
     
-        socket.OnClose:Connect(function()
+        main.socket.OnClose:Connect(function()
             warn("Connection was closed")
             main.disconnect()
         end)
