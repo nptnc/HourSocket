@@ -45,6 +45,8 @@ namespace HourSocketServerCS
                     return;
 
                 string debugPrint = $"a message was received\nplayer: {player.clientGuid}\nmessageid: {messageType}\ncontents: {data}";
+
+                // this is just for debug
                 //Console.WriteLine(Helper.RepeatChar(char.Parse("-"),30));
                 //Console.WriteLine(debugPrint);
                 //Console.WriteLine(Helper.RepeatChar(char.Parse("-"),30));

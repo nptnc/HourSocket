@@ -454,14 +454,14 @@ return function(executionMethod,localPath)
         })
     end)
     
-    expectMessage(2,{"number","number","number","number","number","number","number"})
-    registerMessage(2,function(userid,x,y,z,xr,yr,zr)
+    expectMessage(2,{"number","vector3","vector3"})
+    registerMessage(2,function(userid,position,rotation)
         if not main.registeredPlayers[userid] then
             warn(`no userid ({userid}, {typeof(userid)}) is not a userid`)
             return
         end
         local messageplayer = main.registeredPlayers[userid]
-        messageplayer.cframe = CFrame.new(x,y,z) * CFrame.Angles(math.rad(xr),math.rad(yr),math.rad(zr))
+        messageplayer.cframe = CFrame.new(position.X,position.Y,position.Z) * CFrame.Angles(math.rad(rotation.X),math.rad(rotation.Y),math.rad(rotation.Z))
     end)
     
     expectMessage(3,{"number","any","any"})

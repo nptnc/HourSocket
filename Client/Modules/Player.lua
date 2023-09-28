@@ -214,11 +214,6 @@ return function(api)
             for knockbackIndex,knockback in entity.knockback or {} do
                 entity.Knockback[knockbackIndex].Knockback = knockback
             end
-
-            for cooldownName,cooldownData in entity.Cooldowns do
-                cooldownData.Cooldown = 0
-                cooldownData.MaxCooldown = 0
-            end
         end
     end
 
