@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HourSocketServerCS.Hours {
     public static class PlayerHandler {
-        private static List<Player> players = new();
+        public static List<Player> players = new();
 
         public static void RegisterPlayer(Player player) {
             players.Add(player);
@@ -32,6 +32,11 @@ namespace HourSocketServerCS.Hours {
 
             Helper.Say((byte)LogTypes.RELEASE, $"Destroyed player {player.username}", ConsoleColor.Yellow);
             players.Remove(player);
+
+            if (players.Count <= 0) {
+                Helper.Say((byte)LogTypes.RELEASE, $"All players have left the game, player global id have now been reset.", ConsoleColor.Yellow);
+                Player.globalId = 0;
+            }
         }
     }
 }

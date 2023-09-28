@@ -3,6 +3,10 @@ return function(api)
 
     local toDisconnect = {}
 
+    local getVector3Hard = function(v3)
+        return Vector3.new(api.hardOptimize(v3.X),api.hardOptimize(v3.Y),api.hardOptimize(v3.Z))
+    end
+
     local hook2 = function()
         --[[getrenv()._G.TimeControl.Begin = api.createHook(getrenv()._G.TimeControl.Begin,function(hook)
             local message = api.prepareMessage("startTempo",getrenv()._G.TimePower,getrenv()._G.TimeControl.Special)
@@ -33,18 +37,15 @@ return function(api)
                 local cf = workspace.CurrentCamera.CFrame
 
                 local rx, ry, rz = cf:ToOrientation()
-                local rotation = Vector3.new(math.deg(rx), math.deg(ry), math.deg(rz))
+                local rot = getVector3Hard(Vector3.new(math.deg(rx), math.deg(ry), math.deg(rz)))
+                local pos = getVector3Hard(cf.Position)
 
                 print(`networking input {input}`)
-        
+
                 local message = api.prepareMessage("doInput",
                     input,
-                    api.hardOptimize(cf.Position.X),
-                    api.hardOptimize(cf.Position.Y),
-                    api.hardOptimize(cf.Position.Z),
-                    api.hardOptimize(rotation.X),
-                    api.hardOptimize(rotation.Y),
-                    api.hardOptimize(rotation.Z)
+                    api.encodeV3(pos),
+                    api.encodeV3(rot)
                 )
                 api.sendToServer(message)
             end
@@ -94,34 +95,23 @@ return function(api)
     end
     
     local lastUpdated = {Vector3.zero,Vector3.zero}
-    local lastNetworkedPosition = Vector3.zero
-    local lastNetworkedRotation = Vector3.zero
     module.updateWithFPS = function()
         local char = api.player.Character
         local pos = char.HumanoidRootPart.Position
         local rot = char.HumanoidRootPart.Rotation
+        pos = getVector3Hard(pos)
+        rot = getVector3Hard(rot)
 
         if lastUpdated[1] == pos and lastUpdated[2] == rot then
             return
         end
-
-        if (lastNetworkedRotation - pos).Magnitude < 1 and (lastNetworkedPosition - pos).Magnitude < 1 then
-            return
-        end
         
         local message = api.prepareMessage("updatePlayer",
-            api.hardOptimize(pos.X),
-            api.hardOptimize(pos.Y),
-            api.hardOptimize(pos.Z),
-            api.hardOptimize(rot.X),
-            api.hardOptimize(rot.Y),
-            api.hardOptimize(rot.Z)
+            api.encodeV3(pos),
+            api.encodeV3(rot)
         )
 
         api.sendToServer(message)
-
-        lastNetworkedPosition = pos
-        lastNetworkedRotation = rot
 
         lastUpdated = {pos,rot}
     end

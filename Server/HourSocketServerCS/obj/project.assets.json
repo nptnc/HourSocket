@@ -2,15 +2,15 @@
   "version": 3,
   "targets": {
     "net6.0": {
-      "Coroutine/2.1.5": {
+      "Newtonsoft.Json/13.0.3": {
         "type": "package",
         "compile": {
-          "lib/net6.0/Coroutine.dll": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/Coroutine.dll": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
             "related": ".xml"
           }
         }
@@ -31,23 +31,34 @@
     }
   },
   "libraries": {
-    "Coroutine/2.1.5": {
-      "sha512": "oqBFi+ivqCQHi0evkbIUvYDyT6UbZ+vWT06vqhJ+QrksHR3NEvOiHUyJ5Dd7GD7QeXdsbYjRvy/msoL+QBd4DA==",
+    "Newtonsoft.Json/13.0.3": {
+      "sha512": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
       "type": "package",
-      "path": "coroutine/2.1.5",
+      "path": "newtonsoft.json/13.0.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "Logo.png",
+        "LICENSE.md",
         "README.md",
-        "coroutine.2.1.5.nupkg.sha512",
-        "coroutine.nuspec",
-        "lib/net45/Coroutine.dll",
-        "lib/net45/Coroutine.xml",
-        "lib/net6.0/Coroutine.dll",
-        "lib/net6.0/Coroutine.xml",
-        "lib/netstandard2.0/Coroutine.dll",
-        "lib/netstandard2.0/Coroutine.xml"
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/net6.0/Newtonsoft.Json.dll",
+        "lib/net6.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "newtonsoft.json.13.0.3.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
       ]
     },
     "WatsonWebsocket/4.0.11": {
@@ -76,7 +87,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "Coroutine >= 2.1.5",
+      "Newtonsoft.Json >= 13.0.3",
       "WatsonWebsocket >= 4.0.11"
     ]
   },
@@ -87,11 +98,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Small Penis\\source\\repos\\HourSocketServerCS\\HourSocketServerCS\\HourSocketServerCS.csproj",
+      "projectUniqueName": "C:\\Users\\Small Penis\\AppData\\Local\\Packages\\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\\AC\\workspace\\HoursMPSource\\Server\\HourSocketServerCS\\HourSocketServerCS.csproj",
       "projectName": "HourSocketServerCS",
-      "projectPath": "C:\\Users\\Small Penis\\source\\repos\\HourSocketServerCS\\HourSocketServerCS\\HourSocketServerCS.csproj",
+      "projectPath": "C:\\Users\\Small Penis\\AppData\\Local\\Packages\\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\\AC\\workspace\\HoursMPSource\\Server\\HourSocketServerCS\\HourSocketServerCS.csproj",
       "packagesPath": "C:\\Users\\Small Penis\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Small Penis\\source\\repos\\HourSocketServerCS\\HourSocketServerCS\\obj\\",
+      "outputPath": "C:\\Users\\Small Penis\\AppData\\Local\\Packages\\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\\AC\\workspace\\HoursMPSource\\Server\\HourSocketServerCS\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -124,9 +135,9 @@
       "net6.0": {
         "targetAlias": "net6.0",
         "dependencies": {
-          "Coroutine": {
+          "Newtonsoft.Json": {
             "target": "Package",
-            "version": "[2.1.5, )"
+            "version": "[13.0.3, )"
           },
           "WatsonWebsocket": {
             "target": "Package",

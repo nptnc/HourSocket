@@ -443,9 +443,9 @@ return function(executionMethod,localPath)
         end
     end
     
-    expectMessage(1,{"number","string","string","vector3","vector3","boolean"})
-    registerMessage(1,function(userId,username,class,position,rotation,isHost)
-        registerPlayer(userId,{
+    expectMessage(1,{"number","string","string","vector3","vector3","boolean","boolean"})
+    registerMessage(1,function(userId,username,class,position,rotation,isHost,isMe)
+        registerPlayer(isMe and player.UserId or userId,{
             username = username,
             class = class,
             position = position,
@@ -513,8 +513,8 @@ return function(executionMethod,localPath)
         apiCall("networkEntityUpdate",nil,entityid,posx,posy,posz,rosx,rosy,rosz)
     end)
     
-    expectMessage(8,{"number","string","number","number","number","number","number","number"})
-    registerMessage(8,function(userid,input,posx,posy,posz,rotx,roty,rotz)
+    expectMessage(8,{"number","string","vector3","vector3"})
+    registerMessage(8,function(userid,input,cameraPos,cameraRot)
         local messageplayer = main.registeredPlayers[userid]
         local entity = messageplayer.entity
         if entity == nil then
@@ -523,7 +523,7 @@ return function(executionMethod,localPath)
         end
         entity.Input = input
         entity.InputTimer = 0.5
-        entity.InputCameraCFrame = CFrame.new(posx,posy,posz) * CFrame.Angles(math.rad(rotx),math.rad(roty),math.rad(rotz))
+        entity.InputCameraCFrame = CFrame.new(cameraPos) * CFrame.Angles(math.rad(cameraRot.X),math.rad(cameraRot.Y),math.rad(cameraRot.Z))
         entity.InputFunctions[input](entity)
         if not entity.InputCameraCFrame then
             warn("cf is nil")

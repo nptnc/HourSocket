@@ -1,6 +1,7 @@
 ﻿using HourSocketServerCS;
 using HourSocketServerCS.Network;
 
+Main.LoadSettings();
 Main.Start();
 MessageHandler.RegisterMessages();
 

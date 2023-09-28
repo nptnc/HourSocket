@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace HourSocketServerCS.Hours {
     public class Player
     {
-        private static int globalId;
+        public static int globalId;
 
         public Guid clientGuid;
 
@@ -22,6 +22,9 @@ namespace HourSocketServerCS.Hours {
 
         // these are for when the player registers.
         public Entity? entity;
+
+        public Vector3 cameraPos;
+        public Vector3 cameraRot;
 
         public string? username;
         public string? playerclass;

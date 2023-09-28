@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Small Penis\\source\\repos\\HourSocketServerCS\\HourSocketServerCS\\HourSocketServerCS.csproj": {}
+    "C:\\Users\\Small Penis\\AppData\\Local\\Packages\\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\\AC\\workspace\\HoursMPSource\\Server\\HourSocketServerCS\\HourSocketServerCS.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Small Penis\\source\\repos\\HourSocketServerCS\\HourSocketServerCS\\HourSocketServerCS.csproj": {
+    "C:\\Users\\Small Penis\\AppData\\Local\\Packages\\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\\AC\\workspace\\HoursMPSource\\Server\\HourSocketServerCS\\HourSocketServerCS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Small Penis\\source\\repos\\HourSocketServerCS\\HourSocketServerCS\\HourSocketServerCS.csproj",
+        "projectUniqueName": "C:\\Users\\Small Penis\\AppData\\Local\\Packages\\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\\AC\\workspace\\HoursMPSource\\Server\\HourSocketServerCS\\HourSocketServerCS.csproj",
         "projectName": "HourSocketServerCS",
-        "projectPath": "C:\\Users\\Small Penis\\source\\repos\\HourSocketServerCS\\HourSocketServerCS\\HourSocketServerCS.csproj",
+        "projectPath": "C:\\Users\\Small Penis\\AppData\\Local\\Packages\\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\\AC\\workspace\\HoursMPSource\\Server\\HourSocketServerCS\\HourSocketServerCS.csproj",
         "packagesPath": "C:\\Users\\Small Penis\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Small Penis\\source\\repos\\HourSocketServerCS\\HourSocketServerCS\\obj\\",
+        "outputPath": "C:\\Users\\Small Penis\\AppData\\Local\\Packages\\ROBLOXCORPORATION.ROBLOX_55nm5eh3cm0pr\\AC\\workspace\\HoursMPSource\\Server\\HourSocketServerCS\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -44,9 +44,9 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "Coroutine": {
+            "Newtonsoft.Json": {
               "target": "Package",
-              "version": "[2.1.5, )"
+              "version": "[13.0.3, )"
             },
             "WatsonWebsocket": {
               "target": "Package",

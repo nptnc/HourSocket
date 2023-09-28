@@ -14,6 +14,14 @@ namespace HourSocketServerCS.Networking {
             Server.server!.SendAsync(player.clientGuid,Encoding.UTF8.GetBytes(data),WebSocketMessageType.Text);
         }
 
+        public static void SendToAll(string data, Player[]? except = null) {
+            except ??= Array.Empty<Player>();
+
+            foreach (Player player in PlayerHandler.players.ToList().Where(p => except.Contains(p) == false)) {
+                SendToClient(player, data);
+            }
+        }
+
         public static string PrepareForLua(int messageId, params string[] toSend) {
             string endString = $"{messageId}{ServerSettings.Lua.seperator}";
             int index = 0;

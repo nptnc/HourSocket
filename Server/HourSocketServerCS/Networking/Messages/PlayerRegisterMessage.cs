@@ -23,8 +23,15 @@ namespace HourSocketServerCS.Network.Messages
             string rotation = reader.ReadUntilSeperator();
             player.OnRegister(username, playerclass, Helper.GetV3(position), Helper.GetV3(rotation));
 
-            string contents = Networker.PrepareForLua(Index(), player.id.ToString(), username, playerclass, position, rotation, player.isHost.ToString().ToLower());
-            Networker.SendToClient(player, contents);
+            // send this player to everyone except the player.
+            string contents = Networker.PrepareForLua(Index(), player.id.ToString(), username, playerclass, position, rotation, player.isHost.ToString().ToLower(), "true");
+            Networker.SendToAll(contents, new Player[] { player });
+
+            foreach (Player otherPlayer in PlayerHandler.players.ToList()) {
+                // send every player to this player
+                string contents2 = Networker.PrepareForLua(Index(), player.id.ToString(), username, playerclass, position, rotation, player.isHost.ToString().ToLower(), otherPlayer.id == player.id ? "true" : "false");
+                Networker.SendToClient(player, contents2);
+            }
         }
     }
 }

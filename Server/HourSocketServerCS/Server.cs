@@ -8,7 +8,6 @@ using System.Net;
 using HourSocketServerCS.Hours;
 using System.Collections;
 using System.IO;
-using Coroutine;
 using HourSocketServerCS.Util;
 using WatsonWebsocket;
 using HourSocketServerCS.Network;
@@ -46,15 +45,18 @@ namespace HourSocketServerCS
                     return;
 
                 string debugPrint = $"a message was received\nplayer: {player.clientGuid}\nmessageid: {messageType}\ncontents: {data}";
-                Console.WriteLine(Helper.RepeatChar(char.Parse("-"),30));
-                Console.WriteLine(debugPrint);
-                Console.WriteLine(Helper.RepeatChar(char.Parse("-"),30));
+                //Console.WriteLine(Helper.RepeatChar(char.Parse("-"),30));
+                //Console.WriteLine(debugPrint);
+                //Console.WriteLine(Helper.RepeatChar(char.Parse("-"),30));
+                if (!MessageHandler.messages.ContainsKey(messageType)) {
+                    Helper.Say((byte)LogTypes.RELEASE, $"Message type {messageType} does not exist!", ConsoleColor.DarkYellow);
+                    return;
+                }
                 MessageHandler.HandleMessage(player, messageType, data);
             };
             server.Start();
             Helper.Say((byte)LogTypes.RELEASE, $"Server started at {ServerSettings.ipaddress}:{ServerSettings.port}", ConsoleColor.Magenta);
         }
-
 
         public void Update() {
             Game.Update();
