@@ -6,12 +6,13 @@ This requires the Microsoft Store Roblox Version [2.592.586.0](https://github.co
 
 [Public server statistics](http://salamithecat.com:4040) · [Trello](https://trello.com/b/e1gvvbzK/hours-multiplayer-script) · [Mod Showcase](https://www.youtube.com/watch?v=IsCv-xNTXe4)
 
-Server programmed by [PeeblyWeeb](https://discord.com/users/904032786854346795)  
+Old Server programmed by [PeeblyWeeb](https://discord.com/users/904032786854346795)  
+
 Client programmed by [nptnc](https://discord.com/users/397930609894490122)
+Server programmed by [nptnc](https://discord.com/users/397930609894490122)
 
 This is a Roblox "Hack" that connects to an external server using websockets which sends information and receives information from it,
-Do note that anyone can modify the client or the server to overload or send modified information,
-Please only connect to servers that you trust as it may be unsafe as people can modify the server to log information that you might not want to be logged (ip addresses).
+Do note that anyone can modify the client or the server to overload or send modified information.
 
 ### Supported Executors
 [Synapse X](https://x.synapse.to)<sub> $20</sub>  
