@@ -17,7 +17,7 @@ namespace HourSocketServerCS {
             logType = LogTypes.OHSHITSOMETHINGHASGONECATASTROPHICALLYWRONG;
         }
 
-        public async static void LoadSettings() {
+        public static void LoadSettings() {
             string path = AppDomain.CurrentDomain.BaseDirectory;
             string settingsPath = $"{path}/settings.cfg";
             if (!File.Exists(settingsPath)) {

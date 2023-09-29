@@ -502,24 +502,24 @@ return function(executionMethod,localPath)
         apiCall("playerEntityKnockbackUpdate",nil,userid,knockbackIndex,Vector3.new(x,y,z))
     end)
     
-    expectMessage(5,{"number","string","number","boolean","number","number","number","number","number","number"})
-    registerMessage(5,function(entityid,entityname,damageTeam,isBoss,posx,posy,posz,rotx,roty,rotz)
-        print(`received spawn entity packet {entityid} {entityname} {damageTeam} {isBoss} {posx} {posy} {posz} {rotx} {roty} {rotz}`)
+    expectMessage(5,{"number","string","number","boolean","vector3","vector3"})
+    registerMessage(5,function(entityid,entityname,damageTeam,isBoss,pos,rot)
+        print(`received spawn entity packet {entityid} {entityname} {damageTeam} {isBoss} {pos} {rot}`)
     
         local realEntityId = getrenv()._G.SpawnCreature({
             Name = entityname,
-            SpawnCFrame = CFrame.new(posx,posy,posz) * CFrame.Angles(math.rad(rotx),math.rad(roty),math.rad(rotz)),
+            SpawnCFrame = CFrame.new(pos) * CFrame.Angles(math.rad(rot.X),math.rad(rot.Y),math.rad(rot.Z)),
             DamageTeam = damageTeam,
             IsBoss = isBoss,
             Bypass = true,
         })
     
-        apiCall("networkedEntityCreated",nil,entityid,realEntityId,posx,posy,posz,rotx,roty,rotz)
+        apiCall("networkedEntityCreated",nil,entityid,realEntityId,pos,rot)
     end)
     
-    expectMessage(6,{"number","number","number","number","number","number","number"})
-    registerMessage(6,function(entityid,posx,posy,posz,rosx,rosy,rosz)
-        apiCall("networkEntityUpdate",nil,entityid,posx,posy,posz,rosx,rosy,rosz)
+    expectMessage(6,{"number","vector3","vector3"})
+    registerMessage(6,function(entityid,pos,rot)
+        apiCall("networkEntityUpdate",nil,entityid,pos,rot)
     end)
     
     expectMessage(8,{"number","string","vector3","vector3"})

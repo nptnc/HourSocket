@@ -23,11 +23,11 @@ namespace HourSocketServerCS
         {
             server = new(ServerSettings.ipaddress,ServerSettings.port,false);
             server.ClientConnected += (object? sender, ConnectionEventArgs? args) => {
-                new Player(args.Client.Guid);
+                new Player(args!.Client.Guid);
                 Console.WriteLine("Client connected: " + args!.Client.ToString());
             };
             server.ClientDisconnected += (object? sender, DisconnectionEventArgs? args) => {
-                PlayerHandler.DestroyPlayer(args.Client.Guid);
+                PlayerHandler.DestroyPlayer(args!.Client.Guid);
             };
             server.MessageReceived += (object? sender, MessageReceivedEventArgs? args) => {
                 string decodedMessage = Encoding.UTF8.GetString(args!.Data);

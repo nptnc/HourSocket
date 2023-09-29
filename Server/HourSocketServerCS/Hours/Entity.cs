@@ -11,7 +11,7 @@ namespace HourSocketServerCS.Hours {
     {
         public static int globalId = 0;
 
-        public Entity(string entityid, bool isplayer = false)
+        public Entity(string entityid, int team, bool isplayer = false, bool isBoss = false)
         {
             globalId += 1;
             
@@ -24,14 +24,19 @@ namespace HourSocketServerCS.Hours {
             id = globalId;
             this.isplayer = isplayer;
             this.entityid = entityid;
+            this.isBoss = isBoss;
+            this.team = team;
             Game.entities.Add(this);
         }
 
         public int id;
+        public int? hostNetworkId;
         public int health;
+        public int team;
 
         public string entityid;
-        
+
+        public bool isBoss = false;        
         public bool isplayer = false;
 
         public Vector3 position;

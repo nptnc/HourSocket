@@ -38,5 +38,9 @@ namespace HourSocketServerCS.Hours {
                 Player.globalId = 0;
             }
         }
+
+        public static Player? GetHost() {
+            return players.FirstOrDefault(player => player.isHost == true);
+        }
     }
 }

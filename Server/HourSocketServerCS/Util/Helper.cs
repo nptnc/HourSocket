@@ -18,17 +18,5 @@ namespace HourSocketServerCS.Util {
         public static string RepeatChar(char text, int n) {
             return new string(text, n);
         }
-
-        /// <summary>
-        /// reverses vector3 sent by lua which is x_y_z
-        /// </summary>
-        public static Vector3 GetV3(string receivedData) {
-            string[] xyz = receivedData.Split("_");
-            float[] end = new float[3];
-            for (int i = 0; i < 3; i++) {
-                float.TryParse(xyz[i], out end[i]);
-            }
-            return new Vector3(end[0], end[1], end[2]);
-        }
     }
 }

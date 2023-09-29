@@ -13,8 +13,11 @@ namespace HourSocketServerCS.Hours {
     {
         public static int globalId;
 
+        public int id;
+
         public Guid clientGuid;
 
+        public bool isHost = false;
         public bool hasRegistered {
             get;
             protected set;
@@ -28,9 +31,6 @@ namespace HourSocketServerCS.Hours {
 
         public string? username;
         public string? playerclass;
-
-        public int id;
-        public bool isHost = false;
 
         public Player(Guid clientGuid) {
             globalId++;
@@ -47,7 +47,7 @@ namespace HourSocketServerCS.Hours {
                 return;
             hasRegistered = true;
 
-            entity = new(playerclass, true);
+            entity = new(playerclass, 1, true, false);
 
             this.username = username;
             this.playerclass = playerclass;

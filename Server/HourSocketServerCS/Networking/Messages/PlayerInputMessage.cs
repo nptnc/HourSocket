@@ -1,4 +1,5 @@
-﻿using HourSocketServerCS.Hours;
+﻿using HourSocketServerCS.Extensions;
+using HourSocketServerCS.Hours;
 using HourSocketServerCS.Networking;
 using HourSocketServerCS.Util;
 using System;
@@ -21,8 +22,8 @@ namespace HourSocketServerCS.Network.Messages {
             string input = reader.ReadUntilSeperator();
             string position = reader.ReadUntilSeperator();
             string rotation = reader.ReadUntilSeperator();
-            player.cameraPos = Helper.GetV3(position);
-            player.cameraRot = Helper.GetV3(rotation);
+            player.cameraPos = position.NetVector3();
+            player.cameraRot = rotation.NetVector3();
 
             Helper.Say((byte)LogTypes.RELEASE, $"{player.username} inputted {input}", ConsoleColor.Yellow);
             string contents2 = Networker.PrepareForLua(Index(), player.id.ToString(), input, position, rotation);

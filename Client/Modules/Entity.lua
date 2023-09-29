@@ -9,21 +9,25 @@ return function(api)
         return api.hardOptimize(v3.X),api.hardOptimize(v3.Y),api.hardOptimize(v3.Z)
     end
 
+    local getVector3Hard2 = function(v3)
+        return Vector3.new(api.hardOptimize(v3.X),api.hardOptimize(v3.Y),api.hardOptimize(v3.Z))
+    end
+
     api.globals.entityDatabase = {}
 
     local globalEntityId = 0
-    local reg = function(entity,realId,entitymodelid,x,y,z,xr,yr,zr)
+    local reg = function(entity,realId,entitymodelid,pos,rot)
         globalEntityId += 1
 
         getrenv()._G.Entities[realId].NetworkID = globalEntityId
 
         api.globals.entityDatabase[globalEntityId] = {
-            cframe = CFrame.new(x,y,z) * CFrame.Angles(math.rad(xr),math.rad(yr),math.rad(zr)),
+            cframe = CFrame.new(pos) * CFrame.Angles(math.rad(rot.X),math.rad(rot.Y),math.rad(rot.Z)),
             realId = realId,
             networkId = globalEntityId,
         }
 
-        local message = api.prepareMessage("registerEntity",globalEntityId,entitymodelid,entity.DamageTeam,entity.IsBoss or false,x,y,z,xr,yr,zr)
+        local message = api.prepareMessage("registerEntity",globalEntityId,entitymodelid,entity.DamageTeam,entity.IsBoss or false,api.encodeV3(pos),api.encodeV3(rot))
         api.sendToServer(message)
         print(`registering entity {realId} as {globalEntityId} on network`)
         return globalEntityId
@@ -86,12 +90,12 @@ return function(api)
                 local realEntityId = hook.call(...) -- spawn the enemy
                 local entity = getrenv()._G.Entities[realEntityId]
 
-                local x,y,z = getVector3Hard(entity.RootPart.Position)
-                local xr,yr,zr = getVector3Hard(entity.RootPart.Rotation)
+                local pos = getVector3Hard2(entity.RootPart.Position)
+                local rot = getVector3Hard2(entity.RootPart.Rotation)
 
                 -- lets stop from creating infinite loops of players
                 if not args.IsPlayer then
-                    local entitynetworkid = reg(entity,realEntityId,args.Name,x,y,z,xr,yr,zr)
+                    local entitynetworkid = reg(entity,realEntityId,args.Name,pos,rot)
 
                     -- syncs enemy attacks (kinda, some break the game, im trying to figure out how to do this properly.)
                     entity.SwitchAnimation = api.createHook(entity.SwitchAnimation,function(hook2,...)
@@ -235,43 +239,39 @@ return function(api)
             local realId = entityData.realId
             local entity = getrenv()._G.Entities[realId]
             
-            local pos = entity.RootPart.Position
-            local rot = entity.RootPart.Rotation
+            local pos = getVector3Hard2(entity.RootPart.Position)
+            local rot = getVector3Hard2(entity.RootPart.Rotation)
 
-            if entityData.lastNetworkedInformation and (entityData.lastNetworkedInformation.Position-pos).Magnitude < 1 and (entityData.lastNetworkedInformation.Rotation-rot).Magnitude < 1 then
+            if entityData.lastNetworkedInformation and entityData.lastNetworkedInformation.Position == pos and entityData.lastNetworkedInformation.Rotation == rot then
                 return
             end
 
             local message = api.prepareMessage("updateEntityCF",
                 entityId,
-                api.hardOptimize(pos.X),
-                api.hardOptimize(pos.Y),
-                api.hardOptimize(pos.Z),
-                api.hardOptimize(rot.X),
-                api.hardOptimize(rot.Y),
-                api.hardOptimize(rot.Z)
+                api.encodeV3(pos),
+                api.encodeV3(rot)
             )
             api.sendToServer(message)
 
             entityData.lastNetworkedInformation = {
-                Position = Vector3.new(pos.X,pos.Y,pos.Z),
-                Rotation = Vector3.new(rot.X,rot.Y,rot.Z)
+                Position = pos,
+                Rotation = rot,
             }
         end
     end
 
-    module.networkEntityUpdate = function(entityid,posx,posy,posz,rotx,roty,rotz)
+    module.networkEntityUpdate = function(entityid,pos,rot)
         local entityData = api.globals.entityDatabase[entityid]
         if not entityData then
             return
         end
-        entityData.cframe = CFrame.new(posx,posy,posz) * CFrame.Angles(math.rad(rotx),math.rad(roty),math.rad(rotz))
+        entityData.cframe = CFrame.new(pos) * CFrame.Angles(math.rad(rot.X),math.rad(rot.Y),math.rad(rot.Z))
     end
 
-    module.networkedEntityCreated = function(entityId,realEntityId,posx,posy,posz,rotx,roty,rotz)
+    module.networkedEntityCreated = function(entityId,realEntityId,pos,rot)
         warn(`non host, registering entity {entityId} in script entity database`)
         api.globals.entityDatabase[entityId] = {
-            cframe = CFrame.new(posx,posy,posz) * CFrame.Angles(math.rad(rotx),math.rad(roty),math.rad(rotz)),
+            cframe = CFrame.new(pos) * CFrame.Angles(math.rad(rot.X),math.rad(rot.Y),math.rad(rot.Z)),
             realId = realEntityId,
             health = getrenv()._G.Entities[realEntityId].Resources.Health or 100,
             networkId = entityId,

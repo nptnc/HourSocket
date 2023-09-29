@@ -9,13 +9,21 @@ namespace HourSocketServerCS.Hours {
     public static class Game {
         public static List<Entity> entities = new();
         public static string currentMap = "SandyBlue"; // this is the default map for hours.
-        private static string previousMap = "SandyBlue";
+        private static string? previousMap;
+
+        public static void Start() {
+            previousMap = currentMap;
+        }
+
+        public static Entity? GetEntityByNetworkId(int networkid) {
+            return entities.FirstOrDefault(entity => entity.hostNetworkId == networkid);
+        }
 
         public static void Wipe() {
             foreach (Entity entity in entities.Where(entity => entity.isplayer == false)) { 
                 entities.Remove(entity);
             }
-            Helper.Say((byte)LogTypes.RELEASE, "Game has been wiped, all entities deleted.", ConsoleColor.Yellow);
+            Helper.Say((byte)LogTypes.RELEASE, "Game has been wiped, reset entity list.", ConsoleColor.Yellow);
         }
 
         public static void WipeEntity(int id) {
@@ -27,6 +35,7 @@ namespace HourSocketServerCS.Hours {
         public static void Update() {
             if (currentMap != previousMap) {
                 Wipe();
+                previousMap = currentMap;
                 return;
             }
 
