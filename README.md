@@ -19,10 +19,10 @@ Do note that anyone can modify the client or the server to overload or send modi
 [krnl](https://krnl.place)<sub> Free</sub>
 
 ### Creating a server
-- [Download Python](https://www.python.org/downloads/release/python-3110/) (If you already have Python, skip this step)
-- Clone this repository using `git clone https://github.com/nptnc/HourSocket`
-- Port Forward `7171` and optionally `4040`
-- Run `main.py` and optionally `webserver.py`
+- Go to releases and download the latest version.
+- Extract it.
+- Port Forward `7171` or what you put in the configuration file.
+- Launch HourSocketServerCS.exe
 
 ### Connecting to a server
 - Using a supported executor of your choice
