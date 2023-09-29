@@ -625,8 +625,8 @@ return function(executionMethod,localPath)
     end)
 
     -- subject potion sync
-    expectMessage(17,{"number","string","number"})
-    registerMessage(17,function(userid,section,index)
+    expectMessage(18,{"number","string","number"})
+    registerMessage(18,function(userid,section,index)
         if not main.registeredPlayers[userid].entity then
             return
         end

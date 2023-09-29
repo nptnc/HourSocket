@@ -12,6 +12,6 @@ namespace HourSocketServerCS.Networking {
             PlayerCFrame = 2,
             PlayerStateUpdate = 3,
             PlayerInput = 8,
-            SubjectPotionAdd = 17;
+            SubjectPotionAdd = 18;
     }
 }

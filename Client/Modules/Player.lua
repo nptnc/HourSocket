@@ -22,6 +22,20 @@ return function(api)
             end
             return true
         end
+
+        if entity.Name == "Class7" then
+            entity.ActionFunctions.AddPotion = api.createHook(entity.ActionFunctions.AddPotion,function(hook,...)
+                local args = {...}
+                args = args[1]
+
+                local message = api.prepareMessage("subjectPotionAdd",
+                    args[1],
+                    args[2]
+                )
+                api.sendToServer(message)
+                return hook.call(...)
+            end)
+        end
         
         local lastInput = entity.Input
         local lastInputTimer = entity.InputTimer
