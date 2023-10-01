@@ -454,11 +454,15 @@ return function(executionMethod,localPath)
     
     expectMessage(1,{"number","string","string","vector3","vector3","boolean","boolean"})
     registerMessage(1,function(userId,username,class,position,rotation,isHost,isMe)
-        registerPlayer(isMe and player.UserId or userId,{
+        if isMe then
+            userId = player.UserId
+        end
+        registerPlayer(userId,{
             username = username,
             class = class,
             position = position,
             rotation = rotation,
+            id = userId,
             isHost = isHost,
         })
     end)
