@@ -15,7 +15,7 @@ This is a Roblox "Hack" that connects to an external server using websockets whi
 Do note that anyone can modify the client or the server to overload or send modified information.
 
 Open Source Credits:
-[https://github.com/statianzo/Fleck](\[fleck\] server)
+[\[fleck\] server](https://github.com/statianzo/Fleck)
 
 ### Supported Executors
 [Synapse X](https://x.synapse.to)<sub> $20</sub>  
