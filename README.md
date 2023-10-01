@@ -14,7 +14,7 @@ Server programmed by [nptnc](https://discord.com/users/397930609894490122)
 This is a Roblox "Hack" that connects to an external server using websockets which sends information and receives information from it,
 Do note that anyone can modify the client or the server to overload or send modified information.
 
-Open Source Credits:
+Open Source Credits:  
 [\[fleck\] server](https://github.com/statianzo/Fleck)
 
 ### Supported Executors
