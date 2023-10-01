@@ -1,12 +1,16 @@
 ﻿using HourSocketServerCS.Hours;
+using HourSocketServerCS.Network;
 using HourSocketServerCS.Networking;
 using HourSocketServerCS.Util;
 
-namespace HourSocketServerCS.Network.Messages {
-    public class PlayerCFrameMessage : Message {
+namespace HourSocketServerCS.Networking.Messages
+{
+    public class PlayerCFrameMessage : Message
+    {
         public override int Index() => MessageIds.PlayerCFrame;
 
-        public override void Handle(Player player, string data) {
+        public override void Handle(Player player, string data)
+        {
             if (!player.hasRegistered)
                 return;
 

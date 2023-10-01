@@ -1,4 +1,5 @@
 ﻿using HourSocketServerCS.Hours;
+using HourSocketServerCS.Network;
 using HourSocketServerCS.Networking;
 using HourSocketServerCS.Util;
 using System;
@@ -9,13 +10,14 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace HourSocketServerCS.Network.Messages
+namespace HourSocketServerCS.Networking.Messages
 {
     public class SubjectPotionAddMessage : Message
     {
         public override int Index() => MessageIds.SubjectPotionAdd;
 
-        public override void Handle(Player player, string data) {
+        public override void Handle(Player player, string data)
+        {
             Reader reader = new(data);
             string section = reader.ReadUntilSeperator();
             string index = reader.ReadUntilSeperator();

@@ -180,9 +180,7 @@ return function(api)
                 if previousKnockback ~= knockbackData.Knockback then
                     local message = api.prepareMessage("updateKnockback",
                         knockbackIndex,
-                        api.optimize(knockbackData.Knockback.X),
-                        api.optimize(knockbackData.Knockback.Y),
-                        api.optimize(knockbackData.Knockback.Z)
+                        api.encodeV3(knockbackData.Knockback)
                     )
                     api.sendToServer(message)
                 end

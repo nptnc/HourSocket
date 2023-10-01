@@ -1,5 +1,6 @@
 ﻿using HourSocketServerCS.Extensions;
 using HourSocketServerCS.Hours;
+using HourSocketServerCS.Network;
 using HourSocketServerCS.Networking;
 using HourSocketServerCS.Util;
 using System;
@@ -10,11 +11,14 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace HourSocketServerCS.Network.Messages {
-    public class PlayerInputMessage : Message {
+namespace HourSocketServerCS.Networking.Messages
+{
+    public class PlayerInputMessage : Message
+    {
         public override int Index() => MessageIds.PlayerInput;
 
-        public override void Handle(Player player, string data) {
+        public override void Handle(Player player, string data)
+        {
             if (!player.hasRegistered)
                 return;
 

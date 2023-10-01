@@ -19,6 +19,10 @@ namespace HourSocketServerCS.Hours {
             return entities.FirstOrDefault(entity => entity.hostNetworkId == networkid);
         }
 
+        public static Entity? GetEntityById(int id) {
+            return entities.FirstOrDefault(entity => entity.id == id);
+        }
+
         public static void Wipe() {
             foreach (Entity entity in entities.Where(entity => entity.isplayer == false)) { 
                 entities.Remove(entity);
@@ -39,9 +43,10 @@ namespace HourSocketServerCS.Hours {
                 return;
             }
 
-            foreach (Entity entity in entities.ToList().Where(entity => entity != null && entity.isplayer == false)) {
+            List<Entity> zazaEntities = entities.ToList();
+            foreach (Entity entity in zazaEntities.Where(entity => entity != null && entity.isplayer == false)) {
                 if (entity.health <= 0) {
-                    entities.Remove(entity);
+                    entities.Remove(GetEntityById(entity.id));
                     Helper.Say((byte)LogTypes.RELEASE, $"Entity {entity.id} died, removing from entity list.", ConsoleColor.Yellow);
                 }
             }

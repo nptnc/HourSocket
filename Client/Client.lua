@@ -501,9 +501,9 @@ return function(executionMethod,localPath)
         apiCall("playerStateUpdate",nil,userid,key,value)
     end)
     
-    expectMessage(4,{"number","number","number","number","number"})
-    registerMessage(4,function(userid,knockbackIndex,x,y,z)
-        apiCall("playerEntityKnockbackUpdate",nil,userid,knockbackIndex,Vector3.new(x,y,z))
+    expectMessage(4,{"number","number","vector3"})
+    registerMessage(4,function(userid,knockbackIndex,v3)
+        apiCall("playerEntityKnockbackUpdate",nil,userid,knockbackIndex,v3)
     end)
     
     expectMessage(5,{"number","string","number","boolean","vector3","vector3"})
