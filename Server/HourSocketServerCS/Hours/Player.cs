@@ -1,4 +1,5 @@
-﻿using HourSocketServerCS.Util;
+﻿using Fleck;
+using HourSocketServerCS.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,7 +16,9 @@ namespace HourSocketServerCS.Hours {
 
         public int id;
 
-        public Guid clientGuid;
+        // this is for their connection, we use this to identify their connection
+        public int connection;
+        public IWebSocketConnection socket;
 
         public bool isHost = false;
         public bool hasRegistered {
@@ -29,14 +32,18 @@ namespace HourSocketServerCS.Hours {
         public Vector3 cameraPos;
         public Vector3 cameraRot;
 
-        public string? username;
+        public string? username = null;
         public string? playerclass;
 
-        public Player(Guid clientGuid) {
+        public bool? pickedTalent;
+        public int pickedTalentIndex;
+
+        public Player(int connection, IWebSocketConnection socket) {
             globalId++;
             id = globalId;
 
-            this.clientGuid = clientGuid;
+            this.connection = connection;
+            this.socket = socket;
             isHost = id == 1;
 
             PlayerHandler.RegisterPlayer(this);

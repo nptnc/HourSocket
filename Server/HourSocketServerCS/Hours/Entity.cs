@@ -16,7 +16,7 @@ namespace HourSocketServerCS.Hours {
             globalId += 1;
             
             if (isplayer) {
-                Helper.Say((byte)LogTypes.RELEASE, $"Created a new player entity {entityid} as id {globalId}", ConsoleColor.Yellow);
+                Helper.Say((byte)LogTypes.RELEASE, $"Created a new player entity {entityid} as id {globalId}", ConsoleColor.Cyan);
             } else {
                 Helper.Say((byte)LogTypes.RELEASE, $"Created a new entity {entityid} as id {globalId}", ConsoleColor.Cyan);
             }
@@ -31,7 +31,7 @@ namespace HourSocketServerCS.Hours {
 
         public int id;
         public int? hostNetworkId;
-        public int health;
+        public int health = 9999; // default health, because we dont know it
         public int team;
 
         public string entityid;

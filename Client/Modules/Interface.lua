@@ -281,17 +281,16 @@ return function(api)
         createLabel("you can press [ to hide this ui")
         local ip = createTextbox("ip","salamithecat.com")
         local port = createTextbox("port","7171")
-        local connectType = createEnum({
-            display = "connect type: %s",
-            tooltip = "some servers require secure connections, you would have to change this.",
+        local isIpv6 = createEnum({
+            display = "ip type: %s",
             options = {
                 {
-                    text = "WebSocket",
-                    id = "ws",
+                    text = "IPv4",
+                    id = "4",
                 },
                 {
-                    text = "WebSocket Secure",
-                    id = "wss",
+                    text = "IPv6",
+                    id = "6",
                 }
             }
         })
@@ -301,7 +300,10 @@ return function(api)
                 button.changeText(api.connected and "disconnect" or "connect")
                 return
             end
-            api.tryToConnect(`{connectType.getSelected()}://{ip.get()}:{port.get()}`)
+            local bracketLeft = isIpv6.getSelected() == "6" and "[" or ""
+            local bracketRight = isIpv6.getSelected() == "6" and "]" or ""
+            local port = port.get() and `:{port.get()}` or ""
+            api.tryToConnect(`ws://{bracketLeft}{ip.get()}{bracketRight}{port}`)
             button.changeText(api.connected and "disconnect" or "connect")
         end)
         --createCheckbox("hi")

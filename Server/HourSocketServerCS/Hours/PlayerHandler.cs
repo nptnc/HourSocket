@@ -1,4 +1,5 @@
-﻿using HourSocketServerCS.Util;
+﻿using Fleck;
+using HourSocketServerCS.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,16 +15,16 @@ namespace HourSocketServerCS.Hours {
             players.Add(player);
         }
 
-        public static Player? GetPlayerFromClientGUID(Guid client) {
+        public static Player? GetPlayerFromClientGUID(int connection) {
             foreach (Player player in players) {
-                if (player.clientGuid == client) 
+                if (player.connection == connection) 
                     return player;
             }
             return null;
         }
 
-        public static void DestroyPlayer(Guid client) {
-            Player? player = GetPlayerFromClientGUID(client);
+        public static void DestroyPlayer(int connection) {
+            Player? player = GetPlayerFromClientGUID(connection);
             if (player == null)
                 return;
 

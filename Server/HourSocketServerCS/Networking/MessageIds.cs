@@ -14,6 +14,9 @@ namespace HourSocketServerCS.Networking {
             EntitySpawn = 5,
             EntityCFrame = 6,
             PlayerInput = 8,
+            PlayerPickTalent = 10,
+            IntermissionStarted = 13, // this might work as one message in the future
+            DamageRequest = 14,
             SubjectPotionAdd = 18;
     }
 }

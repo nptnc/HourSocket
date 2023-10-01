@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace HourSocketServerCS.Networking {
     public static class Networker {
         public static void SendToClient(Player player, string data) {
-            Server.server!.SendAsync(player.clientGuid,Encoding.UTF8.GetBytes(data),WebSocketMessageType.Text);
+            player.socket.Send(Encoding.UTF8.GetBytes(data));
         }
 
         public static void SendToAll(string data, Player[]? except = null) {

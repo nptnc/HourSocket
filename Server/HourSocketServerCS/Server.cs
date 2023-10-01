@@ -9,54 +9,53 @@ using HourSocketServerCS.Hours;
 using System.Collections;
 using System.IO;
 using HourSocketServerCS.Util;
-using WatsonWebsocket;
 using HourSocketServerCS.Network;
+using HourSocketServerCS.Networking;
+using HourSocketServerCS.Extensions;
+using Fleck;
 
 namespace HourSocketServerCS
 {
     public class Server
     {
-        public static WatsonWsServer? server;
+        public static WebSocketServer? server;
 
         // websockets are very awkward in c# bruh
         public void Start()
         {
-            server = new(ServerSettings.ipaddress,ServerSettings.port,false);
-            server.ClientConnected += (object? sender, ConnectionEventArgs? args) => {
-                new Player(args!.Client.Guid);
-                Console.WriteLine("Client connected: " + args!.Client.ToString());
-            };
-            server.ClientDisconnected += (object? sender, DisconnectionEventArgs? args) => {
-                PlayerHandler.DestroyPlayer(args!.Client.Guid);
-            };
-            server.MessageReceived += (object? sender, MessageReceivedEventArgs? args) => {
-                string decodedMessage = Encoding.UTF8.GetString(args!.Data);
+            server = new WebSocketServer($"ws://{ServerSettings.ipaddress}:{ServerSettings.port}");
+            server.Start(socket => {
+                socket.OnOpen = () => {
+                    Console.WriteLine($"A client connected, their ID is {socket.GetHashCode()}");
+                    new Player(socket.GetHashCode(),socket);
+                };
+                socket.OnClose = () => {
+                    PlayerHandler.DestroyPlayer(socket.GetHashCode());
+                };
+                socket.OnMessage = message => {
+                    Reader reader = new(message);
+                    int messageType = reader.ReadUntilSeperator().NetInt(); // will read until the first seperator
+                    string data = reader.ReadAll(); // reads the rest of it
 
-                int messageType;
-                int.TryParse($"{decodedMessage[0]}", out messageType);
+                    Player? player = PlayerHandler.GetPlayerFromClientGUID(socket.GetHashCode());
+                    if (player == null)
+                        return;
 
-                string data = "";
-                for (int i = 0; i < decodedMessage.Length-(1 + ServerSettings.Lua.seperator.Length); i++) {
-                    data += decodedMessage[i+(1 + ServerSettings.Lua.seperator.Length)];
-                }
+                    string debugPrint = $"a message was received\nplayer: {player.connection}\nmessageid: {messageType}\ncontents: {data}";
 
-                Player? player = PlayerHandler.GetPlayerFromClientGUID(args.Client.Guid);
-                if (player == null)
-                    return;
+                    // this is just for debug
+                    //Console.WriteLine(Helper.RepeatChar(char.Parse("-"),30));
+                    //Console.WriteLine(debugPrint);
+                    //Console.WriteLine(Helper.RepeatChar(char.Parse("-"),30));
 
-                string debugPrint = $"a message was received\nplayer: {player.clientGuid}\nmessageid: {messageType}\ncontents: {data}";
+                    if (!MessageHandler.messages.ContainsKey(messageType)) {
+                        Helper.Say((byte)LogTypes.RELEASE, $"Message type {messageType} does not exist!", ConsoleColor.DarkYellow);
+                        return;
+                    }
+                    MessageHandler.HandleMessage(player, messageType, data);
+                };
+            });
 
-                // this is just for debug
-                //Console.WriteLine(Helper.RepeatChar(char.Parse("-"),30));
-                //Console.WriteLine(debugPrint);
-                //Console.WriteLine(Helper.RepeatChar(char.Parse("-"),30));
-                if (!MessageHandler.messages.ContainsKey(messageType)) {
-                    Helper.Say((byte)LogTypes.RELEASE, $"Message type {messageType} does not exist!", ConsoleColor.DarkYellow);
-                    return;
-                }
-                MessageHandler.HandleMessage(player, messageType, data);
-            };
-            server.Start();
             Helper.Say((byte)LogTypes.RELEASE, $"Server started at {ServerSettings.ipaddress}:{ServerSettings.port}", ConsoleColor.Magenta);
         }
 

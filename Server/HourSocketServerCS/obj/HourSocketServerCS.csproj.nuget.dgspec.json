@@ -44,13 +44,13 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Fleck": {
+              "target": "Package",
+              "version": "[1.2.0, )"
+            },
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
-            },
-            "WatsonWebsocket": {
-              "target": "Package",
-              "version": "[4.0.11, )"
             }
           },
           "imports": [

@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Fleck" Version="1.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="WatsonWebsocket" Version="4.0.11" />
   </ItemGroup>
 
 </Project>

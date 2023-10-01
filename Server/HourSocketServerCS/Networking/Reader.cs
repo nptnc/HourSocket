@@ -13,6 +13,15 @@ namespace HourSocketServerCS.Networking {
             this.stringToRead = stringToRead;
         }
 
+        public string ReadAll() {
+            string readString = "";
+            for (int i = offset; i < stringToRead.Length; i++) {
+                string letter = stringToRead[i].ToString();
+                readString += letter;
+            }
+            return readString;
+        }
+
         public string ReadUntilSeperator() {
             string readString = "";
             string lastCharacters = "";

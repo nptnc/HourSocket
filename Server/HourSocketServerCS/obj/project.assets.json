@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     "net6.0": {
+      "Fleck/1.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/netcoreapp2.0/Fleck.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/Fleck.dll": {}
+        }
+      },
       "Newtonsoft.Json/13.0.3": {
         "type": "package",
         "compile": {
@@ -14,23 +23,25 @@
             "related": ".xml"
           }
         }
-      },
-      "WatsonWebsocket/4.0.11": {
-        "type": "package",
-        "compile": {
-          "lib/net6.0/WatsonWebsocket.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/WatsonWebsocket.dll": {
-            "related": ".xml"
-          }
-        }
       }
     }
   },
   "libraries": {
+    "Fleck/1.2.0": {
+      "sha512": "bPLXn6QbLAFoviur6XbrKB0Zn6x04E8VibHXyHZeJsoC7bkUl5DVtzM5cZgDuqHkIrBqAXJyTNJwSNIc6wBJ2Q==",
+      "type": "package",
+      "path": "fleck/1.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "fleck.1.2.0.nupkg.sha512",
+        "fleck.nuspec",
+        "lib/net40/Fleck.dll",
+        "lib/net45/Fleck.dll",
+        "lib/netcoreapp2.0/Fleck.dll",
+        "lib/netstandard2.0/Fleck.dll"
+      ]
+    },
     "Newtonsoft.Json/13.0.3": {
       "sha512": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
       "type": "package",
@@ -60,35 +71,12 @@
         "newtonsoft.json.nuspec",
         "packageIcon.png"
       ]
-    },
-    "WatsonWebsocket/4.0.11": {
-      "sha512": "/k4ow9wohcDtJXX3UAC03YpvmDxhcIfeo5FD9+HdgoOuMBR12+TxmnHpZ+NgAq4uqR3Pj9fuZ7sIwraDmcKJwg==",
-      "type": "package",
-      "path": "watsonwebsocket/4.0.11",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.md",
-        "README.md",
-        "lib/net461/WatsonWebsocket.dll",
-        "lib/net48/WatsonWebsocket.dll",
-        "lib/net6.0/WatsonWebsocket.dll",
-        "lib/net6.0/WatsonWebsocket.xml",
-        "lib/net7.0/WatsonWebsocket.dll",
-        "lib/netcoreapp3.1/WatsonWebsocket.dll",
-        "lib/netcoreapp3.1/WatsonWebsocket.xml",
-        "lib/netstandard2.1/WatsonWebsocket.dll",
-        "lib/netstandard2.1/WatsonWebsocket.xml",
-        "watson.png",
-        "watsonwebsocket.4.0.11.nupkg.sha512",
-        "watsonwebsocket.nuspec"
-      ]
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "Newtonsoft.Json >= 13.0.3",
-      "WatsonWebsocket >= 4.0.11"
+      "Fleck >= 1.2.0",
+      "Newtonsoft.Json >= 13.0.3"
     ]
   },
   "packageFolders": {
@@ -135,13 +123,13 @@
       "net6.0": {
         "targetAlias": "net6.0",
         "dependencies": {
+          "Fleck": {
+            "target": "Package",
+            "version": "[1.2.0, )"
+          },
           "Newtonsoft.Json": {
             "target": "Package",
             "version": "[13.0.3, )"
-          },
-          "WatsonWebsocket": {
-            "target": "Package",
-            "version": "[4.0.11, )"
           }
         },
         "imports": [

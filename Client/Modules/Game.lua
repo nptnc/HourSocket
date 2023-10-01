@@ -40,6 +40,7 @@ return function(api)
         talentOld = getrenv()._G.TalentChosen
         getrenv()._G.TalentChosen = api.createHook(getrenv()._G.TalentChosen,function(hook,...)
             if not api.connected then
+                print("not connected.")
                 return hook.call(...)
             end
             local args = {...}

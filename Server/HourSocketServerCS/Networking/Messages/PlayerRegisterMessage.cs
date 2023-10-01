@@ -26,7 +26,7 @@ namespace HourSocketServerCS.Network.Messages {
             string contents = Networker.PrepareForLua(Index(), player.id.ToString(), username, playerclass, position, rotation, player.isHost.ToString().ToLower(), "false");
             Networker.SendToAll(contents, new Player[] { player });
 
-            foreach (Player otherPlayer in PlayerHandler.players.ToList()) {
+            foreach (Player otherPlayer in PlayerHandler.players.ToList().Where(p => p.hasRegistered)) {
                 // send every player to this player
                 string contents2 = Networker.PrepareForLua(Index(), player.id.ToString(), username, playerclass, position, rotation, player.isHost.ToNetwork(), (otherPlayer.id == player.id).ToNetwork());
                 Networker.SendToClient(player, contents2);
