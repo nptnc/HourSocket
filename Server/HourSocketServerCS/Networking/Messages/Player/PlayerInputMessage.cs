@@ -23,13 +23,13 @@ namespace HourSocketServerCS.Networking.Messages
                 return;
 
             Reader reader = new(data);
-            string input = reader.ReadUntilSeperator();
-            string position = reader.ReadUntilSeperator();
-            string rotation = reader.ReadUntilSeperator();
+            string input = reader.ReadUntilSeperator()!;
+            string position = reader.ReadUntilSeperator()!;
+            string rotation = reader.ReadUntilSeperator()!;
             player.cameraPos = position.NetVector3();
             player.cameraRot = rotation.NetVector3();
 
-            Helper.Say((byte)LogTypes.RELEASE, $"{player.username} inputted {input}", ConsoleColor.Yellow);
+            Helper.Say((byte)LogTypes.INFO, $"{player.username} inputted {input}", ConsoleColor.Yellow);
             string contents2 = Networker.PrepareForLua(Index(), player.id.ToString(), input, position, rotation);
             Networker.SendToAll(contents2, new Player[] { player });
         }

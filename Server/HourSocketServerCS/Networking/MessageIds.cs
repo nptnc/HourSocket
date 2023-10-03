@@ -16,8 +16,10 @@ namespace HourSocketServerCS.Networking {
             EntityCFrame = 6,
             PlayerInput = 8,
             PlayerPickTalent = 10,
-            IntermissionStarted = 13, // this might work as one message in the future
+            GameStateChanged = 13, // this might work as one message in the future
             DamageRequest = 14,
+            EntityAnimation = 15,
+            PlayerChat = 16,
             SubjectPotionAdd = 18;
     }
 }

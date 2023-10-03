@@ -29,14 +29,14 @@ namespace HourSocketServerCS.Networking.Messages
             player.pickedTalent = true;
             player.pickedTalentIndex = talentIndex.NetInt();
 
-            Helper.Say((byte)LogTypes.RELEASE, $"{player.username} chose talent {talentIndex}", ConsoleColor.Yellow);
+            Helper.Say((byte)LogTypes.INFO, $"{player.username} chose talent {talentIndex}", ConsoleColor.Yellow);
             foreach (Player otherPlayer in PlayerHandler.players.ToList().Where(p => p.hasRegistered == true))
             {
                 if (otherPlayer.pickedTalent != true)
                     return;
             }
 
-            Helper.Say((byte)LogTypes.RELEASE, $"everyone chose their talents, sending every player their talent.", ConsoleColor.Yellow);
+            Helper.Say((byte)LogTypes.INFO, $"everyone chose their talents, sending every player their talent.", ConsoleColor.Yellow);
             foreach (Player otherPlayer in PlayerHandler.players.Where(p => p.hasRegistered == true))
             {
                 otherPlayer.pickedTalent = false;

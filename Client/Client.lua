@@ -40,7 +40,7 @@ return function(executionMethod,localPath)
     local seperator = ":::" -- dont change, this has to be the same on the server and the client otherwise one or the other wont receive information.
     local connections = {}
     
-    local branch = "main"
+    local branch = "api"
     local github = `https://raw.githubusercontent.com/nptnc/HourSocket/{branch}/Client`
     
     local modules = {
@@ -52,7 +52,7 @@ return function(executionMethod,localPath)
         "Game",
     }
     
-    local main = {}
+    local api = {}
     local requiredModules = {}
     
     local messageIds = {
@@ -68,17 +68,19 @@ return function(executionMethod,localPath)
         pickTalent = 10,
         startTempo = 11,
         updateEntityKnockback = 12,
-        intermissionStarted = 13,
+        worldStateChanged = 13,
         damageRequest = 14,
         entityInput = 15,
         sayChatMessage = 16,
         subjectPotionAdd = 17,
     }
     
-    main.player = player
-    main.registeredPlayers = {}
-    main.globals = {}
-    
+    api.player = player
+    api.registeredPlayers = {}
+    api.globals = {}
+    api.worldState = getrenv()._G.GameState
+    api.previousWorldState = api.worldState
+
     local cutTable = function(t,ind)
         local newT = {}
         for index,value in t do
@@ -113,20 +115,20 @@ return function(executionMethod,localPath)
         end
     end
     
-    main.apiCall = apiCall
+    api.apiCall = apiCall
     
-    main.doesPlayerHaveEntity = function(playerdata)
+    api.doesPlayerHaveEntity = function(playerdata)
         if playerdata.entity == nil then
             return false
         end
         return true
     end
     
-    main.isHost = function()
-        return main.getMe().serverData.isHost
+    api.isHost = function()
+        return api.getMe().serverData.isHost
     end
     
-    main.respawnPlayer = function()
+    api.respawnPlayer = function()
         --[[hookToMyEntity()
     
         local aidata = getrenv()._G.Entities[1]
@@ -149,11 +151,11 @@ return function(executionMethod,localPath)
         getrenv()._G.PreparePlayerCharacter({})--]]
     end
 
-    main.encodeV3 = function(vector3)
+    api.encodeV3 = function(vector3)
         return `{vector3.X}_{vector3.Y}_{vector3.Z}`
     end
     
-    main.destroyAllEntities = function()
+    api.destroyAllEntities = function()
         for index,aidata in getrenv()._G.Entities do
             if aidata.specialId then
                 continue
@@ -171,7 +173,7 @@ return function(executionMethod,localPath)
         end
     end
     
-    main.findOutVariable = function(var)
+    api.findOutVariable = function(var)
         local newVar = var
         if newVar == "false" then
             newVar = false
@@ -204,7 +206,7 @@ return function(executionMethod,localPath)
         end,
         ["boolean"] = {{"false",false},{"true",true}},
     }
-    main.findOutVariableWithTarget = function(var,targetType)
+    api.findOutVariableWithTarget = function(var,targetType)
         if findOutVariableFromString[targetType] then
             if type(findOutVariableFromString[targetType]) == "function" then
                 -- unimplemented
@@ -224,7 +226,7 @@ return function(executionMethod,localPath)
         end
     end
     
-    main.createPlayer = function(playerdata)
+    api.createPlayer = function(playerdata)
         local entity = getrenv()._G.SpawnCreature({
             Name = playerdata.serverData.class,
             Bypass = true,
@@ -249,7 +251,7 @@ return function(executionMethod,localPath)
         entity.NetworkFunctions = {}
         if entity.Name == "Class7" then
             entity.NetworkFunctions.addPotion = entity.ActionFunctions.AddPotion
-            entity.ActionFunctions.AddPotion = main.createHook(entity.ActionFunctions.AddPotion,function(hook,...)
+            entity.ActionFunctions.AddPotion = api.createHook(entity.ActionFunctions.AddPotion,function(hook,...)
                 return -- we return because we dont want to dictate what their potions are, we let them do it
             end)
         end
@@ -260,7 +262,7 @@ return function(executionMethod,localPath)
         return entity
     end
     
-    main.len = function(a)
+    api.len = function(a)
         local ind = 0
         for _,_ in a do
             ind += 1
@@ -268,29 +270,29 @@ return function(executionMethod,localPath)
         return ind
     end
     
-    main.optimize = function(n)
+    api.optimize = function(n)
         return math.round(n * 50) / 50
     end
     
-    main.hardOptimize = function(n)
+    api.hardOptimize = function(n)
         return math.round(n)
     end
     
     local packetsSentOut = 0
     local throttleAt = 70
-    main.isThrottling = false
-    main.sendToServer = function(...)
+    api.isThrottling = false
+    api.sendToServer = function(...)
         if packetsSentOut > throttleAt then
-            main.isThrottling = true
+            api.isThrottling = true
             apiCall("sentMessage",nil, packetsSentOut, packetsSentOut <= throttleAt and true or false)
             return
         end
         packetsSentOut += 1
-        main.socket:Send(...)
+        api.socket:Send(...)
         apiCall("sentMessage",nil, packetsSentOut, packetsSentOut <= throttleAt and true or false)
     end
     
-    main.createHook = function(old,replace)
+    api.createHook = function(old,replace)
         local meta = {}
         meta.hook = true
         meta.old = old
@@ -318,12 +320,12 @@ return function(executionMethod,localPath)
         return meta
     end
     
-    main.getMe = function()
-        return main.registeredPlayers[player.UserId]
+    api.getMe = function()
+        return api.registeredPlayers[player.UserId]
     end
     
-    main.destroyPlayerEntity = function(userid)
-        local targetPlayer = main.registeredPlayers[userid]
+    api.destroyPlayerEntity = function(userid)
+        local targetPlayer = api.registeredPlayers[userid]
         if not targetPlayer.entity then
             return
         end
@@ -332,7 +334,7 @@ return function(executionMethod,localPath)
         targetPlayer.entity = nil
     end
     
-    main.prepareMessage = function(messageId,...)
+    api.prepareMessage = function(messageId,...)
         messageId = messageIds[messageId] or messageId
         local endString = `{messageId}{seperator}`
         if #{...} > 0 then
@@ -359,10 +361,10 @@ return function(executionMethod,localPath)
                     Url = `{github}/Modules/{module}.lua`,
                     Method = 'GET', -- <optional> | GET/POST/HEAD, etc.
                 }).Body)()
-                requiredModules[module] = response(main)
+                requiredModules[module] = response(api)
             elseif executionMethod == "local" then
                 local response = loadfile(`{localPath}/Modules/{module}.lua`)()
-                requiredModules[module] = response(main)
+                requiredModules[module] = response(api)
             end
         end)
         if not success then
@@ -412,14 +414,14 @@ return function(executionMethod,localPath)
     expectMessage(0,{"number"})
     registerMessage(0,function(userId)
         apiCall("playerDisconnected",nil,userId)
-        main.destroyPlayerEntity(userId)
-        apiCall("createNotification",nil,`{main.registeredPlayers[userId].serverData.username} disconnected`)
-        main.registeredPlayers[userId] = nil
+        api.destroyPlayerEntity(userId)
+        apiCall("createNotification",nil,`{api.registeredPlayers[userId].serverData.username} disconnected`)
+        api.registeredPlayers[userId] = nil
         print(`received disconnect for player {userId}`)
     end)
     
     local registerPlayer = function(userid,data)
-        if main.registeredPlayers[userid] then
+        if api.registeredPlayers[userid] then
             return
         end
     
@@ -433,20 +435,20 @@ return function(executionMethod,localPath)
             Color3.fromRGB(255, 0, 0),
         }
     
-        main.registeredPlayers[userid] = {
+        api.registeredPlayers[userid] = {
             model = nil,
             cframe = CFrame.new(data.position.X,data.position.Y,data.position.Z) * CFrame.Angles(math.rad(data.rotation.X),math.rad(data.rotation.Y),math.rad(data.rotation.Z)),
             chatcolor = chatColors[math.random(1,#chatColors)],
             serverData = data,
         }
     
-        for index,value in main.registeredPlayers[userid].serverData do
-            main.registeredPlayers[userid].serverData[index] = main.findOutVariable(value)
+        for index,value in api.registeredPlayers[userid].serverData do
+            api.registeredPlayers[userid].serverData[index] = api.findOutVariable(value)
         end
         
         print(`received register player {userid}`)
     
-        apiCall("playerRegistered",nil,userid,main.registeredPlayers[userid])
+        apiCall("playerRegistered",nil,userid,api.registeredPlayers[userid])
         if tonumber(userid) ~= player.UserId then
             return
         end
@@ -469,25 +471,25 @@ return function(executionMethod,localPath)
     
     expectMessage(2,{"number","vector3","vector3"})
     registerMessage(2,function(userid,position,rotation)
-        if not main.registeredPlayers[userid] then
+        if not api.registeredPlayers[userid] then
             warn(`no userid ({userid}, {typeof(userid)}) is not a userid`)
             return
         end
-        local messageplayer = main.registeredPlayers[userid]
+        local messageplayer = api.registeredPlayers[userid]
         messageplayer.cframe = CFrame.new(position.X,position.Y,position.Z) * CFrame.Angles(math.rad(rotation.X),math.rad(rotation.Y),math.rad(rotation.Z))
     end)
     
     expectMessage(3,{"number","any","any"})
     registerMessage(3,function(userid,key,value)
-        if not main.registeredPlayers[userid] then
+        if not api.registeredPlayers[userid] then
             warn(`no userid ({userid}) is not a userid`)
             return
         end
     
-        local messageplayer = main.registeredPlayers[userid]
+        local messageplayer = api.registeredPlayers[userid]
     
         if key == "class" then
-            messageplayer.serverData[key] = main.findOutVariable(value)
+            messageplayer.serverData[key] = api.findOutVariable(value)
             local entityId = getEntityIdByEntity(messageplayer.entity)
             local entity = getrenv()._G.Entities[entityId]
             if entity then
@@ -528,7 +530,7 @@ return function(executionMethod,localPath)
     
     expectMessage(8,{"number","string","vector3","vector3"})
     registerMessage(8,function(userid,input,cameraPos,cameraRot)
-        local messageplayer = main.registeredPlayers[userid]
+        local messageplayer = api.registeredPlayers[userid]
         local entity = messageplayer.entity
         if entity == nil then
             warn("cant do input, player entity is nil")
@@ -570,17 +572,19 @@ return function(executionMethod,localPath)
     end)
     
     -- talent popup for non hosts.
-    expectMessage(13,{"boolean"})
-    registerMessage(13,function(isArena)
-        isArena = main.findOutVariable(isArena)
+    expectMessage(13,{"boolean","any"})
+    registerMessage(13,function(state,isArena)
+        if state == "Intermission" then
+            isArena = api.findOutVariable(isArena)
     
-        getrenv()._G.GameState = "Intermission"
-        getrenv()._G.TimeEnabled = false
-        getrenv()._G.SetCameraLock(false)
-        local humrp = getrenv()._G.Entities[1].RootPart
-        humrp.Anchored = true
-        apiCall("gameShowTalentPopup")
-        getrenv()._G.ArenaMode = isArena or false
+            getrenv()._G.GameState = "Intermission"
+            getrenv()._G.TimeEnabled = false
+            getrenv()._G.SetCameraLock(false)
+            local humrp = getrenv()._G.Entities[1].RootPart
+            humrp.Anchored = true
+            apiCall("gameShowTalentPopup")
+            getrenv()._G.ArenaMode = isArena or false
+        end
     end)
     
     -- damage entity for host
@@ -609,7 +613,7 @@ return function(executionMethod,localPath)
     -- player text messages
     expectMessage(16,{"number","string"})
     registerMessage(16,function(userid,text)
-        local messageplayer = main.registeredPlayers[userid]
+        local messageplayer = api.registeredPlayers[userid]
         game.StarterGui:SetCore("ChatMakeSystemMessage",{
             Text = `[{messageplayer.serverData.username}]: {text}`,
             Color = messageplayer.chatcolor,
@@ -631,10 +635,10 @@ return function(executionMethod,localPath)
     -- subject potion sync
     expectMessage(18,{"number","string","number"})
     registerMessage(18,function(userid,section,index)
-        if not main.registeredPlayers[userid].entity then
+        if not api.registeredPlayers[userid].entity then
             return
         end
-        main.registeredPlayers[userid].entity.NetworkFunctions.addPotion({
+        api.registeredPlayers[userid].entity.NetworkFunctions.addPotion({
             section,
             index,
         })
@@ -642,43 +646,43 @@ return function(executionMethod,localPath)
     end)
     
     player.Chatted:Connect(function(messagecontents)
-        if not main.connected then
+        if not api.connected then
             return
         end
     
-        local message = main.prepareMessage("sayChatMessage",messagecontents)
-        main.sendToServer(message)
+        local message = api.prepareMessage("sayChatMessage",messagecontents)
+        api.sendToServer(message)
     end)
     
-    main.disconnect = function()
-        if main.socket then
-            main.socket:Close()
-            main.connected = false
-            main.socket = nil
+    api.disconnect = function()
+        if api.socket then
+            api.socket:Close()
+            api.connected = false
+            api.socket = nil
             return
         end
-        for userid,_ in main.registeredPlayers do
-            main.destroyPlayerEntity(userid)
+        for userid,_ in api.registeredPlayers do
+            api.destroyPlayerEntity(userid)
         end
-        main.registeredPlayers = {}
+        api.registeredPlayers = {}
         apiCall("createNotification",nil,`disconnected from server`)
         apiCall("onDisconnected")
     end
     
-    main.tryToConnect = function(ip)
+    api.tryToConnect = function(ip)
         local success,error = pcall(function()
-            main.socket = websocketLayer.connect(ip)
+            api.socket = websocketLayer.connect(ip)
         end)
         if not success then
             apiCall("createNotification",nil,`failed to connect to server\neither the server is down or you used the wrong connection type.`)
             return
         end
-        main.connected = true
+        api.connected = true
     
         apiCall("connected")
         apiCall("createNotification",nil,`connected to server {ip}`)
     
-        main.socket.OnMessage:Connect(function(msg)
+        api.socket.OnMessage:Connect(function(msg)
             local args = string.split(msg,seperator)
             local messageId = tonumber(args[1])
             if not messages[messageId] then
@@ -700,7 +704,7 @@ return function(executionMethod,localPath)
                 if not messagesExpectedTypes[messageId][index] then
                     continue
                 end
-                value = main.findOutVariableWithTarget(value,messagesExpectedTypes[messageId][index])
+                value = api.findOutVariableWithTarget(value,messagesExpectedTypes[messageId][index])
                 if value == nil then
                     warn(`message id {messageId} at index {index} got {value} expected {messagesExpectedTypes[messageId][index]}.\nthis usually means the server is modified`)
                     return
@@ -710,20 +714,20 @@ return function(executionMethod,localPath)
             messages[messageId](table.unpack(newArgs))
         end)
     
-        main.socket.OnClose:Connect(function()
-            main.disconnect()
+        api.socket.OnClose:Connect(function()
+            api.disconnect()
         end)
     end
     
     workspace.ChildRemoved:Connect(function(child)
-        if not main.connected then
+        if not api.connected then
             return
         end
-        if main.registeredPlayers[tonumber(child.Name)] == nil then
+        if api.registeredPlayers[tonumber(child.Name)] == nil then
             return
         end
         repeat rs.Heartbeat:Wait() until getrenv()._G.GameState ~= "Combat"
-        main.registeredPlayers[tonumber(child.Name)].entity = nil
+        api.registeredPlayers[tonumber(child.Name)].entity = nil
     end)
     
     local hookToMyEntity = function()
@@ -740,30 +744,37 @@ return function(executionMethod,localPath)
     local lastMyEntity = getrenv()._G.Entities[1]
     local lastClass = getrenv()._G.Class
     table.insert(connections,rs.Heartbeat:Connect(function(dt)
-        if not main.connected then
+        if not api.connected then
             return
+        end
+
+        api.worldState = getrenv()._G.GameState
+        if api.previousWorldState ~= api.worldState then
+            api.previousWorldState = api.worldState
+            local message = api.prepareMessage("worldStateChanged",api.worldState)
+            api.sendToServer(message)
         end
     
         if tick() - sinceLastWipe > 1 then
             sinceLastWipe = tick()
             packetsSentOut = 0
             apiCall("resetPacketInformation")
-            main.isThrottling = false
+            api.isThrottling = false
         end
     
-        if main.getMe() == nil then
+        if api.getMe() == nil then
             return
         end
     
-        if not main.getMe().serverData.isHost then
+        if not api.getMe().serverData.isHost then
             getrenv()._G.EnemyCap = 0
         else
             getrenv()._G.EnemyCap = 2
         end
     
         if getrenv()._G.GameState ~= "Combat" then
-            for userid,_ in main.registeredPlayers do
-                main.destroyPlayerEntity(userid)
+            for userid,_ in api.registeredPlayers do
+                api.destroyPlayerEntity(userid)
             end
         end
     
@@ -775,8 +786,8 @@ return function(executionMethod,localPath)
     
         if lastClass ~= getrenv()._G.Class then
             -- update class lol
-            local message = main.prepareMessage("updateState","class",getrenv()._G.Class)
-            main.sendToServer(message)
+            local message = api.prepareMessage("updateState","class",getrenv()._G.Class)
+            api.sendToServer(message)
         end
     
         lastMyEntity = getrenv()._G.Entities[1]
@@ -791,6 +802,6 @@ return function(executionMethod,localPath)
     end))
     
     game.Players.PlayerRemoving:Connect(function(aaa)
-        main.disconnect()
+        api.disconnect()
     end)
 end

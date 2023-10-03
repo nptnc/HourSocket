@@ -22,7 +22,11 @@ namespace HourSocketServerCS.Networking {
             return readString;
         }
 
-        public string ReadUntilSeperator() {
+        public string? ReadUntilSeperator() {
+            if (offset > stringToRead.Length) {
+                return null;
+            }
+
             string readString = "";
             string lastCharacters = "";
             for (int i = offset; i < stringToRead.Length; i++) {

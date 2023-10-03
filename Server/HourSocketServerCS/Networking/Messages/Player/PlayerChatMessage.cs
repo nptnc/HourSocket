@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace HourSocketServerCS.Networking.Messages
 {
-    public class PlayerKnockbackMessage : Message
+    public class PlayerChatMessage : Message
     {
-        public override int Index() => MessageIds.PlayerKnockback;
+        public override int Index() => MessageIds.PlayerChat;
 
         public override void Handle(Player player, string data)
         {
@@ -23,12 +23,11 @@ namespace HourSocketServerCS.Networking.Messages
                 return;
 
             Reader reader = new(data);
-            string knockbackIndex = reader.ReadUntilSeperator();
-            string knockbackValue = reader.ReadUntilSeperator();
+            string message = reader.ReadUntilSeperator();
 
-            Helper.Say((byte)LogTypes.INFO, $"{player.username} knockback {knockbackValue}", ConsoleColor.Yellow);
+            Helper.Say((byte)LogTypes.INFO, $"{player.username}: {message}", ConsoleColor.Yellow);
 
-            string contents = Networker.PrepareForLua(Index(), player.id.ToString(), knockbackIndex, knockbackValue);
+            string contents = Networker.PrepareForLua(Index(), player.id.ToString(), message);
             Networker.SendToAll(contents, new Player[] { player });
         }
     }

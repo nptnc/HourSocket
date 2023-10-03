@@ -14,14 +14,14 @@ namespace HourSocketServerCS {
         public static LogTypes logType;
 
         public static void Start() {
-            logType = LogTypes.OHSHITSOMETHINGHASGONECATASTROPHICALLYWRONG;
+            logType = LogTypes.DEV;
         }
 
         public static void LoadSettings() {
             string path = AppDomain.CurrentDomain.BaseDirectory;
             string settingsPath = $"{path}/settings.cfg";
             if (!File.Exists(settingsPath)) {
-                Helper.Say((byte)LogTypes.RELEASE, "Config file does not exist, creating one.", ConsoleColor.Yellow);
+                Helper.Say((byte)LogTypes.INFO, "Config file does not exist, creating one.", ConsoleColor.Yellow);
 
                 JObject config = new JObject(
                     new JProperty("ip", ServerSettings.ipaddress),
@@ -43,7 +43,7 @@ namespace HourSocketServerCS {
                 ServerSettings.ipaddress = (string)o2.Property("ip")!;
                 ServerSettings.port = (int)o2.Property("port")!;
 
-                Helper.Say((byte)LogTypes.RELEASE, "Loading from config file.", ConsoleColor.Yellow);
+                Helper.Say((byte)LogTypes.INFO, "Loading from config file.", ConsoleColor.Yellow);
             }
         }
     }

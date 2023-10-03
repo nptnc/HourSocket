@@ -23,7 +23,12 @@ namespace HourSocketServerCS.Network
                     continue;
 
                 Message ms = (Message)Activator.CreateInstance(type)!;
-                Helper.Say((byte)LogTypes.OHSHITSOMETHINGHASGONECATASTROPHICALLYWRONG, $"Registered message {type.Name} as {ms.Index()}", ConsoleColor.Cyan);
+                Helper.SayMulti((byte)LogTypes.INFO, new KeyValuePair<string, ConsoleColor>[] {
+                    new ($"Registered message",ConsoleColor.Cyan),
+                    new ($" {type.Name}",ConsoleColor.DarkCyan),
+                    new (" as",ConsoleColor.Cyan),
+                    new ($" {ms.Index()}",ConsoleColor.DarkCyan),
+                });
                 messages.Add(ms.Index(), ms);
             }
         }

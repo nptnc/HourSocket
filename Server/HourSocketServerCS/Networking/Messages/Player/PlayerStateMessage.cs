@@ -32,7 +32,7 @@ namespace HourSocketServerCS.Networking.Messages
                 player.entity!.health = value.NetInt();
             }
 
-            Helper.Say((byte)LogTypes.RELEASE, $"{player.username} state changed, {index} : {value}", ConsoleColor.Yellow);
+            Helper.Say((byte)LogTypes.INFO, $"{player.username} state changed, {index} : {value}", ConsoleColor.Yellow);
 
             string contents2 = Networker.PrepareForLua(Index(), player.id.ToString(), index, value);
             Networker.SendToAll(contents2, new Player[] { player });

@@ -32,7 +32,9 @@ return function(api)
             hook.call(...)
             talentScreen(false)
             if api.isHost() then
-                local message = api.prepareMessage("intermissionStarted",getrenv()._G.ArenaMode)
+                api.worldState = "Intermission"
+                api.previousWorldState = api.worldState
+                local message = api.prepareMessage("worldStateChanged",api.worldState,getrenv()._G.ArenaMode)
                 api.sendToServer(message)
             end
         end)

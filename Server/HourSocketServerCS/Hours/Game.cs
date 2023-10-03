@@ -9,6 +9,7 @@ namespace HourSocketServerCS.Hours {
     public static class Game {
         public static List<Entity> entities = new();
         public static string currentMap = "SandyBlue"; // this is the default map for hours.
+        public static string currentState = "";
         private static string? previousMap;
 
         public static void Start() {
@@ -27,7 +28,7 @@ namespace HourSocketServerCS.Hours {
             foreach (Entity entity in entities.Where(entity => entity.isplayer == false)) { 
                 entities.Remove(entity);
             }
-            Helper.Say((byte)LogTypes.RELEASE, "Game has been wiped, reset entity list.", ConsoleColor.Yellow);
+            Helper.Say((byte)LogTypes.INFO, "Game has been wiped, reset entity list.", ConsoleColor.Yellow);
         }
 
         public static void WipeEntity(int id) {
@@ -47,7 +48,7 @@ namespace HourSocketServerCS.Hours {
             foreach (Entity entity in zazaEntities.Where(entity => entity != null && entity.isplayer == false)) {
                 if (entity.health <= 0) {
                     entities.Remove(GetEntityById(entity.id));
-                    Helper.Say((byte)LogTypes.RELEASE, $"Entity {entity.id} died, removing from entity list.", ConsoleColor.Yellow);
+                    Helper.Say((byte)LogTypes.INFO, $"Entity {entity.id} died, removing from entity list.", ConsoleColor.Yellow);
                 }
             }
         }

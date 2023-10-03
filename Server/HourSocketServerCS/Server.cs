@@ -49,14 +49,17 @@ namespace HourSocketServerCS
                     //Console.WriteLine(Helper.RepeatChar(char.Parse("-"),30));
 
                     if (!MessageHandler.messages.ContainsKey(messageType)) {
-                        Helper.Say((byte)LogTypes.RELEASE, $"Message type {messageType} does not exist!", ConsoleColor.DarkYellow);
+                        Helper.Say((byte)LogTypes.INFO, $"Message type {messageType} does not exist!", ConsoleColor.DarkYellow);
                         return;
                     }
                     MessageHandler.HandleMessage(player, messageType, data);
                 };
             });
 
-            Helper.Say((byte)LogTypes.RELEASE, $"Server started at {ServerSettings.ipaddress}:{ServerSettings.port}", ConsoleColor.Magenta);
+            Helper.SayMulti((byte)LogTypes.INFO, new KeyValuePair<string, ConsoleColor>[] {
+                new ($"Server started at",ConsoleColor.Magenta),
+                new ($" {ServerSettings.ipaddress}:{ServerSettings.port}",ConsoleColor.Red),
+            });
         }
 
         public void Update() {

@@ -25,7 +25,7 @@ namespace HourSocketServerCS.Network {
             string attackName = reader.ReadUntilSeperator();
             string screenshake = reader.ReadUntilSeperator();
 
-            Helper.Say((byte)LogTypes.RELEASE, $"{player.username} dealt {damage} to {entityNetworkid}", ConsoleColor.Yellow);
+            Helper.Say((byte)LogTypes.INFO, $"{player.username} dealt {damage} to {entityNetworkid}", ConsoleColor.Yellow);
             string contents = Networker.PrepareForLua(Index(), entityNetworkid, damage, partName, attackName, screenshake);
             Networker.SendToClient(PlayerHandler.GetHost()!, contents);
         }

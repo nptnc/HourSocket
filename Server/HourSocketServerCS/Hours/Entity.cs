@@ -16,9 +16,9 @@ namespace HourSocketServerCS.Hours {
             globalId += 1;
             
             if (isplayer) {
-                Helper.Say((byte)LogTypes.RELEASE, $"Created a new player entity {entityid} as id {globalId}", ConsoleColor.Cyan);
+                Helper.Say((byte)LogTypes.INFO, $"Created a new player entity {entityid} as id {globalId}", ConsoleColor.Cyan);
             } else {
-                Helper.Say((byte)LogTypes.RELEASE, $"Created a new entity {entityid} as id {globalId}", ConsoleColor.Cyan);
+                Helper.Say((byte)LogTypes.INFO, $"Created a new entity {entityid} as id {globalId}", ConsoleColor.Cyan);
             }
             
             id = globalId;
@@ -30,13 +30,13 @@ namespace HourSocketServerCS.Hours {
         }
 
         public int id;
-        public int? hostNetworkId;
+        public int? hostNetworkId; // might not have one, its a player
         public int health = 9999; // default health, because we dont know it
         public int team;
 
         public string entityid;
 
-        public bool isBoss = false;        
+        public bool isBoss = false;
         public bool isplayer = false;
 
         public Vector3 position;

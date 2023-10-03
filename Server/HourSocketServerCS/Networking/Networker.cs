@@ -22,10 +22,13 @@ namespace HourSocketServerCS.Networking {
             }
         }
 
-        public static string PrepareForLua(int messageId, params string[] toSend) {
+        public static string PrepareForLua(int messageId, params string?[] toSend) {
             string endString = $"{messageId}{ServerSettings.Lua.seperator}";
             int index = 0;
-            foreach (string argument in toSend) {
+            foreach (string? argument in toSend) {
+                if (argument == null) {
+                    return endString;
+                }
                 if (index == 0) {
                     endString += $"{argument}";
                 }
