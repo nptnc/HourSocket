@@ -8,7 +8,7 @@ namespace HourSocketServerCS.Networking {
     public static class MessageIds {
         public static int
             PlayerDisconnect = 0,
-            PlayerUpdate = 1,
+            PlayerRegister = 1,
             PlayerCFrame = 2,
             PlayerStateUpdate = 3,
             PlayerKnockback = 4,
@@ -20,6 +20,6 @@ namespace HourSocketServerCS.Networking {
             DamageRequest = 14,
             EntityAnimation = 15,
             PlayerChat = 16,
-            SubjectPotionAdd = 18;
+            SubjectPotionAdd = 17;
     }
 }

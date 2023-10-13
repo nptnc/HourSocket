@@ -22,6 +22,8 @@ namespace HourSocketServerCS.Networking.Messages
             string section = reader.ReadUntilSeperator();
             string index = reader.ReadUntilSeperator();
 
+            Helper.Say((byte)LogTypes.DEV, $"potion {section} {index} added to {player.username}");
+
             // send this player to everyone except the player.
             string contents = Networker.PrepareForLua(Index(), player.id.ToString(), section, index);
             Networker.SendToAll(contents, new Player[] { player });

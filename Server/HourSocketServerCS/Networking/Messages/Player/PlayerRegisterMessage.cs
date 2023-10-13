@@ -15,7 +15,7 @@ namespace HourSocketServerCS.Networking.Messages
 {
     public class PlayerRegisterMessage : Message
     {
-        public override int Index() => MessageIds.PlayerUpdate;
+        public override int Index() => MessageIds.PlayerRegister;
 
         public override void Handle(Player player, string data)
         {
