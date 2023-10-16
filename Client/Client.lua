@@ -27,7 +27,7 @@ local start = function(executionMethod,localPath)
             request = function(what)
                 return request({
                     Url = what,
-                    Method = 'GET', -- <optional> | GET/POST/HEAD, etc.
+                    Method = 'GET',
                 }).Body
             end,
             connect = Krnl.WebSocket.connect,

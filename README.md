@@ -32,11 +32,22 @@ Do note that anyone can modify the client or the server to overload or send modi
 - Using a supported executor of your choice
 - Inject into Roblox using your executor
 - Execute the script:
+
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/nptnc/HourSocket/main/Client/Client.lua"))()("github")
+local executor = identifyexecutor()
+if executor == "Electron V2" or executor == "Electron" then
+    -- god i fucking hate this exector
+    loadstring(request({
+        url = what,
+    }).Body)()("github")
+else
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/nptnc/HourSocket/main/Client/Client.lua"))()("github")
+end
 
 --[[ 
-for dev testing, we need to run the code locally so you dont have to spam commit to github!
+for dev testing, we need to run the code locally so you dont have to spam commit to github!,
+oh it also only works on krnl cause electron is a shit exploit!!!!!!
+
 local path = "HoursMPSource/Client"
 loadfile(`{path}/Client.lua`)()("local",path)
 --]]
