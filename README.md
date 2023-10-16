@@ -13,7 +13,6 @@ This is a Roblox "Hack" that connects to an external server using websockets whi
 [NewtonSoft.Json \[configuration helper\]](https://github.com/JamesNK/Newtonsoft.Json)
 
 ### Supported Executors
-[Synapse X](https://x.synapse.to)<sub> $20</sub>  
 [krnl](https://krnl.place)<sub> Free</sub>  
 [Electron](https://ryos.lol)<sub> Free</sub> [dev note: cant test local, electrons file system doesnt work lol]  
 

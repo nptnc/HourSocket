@@ -21,35 +21,38 @@ local start = function(executionMethod,localPath)
     local branch = "source"
     local github = `https://raw.githubusercontent.com/nptnc/HourSocket/{branch}/Client`
 
-    if exploit == "Krnl" then
+    local exploits = {
+        {
+            supportedExecutors = {"Electron","Electron V2"},
+            websocketLayer = {
+                request = function(what)
+                    return request({
+                        url = what,
+                    }).Body
+                end,
+                connect = WebSocket.connect,
+            },
+        },
+        {
+            supportedExecutors = {"Krnl"},
+            websocketLayer = {
+                request = function(what)
+                    return request({
+                        Url = what,
+                        Method = 'GET',
+                    }).Body
+                end,
+                connect = Krnl.WebSocket.connect,
+            },
+        },
+    }
+
+    for _,data in exploits do
+        if not table.find(data.supportedExecutors,exploit) then
+            continue
+        end
         supported = true
-        websocketLayer = {
-            request = function(what)
-                return request({
-                    Url = what,
-                    Method = 'GET',
-                }).Body
-            end,
-            connect = Krnl.WebSocket.connect,
-        }
-    elseif exploit == "Synapse X" then
-        supported = true
-        websocketLayer = {
-            request = function()
-                return -- unimplemented for now
-            end,
-            connect = syn.websocket.connect,
-        }
-    elseif exploit == "Electron" then
-        supported = true
-        websocketLayer = {
-            request = function(what)
-                return request({
-                    url = what,
-                }).Body
-            end,
-            connect = WebSocket.connect,
-        }
+        websocketLayer = data.websocketLayer
     end
     
     if supported == false then
