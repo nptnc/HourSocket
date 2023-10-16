@@ -7,6 +7,7 @@ local start = function(executionMethod,localPath)
     getgenv()._G.LEExecuted = true
     
     local rs = game:GetService("RunService")
+    local http = game:GetService("HttpService")
     
     local player = game.Players.LocalPlayer
     
@@ -17,19 +18,36 @@ local start = function(executionMethod,localPath)
     local exploit = identifyexecutor()
     local supported = false
 
+    local branch = "source"
+    local github = `https://raw.githubusercontent.com/nptnc/HourSocket/{branch}/Client`
+
     if exploit == "Krnl" then
         supported = true
         websocketLayer = {
+            request = function(what)
+                return request({
+                    Url = what,
+                    Method = 'GET', -- <optional> | GET/POST/HEAD, etc.
+                }).Body
+            end,
             connect = Krnl.WebSocket.connect,
         }
     elseif exploit == "Synapse X" then
         supported = true
         websocketLayer = {
+            request = function()
+                return -- unimplemented for now
+            end,
             connect = syn.websocket.connect,
         }
     elseif exploit == "Electron" then
         supported = true
         websocketLayer = {
+            request = function(what)
+                return request({
+                    url = what,
+                }).Body
+            end,
             connect = WebSocket.connect,
         }
     end
@@ -44,9 +62,6 @@ local start = function(executionMethod,localPath)
     local sinceLastFPS = 0
     local seperator = ":::" -- dont change, this has to be the same on the server and the client otherwise one or the other wont receive information.
     local connections = {}
-    
-    local branch = "api"
-    local github = `https://raw.githubusercontent.com/nptnc/HourSocket/{branch}/Client`
     
     local modules = {
         "Gui",
@@ -356,16 +371,11 @@ local start = function(executionMethod,localPath)
         return endString
     end
     
-    -- i have no idea if pcalls yield,m they progbably dont tho
-    
     local hasLoadedModules = false 
     for index,module in modules do
         local success,error = pcall(function()
             if executionMethod == "github" then
-                local response = loadstring(request({
-                    Url = `{github}/Modules/{module}.lua`,
-                    Method = 'GET', -- <optional> | GET/POST/HEAD, etc.
-                }).Body)()
+                local response = loadstring(websocketLayer.request(`{github}/Modules/{module}.lua`))()
                 requiredModules[module] = response(api)
             elseif executionMethod == "local" then
                 local response = loadfile(`{localPath}/Modules/{module}.lua`)()
