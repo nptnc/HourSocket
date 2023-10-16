@@ -34,14 +34,15 @@ Do note that anyone can modify the client or the server to overload or send modi
 - Execute the script:
 
 ```lua
+local url = "https://raw.githubusercontent.com/nptnc/HourSocket/main/Client/Client.lua"
 local executor = identifyexecutor()
 if executor == "Electron V2" or executor == "Electron" then
     -- god i fucking hate this exector
     loadstring(request({
-        url = what,
+        url = url,
     }).Body)()("github")
 else
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/nptnc/HourSocket/main/Client/Client.lua"))()("github")
+    loadstring(game:HttpGet(url))()("github")
 end
 
 --[[ 
