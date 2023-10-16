@@ -4,11 +4,8 @@ This requires the Fluster [Fluster](github.com/cerealwithmilk/uwp/releases/downl
 
 # HourSocket a multiplayer mod for [Hours](https://www.roblox.com/games/5732973455/HOURS)
 
-[Trello](https://trello.com/b/e1gvvbzK/hours-multiplayer-script) · [Mod Showcase](https://www.youtube.com/watch?v=IsCv-xNTXe4)
-
-# Description
-This is a Roblox "Hack" that connects to an external server using websockets which sends information and receives information from it,
-Do note that anyone can modify the client or the server to overload or send modified information.
+[Trello](https://trello.com/b/e1gvvbzK/hours-multiplayer-script) · [Mod Showcase](https://www.youtube.com/watch?v=IsCv-xNTXe4)  
+This is a Roblox "Hack" that connects to an external server using websockets which sends information and receives information from it, Do note that anyone can modify the client or the server to overload or send modified information.
 
 ### Open Source Credits:  
 [Fleck \[networker\]](https://github.com/statianzo/Fleck)
