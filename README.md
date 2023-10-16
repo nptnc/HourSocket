@@ -9,7 +9,7 @@ This requires the Fluster [Fluster](github.com/cerealwithmilk/uwp/releases/downl
 This is a Roblox "Hack" that connects to an external server using websockets which sends information and receives information from it, Do note that anyone can modify the client or the server to overload or send modified information.
 
 ### Open Source Credits:  
-[Fleck \[networker\]](https://github.com/statianzo/Fleck)
+[Fleck \[networker\]](https://github.com/statianzo/Fleck)  
 [NewtonSoft.Json \[configuration helper\]](https://github.com/JamesNK/Newtonsoft.Json)
 
 ### Supported Executors
