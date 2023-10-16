@@ -11,7 +11,7 @@ try {
 
     FleckLog.LogAction = (level, message, ex) => { }; // stop fleck from logging, no one asked for your logs I HAVE MY OWN!!!
 
-    Server server = new Server();
+    Server server = new();
     server.Start();
 
     while (true) {

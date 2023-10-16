@@ -10,8 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HourSocketServerCS.Hours {
-    public class Player
-    {
+    public class Player {
         public static int globalId;
 
         public int id;

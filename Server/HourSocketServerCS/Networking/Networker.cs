@@ -23,7 +23,7 @@ namespace HourSocketServerCS.Networking {
         }
 
         public static string PrepareForLua(int messageId, params string?[] toSend) {
-            string endString = $"{messageId}{ServerSettings.Lua.seperator}";
+            string endString = $"{messageId}{ServerSettings.seperator}";
             int index = 0;
             foreach (string? argument in toSend) {
                 if (argument == null) {
@@ -33,7 +33,7 @@ namespace HourSocketServerCS.Networking {
                     endString += $"{argument}";
                 }
                 else {
-                    endString += $"{ServerSettings.Lua.seperator}{argument}";
+                    endString += $"{ServerSettings.seperator}{argument}";
                 }
                 index++;
             }

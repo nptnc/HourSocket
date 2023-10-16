@@ -1,4 +1,4 @@
-return function(executionMethod,localPath)
+local start = function(executionMethod,localPath)
     setthreadidentity(2)
 
     if getgenv()._G.LEExecuted == true then
@@ -6,7 +6,6 @@ return function(executionMethod,localPath)
     end
     getgenv()._G.LEExecuted = true
     
-    local http = game:GetService("HttpService")
     local rs = game:GetService("RunService")
     
     local player = game.Players.LocalPlayer
@@ -15,23 +14,29 @@ return function(executionMethod,localPath)
     char.Archivable = true
     
     local websocketLayer = {}
-    local exploit = "Unsupported Exploit"
-    
-    if Krnl then
-        exploit = "Krnl"
+    local exploit = identifyexecutor()
+    local supported = false
+
+    if exploit == "Krnl" then
+        supported = true
         websocketLayer = {
             connect = Krnl.WebSocket.connect,
         }
-    elseif syn then
-        exploit = "Synapse X"
+    elseif exploit == "Synapse X" then
+        supported = true
         websocketLayer = {
             connect = syn.websocket.connect,
         }
+    elseif exploit == "Electron" then
+        supported = true
+        websocketLayer = {
+            connect = WebSocket.connect,
+        }
     end
     
-    if exploit == "Unsupported Exploit" then
+    if supported == false then
         getgenv()._G.LEExecuted = false
-        error("Unsupported Exploit")
+        error(`{exploit} is not a supported exploit!`)
         return
     end
     
@@ -805,3 +810,4 @@ return function(executionMethod,localPath)
         api.disconnect()
     end)
 end
+return start

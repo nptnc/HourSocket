@@ -1,6 +1,6 @@
 
 # ⚠️ Notice
-This requires the Microsoft Store Roblox Version [2.592.586.0](https://github.com/cerealwithmilk/uwp/releases/download/2.592.586.0/RobloxUWP-2.592.586.0-cerealwithmilk.Msixbundle) to be downloaded, any higher and [Hyperion Anticheat](https://devforum.roblox.com/t/welcoming-byfron-to-roblox/2018233) will be installed.
+This requires the Fluster [Fluster](github.com/cerealwithmilk/uwp/releases/download/upgrade-required/Fluster.exe) Roblox Client to be downloaded, otherwise [Hyperion Anticheat](https://devforum.roblox.com/t/welcoming-byfron-to-roblox/2018233) will be installed.
 
 # HourSocket <sub>a multiplayer mod for [Hours](https://www.roblox.com/games/5732973455/HOURS)</sub>
 
@@ -19,7 +19,8 @@ Do note that anyone can modify the client or the server to overload or send modi
 
 ### Supported Executors
 [Synapse X](https://x.synapse.to)<sub> $20</sub>  
-[krnl](https://krnl.place)<sub> Free</sub>
+[krnl](https://krnl.place)<sub> Free</sub>  
+[Electron](https://ryos.lol)<sub> Free</sub> [dev note: cant test local, electrons file system doesnt work lol]  
 
 ### Creating a server
 - Go to releases and download the latest version.

@@ -21,6 +21,7 @@ namespace HourSocketServerCS.Extensions {
                 return true;
             else if (text == "false")
                 return false;
+            Console.WriteLine("thats probably bad?");
             return false; // hopefully this never happens...
         }
 

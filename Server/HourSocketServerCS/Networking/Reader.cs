@@ -33,7 +33,7 @@ namespace HourSocketServerCS.Networking {
                 string letter = stringToRead[i].ToString();
                 readString += letter;
                 offset++;
-                if (lastCharacters.Length >= ServerSettings.Lua.seperator.Length) {
+                if (lastCharacters.Length >= ServerSettings.seperator.Length) {
                     string newString = "";
                     int index = 0;
                     foreach (char oldLetter in lastCharacters) {
@@ -50,7 +50,7 @@ namespace HourSocketServerCS.Networking {
                 } else {
                     lastCharacters += letter;
                 }
-                if (lastCharacters == ServerSettings.Lua.seperator) {
+                if (lastCharacters == ServerSettings.seperator) {
                     string newString = "";
                     int index = 0;
                     foreach (char oldLetter in readString) {

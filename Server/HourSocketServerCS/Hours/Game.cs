@@ -8,7 +8,13 @@ using System.Threading.Tasks;
 namespace HourSocketServerCS.Hours {
     public static class Game {
         public static List<Entity> entities = new();
-        public static string currentMap = "SandyBlue"; // this is the default map for hours.
+
+        // TODO: check if this shit works?
+        public static string currentMap {
+            private set;
+            get;
+        } = "SandyBlue"; // this is the default map for hours.
+
         public static string currentState = "";
         private static string? previousMap;
 

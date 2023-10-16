@@ -20,7 +20,6 @@ namespace HourSocketServerCS
     {
         public static WebSocketServer? server;
 
-        // websockets are very awkward in c# bruh
         public void Start()
         {
             server = new WebSocketServer($"ws://{ServerSettings.ipaddress}:{ServerSettings.port}");
