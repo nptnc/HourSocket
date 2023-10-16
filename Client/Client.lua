@@ -30,7 +30,9 @@ local start = function(executionMethod,localPath)
                         url = what,
                     }).Body
                 end,
-                connect = WebSocket.connect,
+                connect = function(...)
+                    return WebSocket.connect(...)
+                end,
             },
         },
         {
@@ -42,17 +44,19 @@ local start = function(executionMethod,localPath)
                         Method = 'GET',
                     }).Body
                 end,
-                connect = Krnl.WebSocket.connect,
+                connect = function(...)
+                    return Krnl.WebSocket.connect(...)
+                end
             },
         },
     }
 
     for _,data in exploits do
-        if not table.find(data.supportedExecutors,exploit) then
-            continue
+        if table.find(data.supportedExecutors,exploit) then
+            supported = true
+            websocketLayer = data.websocketLayer
+            print(`supported exploit found {exploit}!`)
         end
-        supported = true
-        websocketLayer = data.websocketLayer
     end
     
     if supported == false then
