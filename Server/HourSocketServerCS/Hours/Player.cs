@@ -59,6 +59,7 @@ namespace HourSocketServerCS.Hours {
             this.playerclass = playerclass;
             entity.position = position;
             entity.rotation = rotation;
+            Helper.Say((byte)LogTypes.INFO, $"player {id} has registered as {username}");
         }
     }
 }

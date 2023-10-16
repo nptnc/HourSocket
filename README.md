@@ -2,20 +2,17 @@
 # ⚠️ Notice
 This requires the Fluster [Fluster](github.com/cerealwithmilk/uwp/releases/download/upgrade-required/Fluster.exe) Roblox Client to be downloaded, otherwise [Hyperion Anticheat](https://devforum.roblox.com/t/welcoming-byfron-to-roblox/2018233) will be installed.
 
-# HourSocket <sub>a multiplayer mod for [Hours](https://www.roblox.com/games/5732973455/HOURS)</sub>
+# HourSocket a multiplayer mod for [Hours](https://www.roblox.com/games/5732973455/HOURS)
 
 [Trello](https://trello.com/b/e1gvvbzK/hours-multiplayer-script) · [Mod Showcase](https://www.youtube.com/watch?v=IsCv-xNTXe4)
 
-Old Server programmed by [PeeblyWeeb](https://discord.com/users/904032786854346795)  
-
-Client programmed by [nptnc](https://discord.com/users/397930609894490122)  
-Server programmed by [nptnc](https://discord.com/users/397930609894490122)
-
+# Description
 This is a Roblox "Hack" that connects to an external server using websockets which sends information and receives information from it,
 Do note that anyone can modify the client or the server to overload or send modified information.
 
 ### Open Source Credits:  
-[\[fleck\] server](https://github.com/statianzo/Fleck)
+[Fleck \[networker\]](https://github.com/statianzo/Fleck)
+[NewtonSoft.Json \[configuration helper\]](https://github.com/JamesNK/Newtonsoft.Json)
 
 ### Supported Executors
 [Synapse X](https://x.synapse.to)<sub> $20</sub>  
@@ -25,7 +22,7 @@ Do note that anyone can modify the client or the server to overload or send modi
 ### Creating a server
 - Go to releases and download the latest version.
 - Extract it.
-- Port Forward `7171` or what you put in the configuration file.
+- Port Forward `6969` or what you put in the configuration file.
 - Launch HourSocketServerCS.exe
 
 ### Connecting to a server

@@ -25,7 +25,6 @@ namespace HourSocketServerCS
             server = new WebSocketServer($"ws://{ServerSettings.ipaddress}:{ServerSettings.port}");
             server.Start(socket => {
                 socket.OnOpen = () => {
-                    Console.WriteLine($"A client connected, their ID is {socket.GetHashCode()}");
                     new Player(socket.GetHashCode(),socket);
                 };
                 socket.OnClose = () => {

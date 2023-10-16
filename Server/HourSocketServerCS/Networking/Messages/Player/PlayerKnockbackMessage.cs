@@ -26,7 +26,9 @@ namespace HourSocketServerCS.Networking.Messages
             string knockbackIndex = reader.ReadUntilSeperator();
             string knockbackValue = reader.ReadUntilSeperator();
 
-            Helper.Say((byte)LogTypes.INFO, $"{player.username} knockback {knockbackValue}", ConsoleColor.Yellow);
+            Vector3 knockbackV3Value = knockbackValue.NetVector3();
+
+            Helper.Say((byte)LogTypes.INFO, $"{player.username} knockback {knockbackV3Value.X}, {knockbackV3Value.Y}, {knockbackV3Value.Z}", ConsoleColor.Yellow);
 
             string contents = Networker.PrepareForLua(Index(), player.id.ToString(), knockbackIndex, knockbackValue);
             Networker.SendToAll(contents, new Player[] { player });
