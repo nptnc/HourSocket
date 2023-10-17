@@ -281,29 +281,13 @@ return function(api)
         createLabel("you can press [ to hide this ui")
         local ip = createTextbox("ip","salamithecat.com")
         local port = createTextbox("port","7171")
-        local isIpv6 = createEnum({
-            display = "ip type: %s",
-            options = {
-                {
-                    text = "IPv4",
-                    id = "4",
-                },
-                {
-                    text = "IPv6",
-                    id = "6",
-                }
-            }
-        })
         createButton("connect",function(button)
             if api.connected then
                 api.disconnect()
                 button.changeText(api.connected and "disconnect" or "connect")
                 return
             end
-            local bracketLeft = isIpv6.getSelected() == "6" and "[" or ""
-            local bracketRight = isIpv6.getSelected() == "6" and "]" or ""
-            local port = port.get() and `:{port.get()}` or ""
-            api.tryToConnect(`ws://{bracketLeft}{ip.get()}{bracketRight}{port}`)
+            api.tryToConnect(`ws://{ip.get()}:{port.get()}`)
             button.changeText(api.connected and "disconnect" or "connect")
         end)
         --createCheckbox("hi")

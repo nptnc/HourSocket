@@ -12,6 +12,7 @@ namespace HourSocketServerCS {
         /// <summary>
         /// When receiving information from fleck its usually something along the lines of this if the message was for player cframe.
         /// 2:::3_0_6:::0_180_0
+        /// (messageId:::position:::rotation)
         /// we need to extract everything other than the data seperator
         /// </summary>
         public static string seperator = ":::";

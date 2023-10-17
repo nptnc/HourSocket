@@ -9,12 +9,12 @@ This requires the [Fluster](github.com/cerealwithmilk/uwp/releases/download/upgr
 This is a Roblox "Hack" that connects to an external server using websockets which sends information and receives information from it, Do note that anyone can modify the client or the server to overload or send modified information.
 
 ### Open Source Credits:  
-[Fleck \[networker\]](https://github.com/statianzo/Fleck)  
-[NewtonSoft.Json \[configuration helper\]](https://github.com/JamesNK/Newtonsoft.Json)
+[Fleck](https://github.com/statianzo/Fleck) [networker]  
+[NewtonSoft.Json](https://github.com/JamesNK/Newtonsoft.Json) [configuration helper]  
 
 ### Supported Executors
 [krnl](https://krnl.place)<sub> Free</sub>  
-[Electron](https://ryos.lol)<sub> Free</sub> [dev note: cant test local, electrons file system doesnt work lol]  
+[Electron](https://ryos.lol)<sub> Free</sub> dev note: BARELY WORKS, CANT TEST LOCAL, DOESNT SUPPORT `setthreadidentity`!
 
 ### Creating a server
 - Go to releases and download the latest version.

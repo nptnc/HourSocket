@@ -1,6 +1,4 @@
 local start = function(executionMethod,localPath)
-    setthreadidentity(2)
-
     if getgenv()._G.LEExecuted == true then
         return
     end
@@ -224,12 +222,12 @@ local start = function(executionMethod,localPath)
         ["string"] = function(a)
             return true,a -- its always a string lil bro.
         end,
+        ["any"] = function(a)
+            return true,a -- so this just does the same thing as string........
+        end,
         ["vector3"] = function(a)
             local split = string.split(a,"_")
             return true,Vector3.new(split[1],split[2],split[3])
-        end,
-        ["any"] = function(a)
-            return true,a -- uh its any
         end,
         ["boolean"] = {{"false",false},{"true",true}},
     }
