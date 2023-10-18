@@ -1,6 +1,8 @@
 
 # ⚠️ Notice
-This requires the [Fluster](github.com/cerealwithmilk/uwp/releases/download/upgrade-required/Fluster.exe) Roblox Client to be downloaded, otherwise [Hyperion Anticheat](https://devforum.roblox.com/t/welcoming-byfron-to-roblox/2018233) will be installed.
+This requires the [Fluster](github.com/cerealwithmilk/uwp/releases/download/upgrade-required/Fluster.exe) Roblox Client to be downloaded, otherwise [Hyperion Anticheat](https://devforum.roblox.com/t/welcoming-byfron-to-roblox/2018233) will be installed.  
+  
+This is unfinished, there will be issues with the mod.
 
 # HourSocket a multiplayer mod for [Hours](https://www.roblox.com/games/5732973455/HOURS)
 

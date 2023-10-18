@@ -28,11 +28,16 @@ namespace HourSocketServerCS.Networking.Messages
 
             Reader reader = new(data);
             string sourceEntityId = reader.ReadUntilSeperator();
-            string 
+            string luaDamageJson = reader.ReadUntilSeperator();
 
-            Helper.Say((byte)LogTypes.INFO, $"{player.username} got damaged", ConsoleColor.Yellow);
+            int realEntityId = -1;
+            int.TryParse(sourceEntityId, out realEntityId);
+            if (realEntityId == -1)
+                return;
 
-            string contents2 = Networker.PrepareForLua(Index(), player.id.ToString(), index, value);
+            Helper.Say((byte)LogTypes.INFO, $"{player.username} got damaged, json is \n{luaDamageJson}", ConsoleColor.Yellow);
+
+            string contents2 = Networker.PrepareForLua(Index(), player.id.ToString(), realEntityId.ToString(), luaDamageJson);
             Networker.SendToAll(contents2, new Player[] { player });
         }
     }

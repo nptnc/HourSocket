@@ -645,18 +645,30 @@ local start = function(executionMethod,localPath)
         print(`subject potion add`)
     end,{"number","string","number"})
 
+    -- why didnt i put this as an api global?
+    local getRealEntityFromNetworkId = function(networkId)
+        for _,entity in getrenv()._G.Entities do
+            if entity.NetworkID == networkId then
+                return entity
+            end
+        end
+    end
+
     -- player damaged, (when they are hit.)
-    registerMessage(messageIds.playerDamaged,function(userid,jsonEncodedDamage)
+    registerMessage(messageIds.playerDamaged,function(userid,sourceEntityNetworkId,jsonEncodedDamage)
         local playerEntity = api.registeredPlayers[userid].entity
         if not playerEntity then
             return
         end
 
+        -- oh for fuck sake.
+        local entity = getRealEntityFromNetworkId(sourceEntityNetworkId)
+
         local decoded = http:JSONDecode(jsonEncodedDamage)
-        decoded.Source = playerEntity.Id
+        decoded.Source = entity.Id
         decoded.Target = playerEntity.Id
         api.globals.DamageOld(decoded)
-    end,{"string"})
+    end,{"number","number","string"})
 
     player.Chatted:Connect(function(messagecontents)
         if not api.connected then
