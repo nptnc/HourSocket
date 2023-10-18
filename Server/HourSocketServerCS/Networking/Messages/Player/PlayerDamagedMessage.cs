@@ -23,7 +23,7 @@ namespace HourSocketServerCS.Networking.Messages
 
         public override void Handle(Player player, string data)
         {
-            if (!player.hasRegistered)
+            if (player.hasRegistered == false)
                 return;
 
             Reader reader = new(data);
@@ -32,11 +32,15 @@ namespace HourSocketServerCS.Networking.Messages
 
             int realEntityId = -1;
             int.TryParse(sourceEntityId, out realEntityId);
-            if (realEntityId == -1)
+            if (realEntityId == -1) {
+                Helper.Say((byte)LogTypes.INFO, $"entity {sourceEntityId} is not an int!", ConsoleColor.Yellow);
                 return;
+            }
 
-            if (Game.GetEntityByNetworkId(realEntityId) == null)
+            if (Game.GetEntityByNetworkId(realEntityId) == null) {
+                Helper.Say((byte)LogTypes.INFO, $"you know what the fuck happened, data is: {data}", ConsoleColor.Yellow);
                 return;
+            }
 
             Helper.Say((byte)LogTypes.INFO, $"{player.username} got damaged by {sourceEntityId}, json is \n{luaDamageJson}", ConsoleColor.Yellow);
 
