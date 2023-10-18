@@ -694,13 +694,13 @@ local start = function(executionMethod,localPath)
             local args = string.split(msg,seperator)
             local messageId = tonumber(args[1])
             if not messages[messageId] then
-                warn(`message id {messageId} is not a valid message id.\nthis usually means the server is modified.`)
+                warn(`message id {messageId} is not a valid message id.\nnice, you fucked up 💀💀💀💀.`)
                 return
             end
             apiCall("receivedMessage")
     
             if messagesExpectedTypes[messageId] and #args-1 > #messagesExpectedTypes[messageId] then
-                warn(`message id {messageId} expected {#messagesExpectedTypes[messageId]} arguments, got {#args-1}.\nthis usually means the server is modified.`)
+                warn(`message id {messageId} expected {#messagesExpectedTypes[messageId]} arguments, got {#args-1}.\nyou fucked up somewhere`)
                 return
             end
     
@@ -714,7 +714,7 @@ local start = function(executionMethod,localPath)
                 end
                 value = api.findOutVariableWithTarget(value,messagesExpectedTypes[messageId][index])
                 if value == nil then
-                    warn(`message id {messageId} at index {index} got {value} expected {messagesExpectedTypes[messageId][index]}.\nthis usually means the server is modified`)
+                    warn(`message id {messageId} at index {index} got {value} expected {messagesExpectedTypes[messageId][index]}.\nyou fucked up somewhere`)
                     return
                 end
                 newArgs[index] = value

@@ -19,6 +19,9 @@ namespace HourSocketServerCS.Networking.Messages
 
         public override void Handle(Player player, string data)
         {
+            if (player.hasRegistered)
+                return;
+
             Reader reader = new(data);
             string username = reader.ReadUntilSeperator();
             string playerclass = reader.ReadUntilSeperator();
