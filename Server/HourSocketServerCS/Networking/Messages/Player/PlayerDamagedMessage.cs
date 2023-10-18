@@ -35,7 +35,10 @@ namespace HourSocketServerCS.Networking.Messages
             if (realEntityId == -1)
                 return;
 
-            Helper.Say((byte)LogTypes.INFO, $"{player.username} got damaged, json is \n{luaDamageJson}", ConsoleColor.Yellow);
+            if (Game.GetEntityByNetworkId(realEntityId) == null)
+                return;
+
+            Helper.Say((byte)LogTypes.INFO, $"{player.username} got damaged by {sourceEntityId}, json is \n{luaDamageJson}", ConsoleColor.Yellow);
 
             string contents2 = Networker.PrepareForLua(Index(), player.id.ToString(), realEntityId.ToString(), luaDamageJson);
             Networker.SendToAll(contents2, new Player[] { player });

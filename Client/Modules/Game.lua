@@ -82,8 +82,8 @@ return function(api)
             end
 
             if args.Target == 1 then
-                -- fuckkkkk sake im gonna have to handle this shit.
-                local message = api.prepareMessage("playerDamaged",HttpService:JSONEncode(args))
+                -- how... fucking fun.
+                local message = api.prepareMessage("playerDamaged",target.NetworkID,HttpService:JSONEncode(args))
                 api.sendToServer(message)
                 warn("player entity got damaged, networking")
             end
