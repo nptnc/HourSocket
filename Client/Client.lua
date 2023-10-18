@@ -1,4 +1,6 @@
 local start = function(executionMethod,localPath)
+    setthreadidentity(2)
+
     if getgenv()._G.LEExecuted == true then
         return
     end
@@ -44,6 +46,20 @@ local start = function(executionMethod,localPath)
                 end,
                 connect = function(...)
                     return Krnl.WebSocket.connect(...)
+                end
+            },
+        },
+        {
+            supportedExecutors = {"Fluxus UWP","Fluxus"},
+            websocketLayer = {
+                request = function(what)
+                    return request({
+                        Url = what,
+                        Method = 'GET',
+                    }).Body
+                end,
+                connect = function(...)
+                    return WebSocket.connect(...)
                 end
             },
         },

@@ -13,6 +13,7 @@ This is a Roblox "Hack" that connects to an external server using websockets whi
 [NewtonSoft.Json](https://github.com/JamesNK/Newtonsoft.Json) [configuration helper]  
 
 ### Supported Executors
+[Fluxus](https://fluxteam.net)<sub> Free</sub> dev note: CANT TEST LOCAL?
 [krnl](https://krnl.place)<sub> Free</sub>  
 [Electron](https://ryos.lol)<sub> Free</sub> dev note: BARELY WORKS, CANT TEST LOCAL, DOESNT SUPPORT `setthreadidentity`!
 
