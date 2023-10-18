@@ -81,8 +81,8 @@ return function(api)
                 end
             end
 
+            -- when we get damaged, we network it so they can see our stun animation and whatever else is happening here.
             if args.Target == 1 then
-                -- how... fucking fun.
                 local thisEntity = getEntityByRealId(args.Source)
 
                 local message = api.prepareMessage("playerDamaged",thisEntity.NetworkID,HttpService:JSONEncode(args))

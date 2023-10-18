@@ -668,6 +668,7 @@ local start = function(executionMethod,localPath)
         decoded.Source = entity.Id
         decoded.Target = playerEntity.Id
         api.globals.Damage(decoded)
+        -- ^ this basically just bypasses the hook so it doesnt cause issues like... an infinite network loop!
     end,{"number","number","string"})
 
     player.Chatted:Connect(function(messagecontents)
