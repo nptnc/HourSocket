@@ -667,7 +667,7 @@ local start = function(executionMethod,localPath)
         local decoded = http:JSONDecode(jsonEncodedDamage)
         decoded.Source = entity.Id
         decoded.Target = playerEntity.Id
-        api.globals.DamageOld(decoded)
+        api.globals.Damage(decoded)
     end,{"number","number","string"})
 
     player.Chatted:Connect(function(messagecontents)
