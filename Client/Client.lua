@@ -114,6 +114,7 @@ local start = function(executionMethod,localPath)
         entityInput = 15,
         sayChatMessage = 16,
         subjectPotionAdd = 17,
+        playerDamaged = 18,
     }
     
     api.player = player
@@ -632,17 +633,8 @@ local start = function(executionMethod,localPath)
         })
     end,{"number","string"})
     
-    -- damage for host to non hosts
-    registerMessage(17,function(userid,entityid,damage,partname,damagename,screenshake)
-        if not entityid then
-            print("entity id is nil from network")
-            return
-        end
-        print(`trying to deal damage to entity {entityid} from network, non host`)
-    end,{"number","number","number","string","string","number"})
-
     -- subject potion sync
-    registerMessage(18,function(userid,section,index)
+    registerMessage(messageIds.subjectPotionAdd,function(userid,section,index)
         if not api.registeredPlayers[userid].entity then
             return
         end
@@ -652,7 +644,20 @@ local start = function(executionMethod,localPath)
         })
         print(`subject potion add`)
     end,{"number","string","number"})
-    
+
+    -- player damaged, (when they are hit.)
+    registerMessage(messageIds.playerDamaged,function(userid,jsonEncodedDamage)
+        local playerEntity = api.registeredPlayers[userid].entity
+        if not playerEntity then
+            return
+        end
+
+        local decoded = http:JSONDecode(jsonEncodedDamage)
+        decoded.Source = playerEntity.Id
+        decoded.Target = playerEntity.Id
+        api.globals.DamageOld(decoded)
+    end,{"string"})
+
     player.Chatted:Connect(function(messagecontents)
         if not api.connected then
             return

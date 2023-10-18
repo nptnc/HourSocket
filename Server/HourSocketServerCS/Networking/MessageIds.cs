@@ -20,6 +20,7 @@ namespace HourSocketServerCS.Networking {
             DamageRequest = 14,
             EntityAnimation = 15,
             PlayerChat = 16,
-            SubjectPotionAdd = 17;
+            SubjectPotionAdd = 17,
+            PlayerDamaged = 18;
     }
 }

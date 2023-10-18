@@ -1,3 +1,4 @@
+local HttpService = game:GetService("HttpService")
 return function(api)
     local module = {}
 
@@ -55,6 +56,7 @@ return function(api)
         end)
 
         damageOld = getrenv()._G.DamageRequest
+        api.globals.Damage = damageOld
         getrenv()._G.DamageRequest = api.createHook(getrenv()._G.DamageRequest,function(hook,...)
             if not api.connected or not api.getMe() then
                 return hook.call(...)
@@ -65,6 +67,7 @@ return function(api)
 
             local target = getEntityByRealId(args.Target)
             if target and target.specialId then
+                warn("prevented player entity from taking damage.")
                 -- this basically just means this is a player entity
                 return -- we dont want players to be hit unless they say they've been hit
             end
@@ -76,6 +79,13 @@ return function(api)
                         return -- nope this is by a player entity, this means that they hit something on our screen
                     end
                 end
+            end
+
+            if args.Target == 1 then
+                -- fuckkkkk sake im gonna have to handle this shit.
+                local message = api.prepareMessage("playerDamaged",HttpService:JSONEncode(args))
+                api.sendToServer(message)
+                warn("player entity got damaged, networking")
             end
 
             if args.Source ~= 1 then
