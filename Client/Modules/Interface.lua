@@ -279,8 +279,8 @@ return function(api)
         end
         
         createLabel("you can press [ to hide this ui")
-        local ip = createTextbox("ip","salamithecat.com")
-        local port = createTextbox("port","7171")
+        local ip = createTextbox("ip","localhost")
+        local port = createTextbox("port","6969")
         createButton("connect",function(button)
             if api.connected then
                 api.disconnect()

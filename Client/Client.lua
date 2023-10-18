@@ -222,8 +222,6 @@ local start = function(executionMethod,localPath)
             newVar = true
         elseif tonumber(newVar) then
             newVar = tonumber(newVar)
-        else
-            newVar = var
         end
         return newVar
     end
@@ -247,6 +245,7 @@ local start = function(executionMethod,localPath)
         end,
         ["boolean"] = {{"false",false},{"true",true}},
     }
+
     api.findOutVariableWithTarget = function(var,targetType)
         if findOutVariableFromString[targetType] then
             if type(findOutVariableFromString[targetType]) == "function" then
@@ -416,21 +415,17 @@ local start = function(executionMethod,localPath)
     local messages = {}
     local messagesExpectedTypes = {}
     
-    local expectMessage = function(id,types)
-        print(`expected message {id}s response with {table.concat(types,", ")}`)
+    local registerMessage = function(id,messageCallback,types)
+        if type(id) == "string" then
+            id = messageIds[id]
+        end
+        print(`registered message {id}, expects {table.concat(types,", ")}`)
+
         messagesExpectedTypes[id] = {}
         for index,datatype in types do
             messagesExpectedTypes[id][index] = datatype
         end
-    end
-    
-    local registerMessage = function(id,messageCallback)
-        if type(id) == "string" then
-            print(`registered message {messageIds[id]}`)
-            messages[messageIds[id]] = messageCallback
-            return
-        end
-        print(`registered message {id}`)
+
         messages[id] = messageCallback
     end
     
@@ -442,19 +437,13 @@ local start = function(executionMethod,localPath)
         end
     end
     
-    expectMessage(999,{"string"})
-    registerMessage(999,function(errorMessage)
-        print(`server caught error {errorMessage}`)
-    end)
-    
-    expectMessage(0,{"number"})
     registerMessage(0,function(userId)
         apiCall("playerDisconnected",nil,userId)
         api.destroyPlayerEntity(userId)
         apiCall("createNotification",nil,`{api.registeredPlayers[userId].serverData.username} disconnected`)
         api.registeredPlayers[userId] = nil
         print(`received disconnect for player {userId}`)
-    end)
+    end,{"number"})
     
     local registerPlayer = function(userid,data)
         if api.registeredPlayers[userid] then
@@ -490,7 +479,6 @@ local start = function(executionMethod,localPath)
         end
     end
     
-    expectMessage(1,{"number","string","string","vector3","vector3","boolean","boolean"})
     registerMessage(1,function(userId,username,class,position,rotation,isHost,isMe)
         if isMe then
             userId = player.UserId
@@ -503,9 +491,8 @@ local start = function(executionMethod,localPath)
             id = userId,
             isHost = isHost,
         })
-    end)
+    end,{"number","string","string","vector3","vector3","boolean","boolean"})
     
-    expectMessage(2,{"number","vector3","vector3"})
     registerMessage(2,function(userid,position,rotation)
         if not api.registeredPlayers[userid] then
             warn(`no userid ({userid}, {typeof(userid)}) is not a userid`)
@@ -513,9 +500,8 @@ local start = function(executionMethod,localPath)
         end
         local messageplayer = api.registeredPlayers[userid]
         messageplayer.cframe = CFrame.new(position.X,position.Y,position.Z) * CFrame.Angles(math.rad(rotation.X),math.rad(rotation.Y),math.rad(rotation.Z))
-    end)
+    end,{"number","vector3","vector3"})
     
-    expectMessage(3,{"number","any","any"})
     registerMessage(3,function(userid,key,value)
         if not api.registeredPlayers[userid] then
             warn(`no userid ({userid}) is not a userid`)
@@ -537,14 +523,12 @@ local start = function(executionMethod,localPath)
     
         warn(userid,key,value)
         apiCall("playerStateUpdate",nil,userid,key,value)
-    end)
+    end,{"number","any","any"})
     
-    expectMessage(4,{"number","number","vector3"})
     registerMessage(4,function(userid,knockbackIndex,v3)
         apiCall("playerEntityKnockbackUpdate",nil,userid,knockbackIndex,v3)
-    end)
+    end,{"number","number","vector3"})
     
-    expectMessage(5,{"number","string","number","boolean","vector3","vector3"})
     registerMessage(5,function(entityid,entityname,damageTeam,isBoss,pos,rot)
         print(`received spawn entity packet {entityid} {entityname} {damageTeam} {isBoss} {pos} {rot}`)
     
@@ -557,14 +541,12 @@ local start = function(executionMethod,localPath)
         })
     
         apiCall("networkedEntityCreated",nil,entityid,realEntityId,pos,rot)
-    end)
-    
-    expectMessage(6,{"number","vector3","vector3"})
+    end,{"number","string","number","boolean","vector3","vector3"})
+
     registerMessage(6,function(entityid,pos,rot)
         apiCall("networkEntityUpdate",nil,entityid,pos,rot)
-    end)
+    end,{"number","vector3","vector3"})
     
-    expectMessage(8,{"number","string","vector3","vector3"})
     registerMessage(8,function(userid,input,cameraPos,cameraRot)
         local messageplayer = api.registeredPlayers[userid]
         local entity = messageplayer.entity
@@ -582,33 +564,28 @@ local start = function(executionMethod,localPath)
         end
     
         print(`received input {input} {userid}`)
-    end)
+    end,{"number","string","vector3","vector3"})
     
-    expectMessage(9,{"number","any","any"})
     registerMessage(9,function(entityid,index,value)
         if index == "health" then
             value = tonumber(value)
         end
         apiCall("networkEntityStateUpdate",nil,entityid,index,value)
-    end)
+    end,{"number","any","any"})
     
-    expectMessage(10,{"number"})
     registerMessage(10,function(talentindex)
         apiCall("chooseTalent",nil,talentindex)
-    end)
+    end,{"number"})
     
-    expectMessage(11,{"string","number"})
     registerMessage(11,function(timeTarget,special)
         --apiCall("startTempo",nil,timeTarget,special)
-    end)
+    end,{"string","number"})
     
-    expectMessage(12,{"number","number","number","number","number"})
-    registerMessage(12,function(entityid,knockbackIndex,x,y,z)
-        apiCall("entityKnockbackUpdate",nil,entityid,knockbackIndex,Vector3.new(x,y,z))
-    end)
+    registerMessage(12,function(entityid,knockbackIndex,vel)
+        apiCall("entityKnockbackUpdate",nil,entityid,knockbackIndex,vel)
+    end,{"number","number","vector3"})
     
     -- talent popup for non hosts.
-    expectMessage(13,{"boolean","any"})
     registerMessage(13,function(state,isArena)
         if state == "Intermission" then
             isArena = api.findOutVariable(isArena)
@@ -621,10 +598,9 @@ local start = function(executionMethod,localPath)
             apiCall("gameShowTalentPopup")
             getrenv()._G.ArenaMode = isArena or false
         end
-    end)
+    end,{"any","boolean"})
     
     -- damage entity for host
-    expectMessage(14,{"number","number","number","string","string","number"})
     registerMessage(14,function(userid,entityid,damage,partname,damagename,screenshake)
         if not entityid then
             print("entity id is nil from network")
@@ -632,10 +608,9 @@ local start = function(executionMethod,localPath)
         end
         print(`trying to deal damage to entity {entityid} from network!`)
         apiCall("gameDealDamage",nil,userid,entityid,damage,partname,damagename,screenshake)
-    end)
+    end,{"number","number","number","string","string","number"})
     
     -- entity input
-    expectMessage(15,{"number","number","string"})
     registerMessage(15,function(entityid,someIndex,input)
         if not entityid then
             print("entity id is nil from network")
@@ -644,10 +619,9 @@ local start = function(executionMethod,localPath)
         
         print(`doing entity input {input}`)
         apiCall("entityDoInput",nil,entityid,someIndex,input)
-    end)
+    end,{"number","number","string"})
     
     -- player text messages
-    expectMessage(16,{"number","string"})
     registerMessage(16,function(userid,text)
         local messageplayer = api.registeredPlayers[userid]
         game.StarterGui:SetCore("ChatMakeSystemMessage",{
@@ -656,20 +630,18 @@ local start = function(executionMethod,localPath)
             Font = Enum.Font.SourceSansBold,
             TextSize = 18,
         })
-    end)
+    end,{"number","string"})
     
     -- damage for host to non hosts
-    expectMessage(17,{"number","number","number","string","string","number"})
     registerMessage(17,function(userid,entityid,damage,partname,damagename,screenshake)
         if not entityid then
             print("entity id is nil from network")
             return
         end
         print(`trying to deal damage to entity {entityid} from network, non host`)
-    end)
+    end,{"number","number","number","string","string","number"})
 
     -- subject potion sync
-    expectMessage(18,{"number","string","number"})
     registerMessage(18,function(userid,section,index)
         if not api.registeredPlayers[userid].entity then
             return
@@ -679,7 +651,7 @@ local start = function(executionMethod,localPath)
             index,
         })
         print(`subject potion add`)
-    end)
+    end,{"number","string","number"})
     
     player.Chatted:Connect(function(messagecontents)
         if not api.connected then
@@ -767,7 +739,7 @@ local start = function(executionMethod,localPath)
     end)
     
     local hookToMyEntity = function()
-        print("hooked to me")
+        print("hooked to player entity")
         apiCall("playerRespawned")
     end
     
@@ -837,7 +809,8 @@ local start = function(executionMethod,localPath)
         apiCall("updateWithFPS")
     end))
     
-    game.Players.PlayerRemoving:Connect(function(aaa)
+    game.Players.PlayerRemoving:Connect(function()
+        -- i mean sockets *probably* get disconnected automatically but like... yeah?
         api.disconnect()
     end)
 end
