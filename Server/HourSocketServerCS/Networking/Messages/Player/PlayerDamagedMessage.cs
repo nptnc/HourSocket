@@ -38,7 +38,7 @@ namespace HourSocketServerCS.Networking.Messages
             }
 
             if (Game.GetEntityByNetworkId(realEntityId) == null) {
-                Helper.Say((byte)LogTypes.INFO, $"you know what the fuck happened, data is: {data}", ConsoleColor.Yellow);
+                Helper.Say((byte)LogTypes.INFO, $"entity {sourceEntityId} doesnt exist.", ConsoleColor.Yellow);
                 return;
             }
 

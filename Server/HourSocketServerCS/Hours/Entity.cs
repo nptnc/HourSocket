@@ -11,21 +11,22 @@ namespace HourSocketServerCS.Hours {
     {
         public static int globalId = 0;
 
-        public Entity(string entityid, int team, bool isplayer = false, bool isBoss = false)
+        public Entity(string entitytype, int team, bool isplayer = false, bool isBoss = false, int? networkId = null)
         {
             globalId += 1;
             
             if (isplayer) {
-                Helper.Say((byte)LogTypes.INFO, $"Created a new player entity {entityid} as id {globalId}", ConsoleColor.Cyan);
+                Helper.Say((byte)LogTypes.INFO, $"Created a new player entity {entitytype} as id {globalId}", ConsoleColor.Cyan);
             } else {
-                Helper.Say((byte)LogTypes.INFO, $"Created a new entity {entityid} as id {globalId}", ConsoleColor.Cyan);
+                Helper.Say((byte)LogTypes.INFO, $"Created a new entity {entitytype} as id {globalId}", ConsoleColor.Cyan);
             }
             
             id = globalId;
             this.isplayer = isplayer;
-            this.entityid = entityid;
+            this.entitytype = entitytype;
             this.isBoss = isBoss;
             this.team = team;
+            this.hostNetworkId = networkId;
             Game.entities.Add(this);
         }
 
@@ -34,7 +35,7 @@ namespace HourSocketServerCS.Hours {
         public int health = 9999; // default health, because we dont know it
         public int team;
 
-        public string entityid;
+        public string entitytype;
 
         public bool isBoss = false;
         public bool isplayer = false;

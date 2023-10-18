@@ -35,7 +35,7 @@ namespace HourSocketServerCS.Networking.Messages
             if (realEntityId == -1)
                 return;
 
-            Entity? entity = new(entityHoursId,damageTeam.NetInt(),false, isBoss.NetBool()); ;
+            Entity? entity = new(entityHoursId,damageTeam.NetInt(),false, isBoss.NetBool(), realEntityId);
             entity.position = position.NetVector3();
             entity.rotation = rotation.NetVector3();
 

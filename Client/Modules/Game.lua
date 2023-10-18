@@ -87,7 +87,7 @@ return function(api)
 
                 local message = api.prepareMessage("playerDamaged",thisEntity.NetworkID,HttpService:JSONEncode(args))
                 api.sendToServer(message)
-                warn(`player entity got damaged by {target.NetworkID}, networking`)
+                warn(`player entity got damaged by {args.Source}, networking`)
             end
 
             if args.Source ~= 1 then
