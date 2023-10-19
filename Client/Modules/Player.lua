@@ -97,6 +97,7 @@ return function(api)
 
         local message = api.prepareMessage("registerPlayer",
             api.player.Name,
+            api.player.UserId,
             getrenv()._G.Class,
             api.encodeV3(entity.RootPart.Position),
             api.encodeV3(entity.RootPart.Rotation)
