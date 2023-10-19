@@ -34,7 +34,7 @@ namespace HourSocketServerCS.Networking.Messages
 
             Helper.Say((byte)LogTypes.INFO, $"{player.username} state changed, {index} : {value}", ConsoleColor.Yellow);
 
-            string contents2 = Networker.PrepareForLua(Index(), player.id.ToString(), index, value);
+            string contents2 = Networker.PrepareForLua(Index(), player.userId, index, value);
             Networker.SendToAll(contents2, new Player[] { player });
         }
     }

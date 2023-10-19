@@ -472,7 +472,7 @@ local start = function(executionMethod,localPath)
             api.registeredPlayers[userid].serverData[index] = api.findOutVariable(value)
         end
         
-        print(`received register player {userid}`)
+        print(`received register player {userid} {data.username}`)
     
         apiCall("playerRegistered",nil,userid,api.registeredPlayers[userid])
         if tonumber(userid) ~= player.UserId then

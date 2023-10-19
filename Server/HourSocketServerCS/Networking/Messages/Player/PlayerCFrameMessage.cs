@@ -18,7 +18,7 @@ namespace HourSocketServerCS.Networking.Messages
             string position = reader.ReadUntilSeperator();
             string rotation = reader.ReadUntilSeperator();
 
-            string contents2 = Networker.PrepareForLua(Index(), player.id.ToString(), position, rotation);
+            string contents2 = Networker.PrepareForLua(Index(), player.userId, position, rotation);
             Networker.SendToAll(contents2, new Player[] { player });
         }
     }

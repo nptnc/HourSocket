@@ -30,7 +30,7 @@ namespace HourSocketServerCS.Networking.Messages
 
             Helper.Say((byte)LogTypes.INFO, $"{player.username} knockback {knockbackV3Value.X}, {knockbackV3Value.Y}, {knockbackV3Value.Z}", ConsoleColor.Yellow);
 
-            string contents = Networker.PrepareForLua(Index(), player.id.ToString(), knockbackIndex, knockbackValue);
+            string contents = Networker.PrepareForLua(Index(), player.userId, knockbackIndex, knockbackValue);
             Networker.SendToAll(contents, new Player[] { player });
         }
     }

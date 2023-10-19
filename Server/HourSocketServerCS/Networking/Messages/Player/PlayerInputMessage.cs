@@ -30,7 +30,7 @@ namespace HourSocketServerCS.Networking.Messages
             player.cameraRot = rotation.NetVector3();
 
             Helper.Say((byte)LogTypes.INFO, $"{player.username} inputted {input}", ConsoleColor.Yellow);
-            string contents2 = Networker.PrepareForLua(Index(), player.id.ToString(), input, position, rotation);
+            string contents2 = Networker.PrepareForLua(Index(), player.userId, input, position, rotation);
             Networker.SendToAll(contents2, new Player[] { player });
         }
     }

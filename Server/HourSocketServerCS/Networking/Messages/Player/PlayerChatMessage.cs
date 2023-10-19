@@ -27,7 +27,7 @@ namespace HourSocketServerCS.Networking.Messages
 
             Helper.Say((byte)LogTypes.INFO, $"{player.username}: {message}", ConsoleColor.Yellow);
 
-            string contents = Networker.PrepareForLua(Index(), player.id.ToString(), message);
+            string contents = Networker.PrepareForLua(Index(), player.userId, message);
             Networker.SendToAll(contents, new Player[] { player });
         }
     }

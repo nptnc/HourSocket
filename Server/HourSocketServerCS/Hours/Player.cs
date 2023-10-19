@@ -31,6 +31,7 @@ namespace HourSocketServerCS.Hours {
         public Vector3 cameraPos;
         public Vector3 cameraRot;
 
+        public string userId;
         public string? username = null;
         public string? playerclass;
 
@@ -48,7 +49,7 @@ namespace HourSocketServerCS.Hours {
             PlayerHandler.RegisterPlayer(this);
         }
 
-        public void OnRegister(string username, string playerclass, Vector3 position, Vector3 rotation) {
+        public void OnRegister(string username, string r_userid, string playerclass, Vector3 position, Vector3 rotation) {
             if (hasRegistered)
                 return;
             hasRegistered = true;
@@ -57,6 +58,7 @@ namespace HourSocketServerCS.Hours {
 
             this.username = username;
             this.playerclass = playerclass;
+            this.userId = r_userid;
             entity.position = position;
             entity.rotation = rotation;
             Helper.Say((byte)LogTypes.INFO, $"player {id} has registered as {username}");
