@@ -214,6 +214,14 @@ local start = function(executionMethod,localPath)
             getrenv()._G.Entities[index] = nil
         end
     end
+
+    api.getRealEntityFromNetworkId = function(networkId)
+        for _,entity in getrenv()._G.Entities do
+            if entity.NetworkID == networkId then
+                return entity
+            end
+        end
+    end
     
     api.findOutVariable = function(var)
         local newVar = var
@@ -438,7 +446,7 @@ local start = function(executionMethod,localPath)
         end
     end
     
-    registerMessage(0,function(userId)
+    registerMessage(messageIds.disconnect,function(userId)
         apiCall("playerDisconnected",nil,userId)
         api.destroyPlayerEntity(userId)
         apiCall("createNotification",nil,`{api.registeredPlayers[userId].serverData.username} disconnected`)
@@ -480,7 +488,7 @@ local start = function(executionMethod,localPath)
         end
     end
     
-    registerMessage(1,function(userId,username,class,position,rotation,isHost,isMe)
+    registerMessage(messageIds.registerPlayer,function(userId,username,class,position,rotation,isHost,isMe)
         if isMe then
             userId = player.UserId
         end
@@ -494,7 +502,7 @@ local start = function(executionMethod,localPath)
         })
     end,{"number","string","string","vector3","vector3","boolean","boolean"})
     
-    registerMessage(2,function(userid,position,rotation)
+    registerMessage(messageIds.updatePlayer,function(userid,position,rotation)
         if not api.registeredPlayers[userid] then
             warn(`no userid ({userid}, {typeof(userid)}) is not a userid`)
             return
@@ -503,7 +511,7 @@ local start = function(executionMethod,localPath)
         messageplayer.cframe = CFrame.new(position.X,position.Y,position.Z) * CFrame.Angles(math.rad(rotation.X),math.rad(rotation.Y),math.rad(rotation.Z))
     end,{"number","vector3","vector3"})
     
-    registerMessage(3,function(userid,key,value)
+    registerMessage(messageIds.updateState,function(userid,key,value)
         if not api.registeredPlayers[userid] then
             warn(`no userid ({userid}) is not a userid`)
             return
@@ -526,11 +534,11 @@ local start = function(executionMethod,localPath)
         apiCall("playerStateUpdate",nil,userid,key,value)
     end,{"number","any","any"})
     
-    registerMessage(4,function(userid,knockbackIndex,v3)
+    registerMessage(messageIds.updateKnockback,function(userid,knockbackIndex,v3)
         apiCall("playerEntityKnockbackUpdate",nil,userid,knockbackIndex,v3)
     end,{"number","number","vector3"})
     
-    registerMessage(5,function(entityid,entityname,damageTeam,isBoss,pos,rot)
+    registerMessage(messageIds.registerEntity,function(entityid,entityname,damageTeam,isBoss,pos,rot)
         print(`received spawn entity packet {entityid} {entityname} {damageTeam} {isBoss} {pos} {rot}`)
     
         local realEntityId = getrenv()._G.SpawnCreature({
@@ -544,7 +552,7 @@ local start = function(executionMethod,localPath)
         apiCall("networkedEntityCreated",nil,entityid,realEntityId,pos,rot)
     end,{"number","string","number","boolean","vector3","vector3"})
 
-    registerMessage(6,function(entityid,pos,rot)
+    registerMessage(messageIds.updateEntityCF,function(entityid,pos,rot)
         apiCall("networkEntityUpdate",nil,entityid,pos,rot)
     end,{"number","vector3","vector3"})
     
@@ -645,15 +653,6 @@ local start = function(executionMethod,localPath)
         print(`subject potion add`)
     end,{"number","string","number"})
 
-    -- why didnt i put this as an api global?
-    local getRealEntityFromNetworkId = function(networkId)
-        for _,entity in getrenv()._G.Entities do
-            if entity.NetworkID == networkId then
-                return entity
-            end
-        end
-    end
-
     -- player damaged, (when they are hit.)
     registerMessage(messageIds.playerDamaged,function(userid,sourceEntityNetworkId,jsonEncodedDamage)
         local playerEntity = api.registeredPlayers[userid].entity
@@ -662,7 +661,7 @@ local start = function(executionMethod,localPath)
         end
 
         -- oh for fuck sake.
-        local entity = getRealEntityFromNetworkId(sourceEntityNetworkId)
+        local entity = api.getRealEntityFromNetworkId(sourceEntityNetworkId)
 
         local decoded = http:JSONDecode(jsonEncodedDamage)
         decoded.Source = entity.Id

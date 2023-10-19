@@ -55,14 +55,6 @@ return function(api)
         end
     end
 
-    local getRealEntityFromNetworkId = function(networkId)
-        for _,entity in getrenv()._G.Entities do
-            if entity.NetworkID == networkId then
-                return entity
-            end
-        end
-    end
-
     local getEntityFromNetworkId = function(networkId)
         return api.globals.entityDatabase[networkId]
     end
@@ -296,7 +288,7 @@ return function(api)
     end
 
     module.entityDoInput = function(entityid,someIndex,input)
-        local entity = getRealEntityFromNetworkId(entityid)
+        local entity = api.getRealEntityFromNetworkId(entityid)
         if not entity then
             print("entity doesnt exist cant do input")
             return
