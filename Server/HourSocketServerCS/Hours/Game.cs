@@ -10,13 +10,10 @@ namespace HourSocketServerCS.Hours {
         public static List<Entity> entities = new();
 
         // TODO: check if this shit works?
-        public static string currentMap {
-            private set;
-            get;
-        } = "SandyBlue"; // this is the default map for hours.
+        public static string currentMap = "SandyBlue"; // this is the default map for hours.
+        private static string? previousMap;
 
         public static string currentState = "";
-        private static string? previousMap;
 
         public static void Start() {
             previousMap = currentMap;

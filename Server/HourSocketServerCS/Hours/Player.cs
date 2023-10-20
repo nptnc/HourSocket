@@ -31,7 +31,7 @@ namespace HourSocketServerCS.Hours {
         public Vector3 cameraPos;
         public Vector3 cameraRot;
 
-        public string userId;
+        public string? userId;
         public string? username = null;
         public string? playerclass;
 
@@ -61,7 +61,7 @@ namespace HourSocketServerCS.Hours {
             this.userId = r_userid;
             entity.position = position;
             entity.rotation = rotation;
-            Helper.Say((byte)LogTypes.INFO, $"player {id} has registered as {username}");
+            Helper.Say((byte)LogTypes.INFO, $"player {id} has registered as {username} {r_userid}");
         }
     }
 }

@@ -395,7 +395,7 @@ local start = function(executionMethod,localPath)
                 end
             end
         else
-            endString = `{messageId}{seperator}{player.UserId}`
+            endString = `{messageId}`
         end
         return endString
     end
@@ -488,10 +488,7 @@ local start = function(executionMethod,localPath)
         end
     end
     
-    registerMessage(messageIds.registerPlayer,function(userId,username,class,position,rotation,isHost,isMe)
-        if isMe then
-            userId = player.UserId
-        end
+    registerMessage(messageIds.registerPlayer,function(userId,username,class,position,rotation,isHost)
         registerPlayer(userId,{
             username = username,
             class = class,
@@ -500,7 +497,7 @@ local start = function(executionMethod,localPath)
             id = userId,
             isHost = isHost,
         })
-    end,{"number","string","string","vector3","vector3","boolean","boolean"})
+    end,{"number","string","string","vector3","vector3","boolean"})
     
     registerMessage(messageIds.updatePlayer,function(userid,position,rotation)
         if not api.registeredPlayers[userid] then
@@ -699,7 +696,7 @@ local start = function(executionMethod,localPath)
             api.socket = websocketLayer.connect(ip)
         end)
         if not success then
-            apiCall("createNotification",nil,`failed to connect to server\neither the server is down or you used the wrong connection type.`)
+            apiCall("createNotification",nil,`failed to connect to server\nyou inputted the wrong server details or the server is down`)
             return
         end
         api.connected = true
@@ -744,6 +741,7 @@ local start = function(executionMethod,localPath)
         end)
     end
     
+    -- this probably isnt necessary anymore
     workspace.ChildRemoved:Connect(function(child)
         if not api.connected then
             return

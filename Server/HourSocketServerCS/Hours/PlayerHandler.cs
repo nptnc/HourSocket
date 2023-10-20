@@ -31,12 +31,29 @@ namespace HourSocketServerCS.Hours {
             if (player.entity != null)
                 Game.WipeEntity(player.entity.id);
 
+            bool wasHost = player.isHost;
+
             Helper.Say((byte)LogTypes.INFO, $"Destroyed player {player.username}", ConsoleColor.Yellow);
             players.Remove(player);
 
             if (players.Count <= 0) {
-                Helper.Say((byte)LogTypes.INFO, $"All players have left the game, player global id have now been reset.", ConsoleColor.Yellow);
+                Helper.Say((byte)LogTypes.INFO, $"All players have left the game, player global id have now been reset.", ConsoleColor.Cyan);
                 Player.globalId = 0;
+                return;
+            }
+
+            if (wasHost) {
+                List<int> ids = new();
+                foreach (Player newPlayer in players) {
+                    ids.Add(newPlayer.id);
+                }
+                foreach (Player newPlayer in players.Where(p => p.hasRegistered == true)) {
+                    int min = ids.Min();
+                    if (newPlayer.id == min) {
+                        newPlayer.isHost = true;
+                        Helper.Say((byte)LogTypes.INFO, $"Host has been transferred to {newPlayer!.username} id {newPlayer.id}!", ConsoleColor.Cyan);
+                    }
+                }
             }
         }
 

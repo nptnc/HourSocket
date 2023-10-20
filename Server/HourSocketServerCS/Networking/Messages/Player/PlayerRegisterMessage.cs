@@ -31,13 +31,13 @@ namespace HourSocketServerCS.Networking.Messages
             player.OnRegister(username, userid, playerclass, position.NetVector3(), rotation.NetVector3());
 
             // send this player to everyone except the player.
-            string contents = Networker.PrepareForLua(Index(), player.userId, username, playerclass, position, rotation, player.isHost.ToString().ToLower(), "false");
+            string contents = Networker.PrepareForLua(Index(), player.userId, username, playerclass, position, rotation, player.isHost.ToString().ToLower());
             Networker.SendToAll(contents, new Player[] { player });
 
             foreach (Player otherPlayer in PlayerHandler.players.ToList().Where(p => p.hasRegistered))
             {
                 // send every player to this player
-                string contents2 = Networker.PrepareForLua(Index(), otherPlayer.userId, username, playerclass, position, rotation, player.isHost.ToNetwork(), (otherPlayer.id == player.id).ToNetwork());
+                string contents2 = Networker.PrepareForLua(Index(), otherPlayer.userId, otherPlayer.username, otherPlayer.playerclass, otherPlayer.entity!.position.ToNetwork(), otherPlayer.entity!.rotation.ToNetwork(), otherPlayer.isHost.ToNetwork());
                 Networker.SendToClient(player, contents2);
             }
         }
