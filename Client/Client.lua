@@ -1,4 +1,4 @@
-local start = function(executionMethod,localPath)
+local start = function(localPath)
     setthreadidentity(2)
 
     if getgenv()._G.LEExecuted == true then
@@ -498,13 +498,13 @@ local start = function(executionMethod,localPath)
     local hasLoadedModules = false 
     for index,module in modules do
         local success,error = pcall(function()
-            if executionMethod == "github" then
+            if not localPath then
                 local response = loadstring(websocketLayer.request(`{github}/Modules/{module}.lua`))()
                 requiredModules[module] = response(api)
-            elseif executionMethod == "local" then
-                local response = loadfile(`{localPath}/Modules/{module}.lua`)()
-                requiredModules[module] = response(api)
+                return
             end
+            local response = loadfile(`{localPath}/Modules/{module}.lua`)()
+            requiredModules[module] = response(api)
         end)
         if not success then
             warn(`caught an error trying to fetch module\n{error}`)

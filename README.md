@@ -37,9 +37,9 @@ if executor == "Electron V2" or executor == "Electron" then
     -- god i fucking hate this exector
     loadstring(request({
         url = url,
-    }).Body)()("github")
+    }).Body)()()
 else
-    loadstring(game:HttpGet(url))()("github")
+    loadstring(game:HttpGet(url))()()
 end
 
 --[[ 
@@ -47,6 +47,6 @@ for dev testing, we need to run the code locally so you dont have to spam commit
 oh it also only works on krnl cause electron is a shit exploit!!!!!!
 
 local path = "HoursMPSource/Client"
-loadfile(`{path}/Client.lua`)()("local",path)
+loadfile(`{path}/Client.lua`)()(path)
 --]]
 ````
