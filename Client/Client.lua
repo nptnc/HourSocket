@@ -186,6 +186,16 @@ local start = function(localPath)
         return false
     end
 
+    local convertTableStringsToNumbers = function(t)
+        local newT = table.clone(t)
+        for index,value in newT do
+            if type(value) == "string" then
+                newT[index] = tonumber(value) or value
+            end
+        end
+        return newT
+    end
+
     local encoding = {
         Color3 = {
             Encode = function(value)
@@ -198,7 +208,8 @@ local start = function(localPath)
                 end
                 value = string.gsub(value,`c{encodeSeperator}`,"")
                 local splitted = string.split(value,",")
-                return true,Color3.new(tonumber(splitted[1]),tonumber(splitted[2]),tonumber(splitted[3]))
+                splitted = convertTableStringsToNumbers(splitted)
+                return true,Color3.new(splitted[1],splitted[2],splitted[3])
             end,
         },
         Vector3 = {
@@ -212,7 +223,8 @@ local start = function(localPath)
                 end
                 value = string.gsub(value,`v3{encodeSeperator}`,"")
                 local splitted = string.split(value,",")
-                return true,Vector3.new(tonumber(splitted[1]),tonumber(splitted[2]),tonumber(splitted[3]))
+                splitted = convertTableStringsToNumbers(splitted)
+                return true,Vector3.new(splitted[1],splitted[2],splitted[3])
             end,
         },
     }
