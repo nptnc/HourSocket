@@ -165,6 +165,101 @@ local start = function(executionMethod,localPath)
         end
         return true
     end
+
+    local encodeSeperator = "--"
+    
+    local checkIfStringStartsWith = function(haystack,needle)
+        local needleSplit = string.split(needle,"")
+        local startsWith = ""
+        for i,strchar in string.split(haystack,"") do
+            if not needleSplit[i] then
+                return false
+            end
+            if needleSplit[i] ~= strchar then
+                return false
+            end
+            startsWith ..= strchar
+            if startsWith == needle then
+                return true
+            end
+        end
+        return false
+    end
+
+    local encoding = {
+        Color3 = {
+            Encode = function(value)
+                return `c{encodeSeperator}{value.R},{value.G},{value.B}`
+            end,
+            Decode = function(value)
+                local does = checkIfStringStartsWith(value,`c{encodeSeperator}`)
+                if not does then
+                    return false
+                end
+                value = string.gsub(value,`c{encodeSeperator}`,"")
+                return true,value
+            end,
+        }
+    }
+
+    api.encodeJson = function(decoded)
+        local deepCopy; deepCopy = function(t)
+            local copy = {}
+            for index,value in t do
+                if type(value) == "table" then
+                    value = deepCopy(value)
+                end
+                if encoding[typeof(value)] then
+                    value = encoding[typeof(value)].Encode(value)
+                end
+                copy[index] = value
+            end
+            return copy
+        end
+        local readyToEncode = deepCopy(decoded)
+        return http:JSONEncode(readyToEncode)
+    end
+
+    api.decodeJson = function(encoded)
+        local notFullyDecoded = http:JSONDecode(encoded)
+        local deepCopy; deepCopy = function(t)
+            local copy = {}
+            for index,value in t do
+                if type(value) == "table" then
+                    value = deepCopy(value)
+                else
+                    for TYPE,methods in encoding do
+                        local success,newValue = methods.Decode(value)
+                        if not success then
+                            continue
+                        end
+                        warn(`successfully json decoded {index} it was a {TYPE}!`)
+                        value = newValue
+                    end
+                end
+                copy[index] = value
+            end
+            return copy
+        end
+        local decoded = deepCopy(notFullyDecoded)
+        return decoded
+    end
+
+    --[[
+    json encoding and decoding test
+
+    local toEncode = {
+        someFuckingThing = Color3.fromRGB(255,255,255),
+    }
+
+    warn(api.encodeJson(toEncode))
+
+    warn(http:JSONEncode(toEncode))
+
+    for i,v in api.decodeJson(api.encodeJson(toEncode)) do
+        print(i,v)
+    end
+    --]]
     
     api.isHost = function()
         return api.getMe().serverData.isHost
@@ -660,7 +755,7 @@ local start = function(executionMethod,localPath)
         -- oh for fuck sake.
         local entity = api.getRealEntityFromNetworkId(sourceEntityNetworkId)
 
-        local decoded = http:JSONDecode(jsonEncodedDamage)
+        local decoded = api.decodeJson(jsonEncodedDamage)
         decoded.Source = entity.Id
         decoded.Target = playerEntity.Id
         api.globals.Damage(decoded)

@@ -1,4 +1,3 @@
-local HttpService = game:GetService("HttpService")
 return function(api)
     local module = {}
 
@@ -85,7 +84,7 @@ return function(api)
             if args.Target == 1 then
                 local thisEntity = getEntityByRealId(args.Source)
 
-                local message = api.prepareMessage("playerDamaged",thisEntity.NetworkID,HttpService:JSONEncode(args))
+                local message = api.prepareMessage("playerDamaged",thisEntity.NetworkID,api.encodeJson(args))
                 api.sendToServer(message)
                 warn(`player entity got damaged by {args.Source}, networking`)
             end
