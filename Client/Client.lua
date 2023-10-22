@@ -197,9 +197,24 @@ local start = function(localPath)
                     return false
                 end
                 value = string.gsub(value,`c{encodeSeperator}`,"")
-                return true,value
+                local splitted = string.split(value,",")
+                return true,Color3.new(tonumber(splitted[1]),tonumber(splitted[2]),tonumber(splitted[3]))
             end,
-        }
+        },
+        Vector3 = {
+            Encode = function(value)
+                return `v3{encodeSeperator}{value.X},{value.Y},{value.Z}`
+            end,
+            Decode = function(value)
+                local does = checkIfStringStartsWith(value,`c{encodeSeperator}`)
+                if not does then
+                    return false
+                end
+                value = string.gsub(value,`v3{encodeSeperator}`,"")
+                local splitted = string.split(value,",")
+                return true,Vector3.new(tonumber(splitted[1]),tonumber(splitted[2]),tonumber(splitted[3]))
+            end,
+        },
     }
 
     api.encodeJson = function(decoded)
@@ -227,7 +242,7 @@ local start = function(localPath)
             for index,value in t do
                 if type(value) == "table" then
                     value = deepCopy(value)
-                else
+                elseif type(value) == "string" then
                     for TYPE,methods in encoding do
                         local success,newValue = methods.Decode(value)
                         if not success then
