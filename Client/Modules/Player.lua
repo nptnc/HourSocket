@@ -7,6 +7,10 @@ return function(api)
         return Vector3.new(api.hardOptimize(v3.X),api.hardOptimize(v3.Y),api.hardOptimize(v3.Z))
     end
 
+    local getVector3Hard2 = function(v3,factor)
+        return Vector3.new(math.round(v3.X*factor)/factor,math.round(v3.Y*factor)/factor,math.round(v3.Z*factor)/factor)
+    end
+
     local hook2 = function()
         --[[getrenv()._G.TimeControl.Begin = api.createHook(getrenv()._G.TimeControl.Begin,function(hook)
             local message = api.prepareMessage("startTempo",getrenv()._G.TimePower,getrenv()._G.TimeControl.Special)
@@ -116,10 +120,11 @@ return function(api)
     local lastUpdated = {Vector3.zero,Vector3.zero}
     module.updateWithFPS = function()
         local char = api.player.Character
+        local factor = 5
         local pos = char.HumanoidRootPart.Position
         local rot = char.HumanoidRootPart.Rotation
-        pos = getVector3Hard(pos)
-        rot = getVector3Hard(rot)
+        pos = getVector3Hard2(pos,factor)
+        rot = getVector3Hard2(rot,factor)
 
         if lastUpdated[1] == pos and lastUpdated[2] == rot then
             return
