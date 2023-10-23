@@ -141,7 +141,8 @@ return function(api)
     end
 
     module.playerStateUpdate = function(userid,index,value)
-        value = api.findOutVariable(userid,index,value)
+        index = api.findOutVariable(index)
+        value = api.findOutVariable(value)
         print(`updating player state {index} {value}`)
         
         api.registeredPlayers[userid].serverData[index] = value
@@ -171,10 +172,7 @@ return function(api)
 
             if currentValues.health ~= previousValues.health then
                 print("networking current health")
-                local message = api.prepareMessage("updateState",
-                    "health",
-                    currentValues.health
-                )
+                local message = api.prepareMessage("updateState","health",currentValues.health)
                 api.sendToServer(message)
             end
 
