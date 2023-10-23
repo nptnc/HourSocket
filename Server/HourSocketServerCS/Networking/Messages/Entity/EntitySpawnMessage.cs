@@ -30,6 +30,11 @@ namespace HourSocketServerCS.Networking.Messages
             string position = reader.ReadUntilSeperator();
             string rotation = reader.ReadUntilSeperator();
 
+            if (Game.GetEntityByNetworkId(entityNetworkId) != null) {
+                Helper.Say((byte)LogTypes.INFO, $"Cannot register entity, entity {entityNetworkId} already exists!",ConsoleColor.Red);
+                return;
+            }
+
             Entity? entity = new(entityHoursId,damageTeam.NetInt(),false, isBoss.NetBool());
             entity.position = position.NetVector3();
             entity.rotation = rotation.NetVector3();
