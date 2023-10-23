@@ -31,13 +31,21 @@ namespace HourSocketServerCS.Networking.Messages
             player.OnRegister(username, userid, playerclass, position.NetVector3(), rotation.NetVector3());
 
             // send this player to everyone except the player.
-            string contents = Networker.PrepareForLua(Index(), player.userId, username, playerclass, position, rotation, player.isHost.ToString().ToLower());
+            string contents = Networker.PrepareForLua(Index(), userid, username, playerclass, position, rotation, player.isHost.ToNetwork());
             Networker.SendToAll(contents, new Player[] { player });
 
-            foreach (Player otherPlayer in PlayerHandler.players.ToList().Where(p => p.hasRegistered))
-            {
+            foreach (Player otherPlayer in PlayerHandler.players.ToList().Where(p => p.hasRegistered)) {
                 // send every player to this player
                 string contents2 = Networker.PrepareForLua(Index(), otherPlayer.userId, otherPlayer.username, otherPlayer.playerclass, otherPlayer.entity!.position.ToNetwork(), otherPlayer.entity!.rotation.ToNetwork(), otherPlayer.isHost.ToNetwork());
+                Networker.SendToClient(player, contents2);
+            }
+
+            foreach (Entity entity in Game.entities) {
+                if (entity.hostNetworkId == null) {
+                    Helper.Say((byte)LogTypes.INFO, "Entity host id is null, cant send catchup message!");
+                    continue;
+                }
+                string contents2 = Networker.PrepareForLua(MessageIds.EntitySpawn, entity.hostNetworkId, entity.entitytype, entity.team.ToString(), entity.isBoss.ToNetwork(), entity.position.ToNetwork(), entity.rotation.ToNetwork());
                 Networker.SendToClient(player, contents2);
             }
         }

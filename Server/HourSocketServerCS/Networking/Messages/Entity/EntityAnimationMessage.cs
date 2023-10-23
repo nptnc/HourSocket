@@ -27,7 +27,7 @@ namespace HourSocketServerCS.Networking.Messages {
             string someIndex = reader.ReadUntilSeperator();
             string animationName = reader.ReadUntilSeperator();
 
-            Entity? entity = Game.GetEntityByNetworkId(entityId.NetInt());
+            Entity? entity = Game.GetEntityByNetworkId(entityId);
             if (entity == null)
                 return;
 

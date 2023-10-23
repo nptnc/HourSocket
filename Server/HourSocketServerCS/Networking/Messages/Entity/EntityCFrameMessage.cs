@@ -23,16 +23,11 @@ namespace HourSocketServerCS.Networking.Messages
                 return;
 
             Reader reader = new(data);
-            string entityId = reader.ReadUntilSeperator();
+            string entityNetworkId = reader.ReadUntilSeperator();
             string position = reader.ReadUntilSeperator();
             string rotation = reader.ReadUntilSeperator();
 
-            int realEntityId = -1;
-            int.TryParse(entityId, out realEntityId);
-            if (realEntityId == -1)
-                return;
-
-            Entity? entity = Game.GetEntityByNetworkId(realEntityId);
+            Entity? entity = Game.GetEntityByNetworkId(entityNetworkId);
             if (entity == null)
                 return;
 
@@ -40,7 +35,7 @@ namespace HourSocketServerCS.Networking.Messages
             entity.rotation = rotation.NetVector3();
 
             // send this player to everyone except the player.
-            string contents = Networker.PrepareForLua(Index(), entityId, position, rotation);
+            string contents = Networker.PrepareForLua(Index(), entityNetworkId, position, rotation);
             Networker.SendToAll(contents, new Player[] { player });
         }
     }

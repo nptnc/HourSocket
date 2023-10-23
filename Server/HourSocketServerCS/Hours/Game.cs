@@ -19,7 +19,7 @@ namespace HourSocketServerCS.Hours {
             previousMap = currentMap;
         }
 
-        public static Entity? GetEntityByNetworkId(int networkid) {
+        public static Entity? GetEntityByNetworkId(string networkid) {
             return entities.FirstOrDefault(entity => entity.hostNetworkId == networkid);
         }
 

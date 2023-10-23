@@ -11,7 +11,7 @@ namespace HourSocketServerCS.Hours {
     {
         public static int globalId = 0;
 
-        public Entity(string entitytype, int team, bool isplayer = false, bool isBoss = false, int? networkId = null)
+        public Entity(string entitytype, int team, bool isplayer = false, bool isBoss = false)
         {
             globalId += 1;
             
@@ -26,12 +26,11 @@ namespace HourSocketServerCS.Hours {
             this.entitytype = entitytype;
             this.isBoss = isBoss;
             this.team = team;
-            this.hostNetworkId = networkId;
             Game.entities.Add(this);
         }
 
         public int id;
-        public int? hostNetworkId; // might not have one, its a player
+        public string? hostNetworkId; // might not have one, its a player
         public int health = 9999; // default health, because we dont know it
         public int team;
 

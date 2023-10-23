@@ -30,14 +30,10 @@ namespace HourSocketServerCS.Networking.Messages
             string position = reader.ReadUntilSeperator();
             string rotation = reader.ReadUntilSeperator();
 
-            int realEntityId = -1;
-            int.TryParse(entityNetworkId, out realEntityId);
-            if (realEntityId == -1)
-                return;
-
-            Entity? entity = new(entityHoursId,damageTeam.NetInt(),false, isBoss.NetBool(), realEntityId);
+            Entity? entity = new(entityHoursId,damageTeam.NetInt(),false, isBoss.NetBool());
             entity.position = position.NetVector3();
             entity.rotation = rotation.NetVector3();
+            entity.hostNetworkId = entityNetworkId;
 
             // send this player to everyone except the player.
             string contents = Networker.PrepareForLua(Index(), entityNetworkId, entityHoursId, damageTeam, isBoss, position, rotation);
