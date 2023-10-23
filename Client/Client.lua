@@ -198,30 +198,32 @@ local start = function(localPath)
 
     local encoding = {
         Color3 = {
-            Encode = function(value)
-                return `c{encodeSeperator}{value.R},{value.G},{value.B}`
+            Identifier = "c";
+            Encode = function(value,id)
+                return `{id}{encodeSeperator}{value.R},{value.G},{value.B}`
             end,
-            Decode = function(value)
-                local does = checkIfStringStartsWith(value,`c{encodeSeperator}`)
+            Decode = function(value,id)
+                local does = checkIfStringStartsWith(value,`{id}{encodeSeperator}`)
                 if not does then
                     return false
                 end
-                value = string.gsub(value,`c{encodeSeperator}`,"")
+                value = string.gsub(value,`{id}{encodeSeperator}`,"")
                 local splitted = string.split(value,",")
                 splitted = convertTableStringsToNumbers(splitted)
                 return true,Color3.new(splitted[1],splitted[2],splitted[3])
             end,
         },
         Vector3 = {
-            Encode = function(value)
-                return `v3{encodeSeperator}{value.X},{value.Y},{value.Z}`
+            Identifier = "v3";
+            Encode = function(value,id)
+                return `{id}{encodeSeperator}{value.X},{value.Y},{value.Z}`
             end,
-            Decode = function(value)
-                local does = checkIfStringStartsWith(value,`c{encodeSeperator}`)
+            Decode = function(value,id)
+                local does = checkIfStringStartsWith(value,`{id}{encodeSeperator}`)
                 if not does then
                     return false
                 end
-                value = string.gsub(value,`v3{encodeSeperator}`,"")
+                value = string.gsub(value,`{id}{encodeSeperator}`,"")
                 local splitted = string.split(value,",")
                 splitted = convertTableStringsToNumbers(splitted)
                 return true,Vector3.new(splitted[1],splitted[2],splitted[3])
@@ -237,7 +239,8 @@ local start = function(localPath)
                     value = deepCopy(value)
                 end
                 if encoding[typeof(value)] then
-                    value = encoding[typeof(value)].Encode(value)
+                    local encoder = encoding[typeof(value)]
+                    value = encoder.Encode(value,encoder.Identifier)
                 end
                 copy[index] = value
             end
@@ -256,12 +259,13 @@ local start = function(localPath)
                     value = deepCopy(value)
                 elseif type(value) == "string" then
                     for TYPE,methods in encoding do
-                        local success,newValue = methods.Decode(value)
+                        local success,newValue = methods.Decode(value,methods.Identifier)
                         if not success then
                             continue
                         end
                         warn(`successfully json decoded {index} it was a {TYPE}!`)
                         value = newValue
+                        break
                     end
                 end
                 copy[index] = value
