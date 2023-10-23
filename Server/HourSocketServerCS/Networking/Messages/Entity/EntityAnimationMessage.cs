@@ -32,7 +32,7 @@ namespace HourSocketServerCS.Networking.Messages {
                 return;
 
             // send this player to everyone except the player.
-            string contents = Networker.PrepareForLua(Index(), entityId, someIndex, entityId);
+            string contents = Networker.PrepareForLua(Index(), entityId, someIndex, animationName);
             Networker.SendToAll(contents, new Player[] { player });
         }
     }
